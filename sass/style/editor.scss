@@ -1,0 +1,26 @@
+.md-controls {
+   div {
+      background-color: $body-bgcolor;
+      height: 1.9em;
+
+      a {
+         padding: 0.25em 0.5em 0.15em;
+         margin: 0 0.25em;
+         width: 2em;
+         color: #000;
+         font-size: 1em;
+         text-align: center;
+         display: inline-block;
+
+         &:hover, &:active {
+            background-color: $block-bgcolor;
+         }
+      }
+   }
+
+   textarea {
+      border-color: $body-bgcolor;
+      border-top: 0;
+      width: 100%;
+   }
+}

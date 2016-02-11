@@ -1,0 +1,12 @@
+body {
+   background-color: $body-bgcolor;
+}
+
+blockquote {
+   border-left: 0.5em solid $body-bgcolor;
+   padding-left: 0.5em;
+}
+
+.btn {
+   border-radius: 0;
+}

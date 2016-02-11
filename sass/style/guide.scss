@@ -1,0 +1,32 @@
+.guide-header {
+   padding: 1.5rem 1.5rem 1.1rem;
+   margin-bottom: 1.5rem;
+   background-color: $block-bgcolor;
+
+   .author, .updated {
+      color: $text-muted;
+      font-size: 0.8em;
+      line-height: 1.2em;
+      display: block;
+   }
+
+   .tags {
+      margin-top: 0.4em;
+   }
+}
+
+.guide-body {
+   .section {
+      padding: 1.5rem 1.5rem 1.1rem;
+      background-color: $block-bgcolor;
+      margin-bottom: 1.5rem;
+
+      h3 {
+         border-bottom: 1px solid $body-bgcolor;
+      }
+
+      p {
+         margin-bottom: 0;
+      }
+   }
+}

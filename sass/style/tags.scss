@@ -1,0 +1,45 @@
+.tag {
+   display: inline-block;
+   padding: 0.5em;
+   font-size: 0.8em;
+   font-weight: bold;
+   line-height: 1.2em;
+   text-align: center;
+   color: $tag-color;
+   white-space: nowrap;
+   vertical-align: baseline;
+   margin: 0 0.4em 0.4em 0;
+
+   background-color: $tag-bgcolor;
+   &:hover, &:focus, &:active {
+      color: $tag-color;
+      text-decoration: none;
+      background-color: darken($tag-bgcolor, 3%);
+   }
+
+   &.multiple {
+      background-color: complement($tag-bgcolor);
+      &:hover {
+         background-color: darken(complement($tag-bgcolor), 3%);
+      }
+   }
+
+   &.current {
+      background-color: adjust_hue($tag-bgcolor, 240deg);
+      &:hover {
+         background-color: darken(adjust_hue($tag-bgcolor, 240deg), 3%);
+      }
+   }
+
+   &.category {
+      background-color: adjust_hue($tag-bgcolor, 120deg);
+      &:hover {
+         background-color: darken(adjust_hue($tag-bgcolor, 120deg), 3%);
+      }
+   }
+}
+
+.tags a i.fa {
+   font-size: 0.8em;
+   margin-right: 0.4em;
+}

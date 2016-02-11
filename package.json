@@ -1,0 +1,40 @@
+{
+  "name": "TLDR.gg",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Alayton Norgard <an.adept@gmail.com>",
+  "dependencies": {
+    "gulp": "~3.9.0",
+    "gulp-inject": "~3.0.0",
+    "gulp-sass": "~2.1.1",
+    "gulp-uglify": "~1.5.1",
+    "gulp-cssnano": "~2.1.0",
+    "gulp-freeze": "~0.0.2",
+    "gulp-sourcemaps": "~1.6.0",
+    "gulp-base64": "~0.1.3",
+    "vinyl-source-stream": "~1.1.0",
+    "vinyl-buffer": "~1.0.0",
+    "del": "~2.2.0",
+    "globby": "~4.0.0",
+    "font-awesome": "~4.5.0",
+    "jquery": "~2.2.0",
+    "browserify": "~13.0.0",
+    "markdown-it": "~5.1.0",
+    "request": "~2.67.0",
+    "express": "~4.13.0",
+    "underscore": "~1.8.0",
+    "bootstrap": "4.0.0-alpha.2",
+    "tether": "~1.1.1",
+    "slug": "~0.9.1",
+    "sifter": "~0.4.5",
+    "moment": "~2.11.1",
+    "mithril": "~0.2.0",
+    "mithril-node-render": "~0.4.2"
+  },
+  "devDependencies": {
+  },
+  "browser": {
+    "./util/request.js": "./util/request-browser.js"
+  }
+}
