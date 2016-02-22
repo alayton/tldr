@@ -3,7 +3,7 @@ var auth = require('../../models/auth.js');
 
 module.exports = function() {
     return [
-        m('h2', 'Recent Activity'),
+        m('h2', 'Whats up?'),
         auth.user() ?
             [
                 m('p', 'Recent activity goes here...')

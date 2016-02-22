@@ -75,7 +75,24 @@ var layout = function(content) {
                 ]),
                 m('footer.footer', [
                     m('.container', [
-                        m('p', '© TLDR.gg ' + new Date().getFullYear()),
+                        m('span.copyright', '© TLDR.gg ' + new Date().getFullYear()),
+                        m('ul', [
+                            m('li', [
+                                m('a[href=mailto:coolpeople@tldr.gg]', 'Contact'),
+                            ]),
+                            m('li.divider', ' - '),
+                            m('li', [
+                                 m('a[href=/about]', 'About'),
+                            ]),
+                            m('li.divider', ' - '),
+                            m('li', [
+                                 m('a[href=/privacy]', 'Privacy'),
+                            ]),
+                            m('li.divider', ' - '),
+                            m('li', [
+                                 m('a[href=/tos]', 'TOS'),
+                            ]),
+                        ]),                       
                     ])
                 ]),
                 m.component(login),
