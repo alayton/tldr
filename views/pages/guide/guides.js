@@ -2,7 +2,7 @@ var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
 var layout = require('../../layout/sidebar.js');
-var categoryTag = require('../../../controllers/components/categorytag.js');
+var categoryTag = require('../../../controllers/components/tag/categorytag.js');
 
 module.exports = function(vm) {
     return layout([
@@ -41,6 +41,10 @@ module.exports = function(vm) {
                     m('p.card-text', guide.author_name)
                 ])
             ]);
-        }))
+        })),
+        m('a.btn.btn-success.btn-lg', {
+            href: '/guide/edit?catg=' + vm.category.id,
+            config: m.route
+        }, [m('i.fa.fa-new'), ' New Guide'])
     ]);
 };

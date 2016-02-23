@@ -1,5 +1,6 @@
 var m = require('mithril');
 var _ = require('underscore');
+var config = require('../config.js');
 var auth = require('../models/auth.js');
 
 var addAuthHeader = function(xhr) {
@@ -8,7 +9,7 @@ var addAuthHeader = function(xhr) {
 
 var req = function(options, skipAuth) {
     if (options.endpoint) {
-        options.url = '//tldrapi.alayton.com' + options.endpoint;
+        options.url = config.apiRoot + options.endpoint;
     }
 
     if (window['tldrRequests'] !== undefined && tldrRequests && tldrRequests[options.url]) {
@@ -25,7 +26,19 @@ var req = function(options, skipAuth) {
         options.config = addAuthHeader;
     }
 
-    return m.request(options);
+    options.unwrapSuccess = options.unwrapError = function(data, xhr) {
+        data.statusCode = xhr.status;
+        return data;
+    };
+
+    var req = m.request(options);
+    req.then(null, function(data) {
+        if (data.statusCode == 401) {
+            auth.logout(true);
+        }
+    });
+    return req;
+
 };
 
 module.exports = req;

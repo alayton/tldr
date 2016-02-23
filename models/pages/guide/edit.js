@@ -7,7 +7,8 @@ var skeleton = require('../../../views/layout/skeleton.js');
 
 var vm = function(params, done) {
     this.guide = null;
-    this.body = null;
+    this.body = [];
+    this.tags = [];
     this.error = null;
     this.saving = m.prop(false);
     this.saved = m.prop(false);
@@ -15,7 +16,38 @@ var vm = function(params, done) {
     var guideId = parseInt(param(params, 'id', 0));
 
     if (!guideId) {
-        this.guide = false;
+        var catg = parseInt(param(params, 'catg', 0));
+        if (!catg) {
+            this.error = 'No category given!';
+            if (done) done(null, this);
+            return;
+        }
+
+        this.guide = {
+            category_id: catg,
+            title: m.prop(''),
+            tags: [],
+            suggestions: []
+        };
+
+        this.body.push({
+            title: m.prop(''),
+            text: m.prop(''),
+            image: m.prop(0)
+        });
+
+        req({
+            endpoint: '/tag/children/' + catg
+        }).then(_.bind(function(data) {
+            this.guide.category = data.tag;
+            this.guide.category_id = data.tag.id;
+            this.tags = data.children;
+            if (done) done(null, this);
+        }, this), _.bind(function(data) {
+            this.error = data.error;
+            if (done) done(null, this);
+        }, this));
+
         return;
     }
 
@@ -72,12 +104,15 @@ vm.prototype = {
         };
 
         req({
-            method: 'PUT',
-            endpoint: '/guide/' + self.guide.id,
+            method: self.guide.id ? 'PUT' : 'POST',
+            endpoint: self.guide.id ? '/guide/' + self.guide.id : '/guide',
             data: data
         }).then(function(data) {
             self.saving(false);
             self.saved(true);
+
+            self.guide.id = data.guide.id;
+
             _.delay(function() {
                 self.saved(false);
             }, 15000);
@@ -85,6 +120,18 @@ vm.prototype = {
             skeleton.errors().push(data.error);
             self.saving(false);
         });
+    },
+    addSection: function(self) {
+        self.body.push({
+            title: m.prop(''),
+            text: m.prop(''),
+            image: m.prop(0)
+        });
+    },
+    delSection: function(self, idx) {
+        if (idx < self.body.length) {
+            self.body.splice(idx, 1);
+        }
     },
     hasTag: function(tag) {
         return (_.findWhere(this.guide.tags, { id: tag.id }) !== undefined);

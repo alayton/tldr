@@ -1,18 +1,22 @@
 var m = require('mithril');
 var $ = require('jquery');
-var layout = require('../../views/layout/skeleton.js');
-var auth = require('../auth.js');
-var req = require('../../util/request.js');
+var layout = require('../../../views/layout/skeleton.js');
+var auth = require('../../auth.js');
+var req = require('../../../util/request.js');
 
 var vm = function() {
     this.email = m.prop('');
     this.password = m.prop('');
 
-    this.emailError = m.prop(false);
-    this.passwordError = m.prop(false);
+    this.error = m.prop(null);
+    this.emailError = m.prop(null);
+    this.passwordError = m.prop(null);
 };
 
 vm.prototype = {
+    closeModal: function() {
+        $('#loginModal').modal('hide');
+    },
     serialize: function() {
         return {
             email: this.email(),
@@ -21,6 +25,8 @@ vm.prototype = {
     },
     submit: function(e) {
         e.preventDefault();
+        var self = this;
+        self.error(null);
 
         req({
             endpoint: '/auth',
@@ -31,7 +37,7 @@ vm.prototype = {
                 auth.key(data.token);
                 auth.user(data.user);
 
-                $('#loginModal').modal('hide');
+                self.closeModal();
             } else if (data.error) {
                 layout.errors().push(data.error);
             } else {
@@ -40,14 +46,15 @@ vm.prototype = {
         }, function(err) {
             if (err.field_errors) {
                 if (err.field_errors.Email) {
-                    this.emailError(err.field_errors.Email);
+                    self.emailError(err.field_errors.Email);
                 }
                 if (err.field_errors.Password) {
-                    this.passwordError(err.field_errors.Password);
+                    self.passwordError(err.field_errors.Password);
                 }
             }
+
             if (err.error) {
-                layout.errors().push(err.error);
+                self.error(err.error);
             }
         });
 

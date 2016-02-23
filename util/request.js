@@ -1,6 +1,7 @@
 var request = require('request');
 var m = require('mithril');
 var _ = require('underscore');
+var config = require('../config.js');
 
 var reqCallback = function(deferred, url, error, response, body) {
     if (error) {
@@ -12,7 +13,7 @@ var reqCallback = function(deferred, url, error, response, body) {
         }
     } else {
         var data = JSON.parse(body);
-        req.cache[url.replace('http:', '')] = data;
+        req.cache[url] = data;
         deferred.resolve(data);
     }
 };
@@ -24,7 +25,7 @@ var req = function(options) {
     opts.method = options.method || 'GET';
 
     if (options.endpoint) {
-        opts.uri = 'http://tldrapi.alayton.com' + options.endpoint;
+        opts.uri = config.apiRoot + options.endpoint;
     } else if (options.url) {
         opts.uri = options.url;
     }

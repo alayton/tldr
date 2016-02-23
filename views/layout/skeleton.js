@@ -19,8 +19,13 @@ var showLogin = function() {
     $('#loginModal').modal('show');
 };
 
+var showSignup = function() {
+    $('#signupModal').modal('show');
+};
+
 var layout = function(content) {
-    var login = require('../../controllers/components/login.js');
+    var login = require('../../controllers/components/user/login.js');
+    var signup = require('../../controllers/components/user/signup.js');
 
     return m('.container', [
         m('nav.navbar.navbar-full.navbar-dark.bg-primary', [
@@ -39,7 +44,7 @@ var layout = function(content) {
                     ]) :
                     [
                         m('li.nav-item', m('a.nav-link[href=javascript:;]', { onclick: showLogin }, 'Log in')),
-                        m('li.nav-item', m('a.nav-link[href=/signup]', 'Sign up'))
+                        m('li.nav-item', m('a.nav-link[href=javascript:;]', { onclick: showSignup }, 'Sign up'))
                     ]
             ])
         ]),
@@ -49,12 +54,20 @@ var layout = function(content) {
                 err
             ]);
         }),
+        _.map(layout.notices(), function(err) {
+            return m('.alert.alert-info.alert-dismissable.fade.in', [
+                m('button.close[type=button]', { 'data-dismiss': 'alert' }, m('span', m.trust('&times;'))),
+                err
+            ]);
+        }),
         content,
         m('footer.footer', m('p', '© TLDR.gg ' + new Date().getFullYear())),
-        m.component(login)
+        m.component(login),
+        m.component(signup)
     ]);
 };
 
+layout.notices = m.prop([]);
 layout.errors = m.prop([]);
 
 module.exports = layout;

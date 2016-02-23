@@ -35,6 +35,7 @@
   "devDependencies": {
   },
   "browser": {
-    "./util/request.js": "./util/request-browser.js"
+    "./util/request.js": "./util/request-browser.js",
+    "mithril": "./asset/js/mithril.js"
   }
 }

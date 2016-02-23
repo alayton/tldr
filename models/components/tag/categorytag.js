@@ -2,7 +2,7 @@ var m = require('mithril');
 var $ = require('jquery');
 var _ = require('underscore');
 var Sifter = require('sifter');
-var req = require('../../util/request.js');
+var req = require('../../../util/request.js');
 
 var vm = function(tag, addFunc, context, onclick) {
     this.tag = tag;

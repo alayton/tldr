@@ -41,17 +41,22 @@ var auth = new function() {
         return user;
     };
 
-    this.logout = function() {
-        var req = require('../util/request.js');
-        req({
-            endpoint: '/auth',
-            method: 'DELETE'
-        }).then(_.bind(function(response) {
-            if (response.ok) {
-                this.key(null);
-                this.user(null);
-            }
-        }, this));
+    this.logout = function(force) {
+        if (force) {
+            this.key(null);
+            this.user(null);
+        } else {
+            var req = require('../util/request.js');
+            req({
+                endpoint: '/auth',
+                method: 'DELETE'
+            }).then(_.bind(function(response) {
+                if (response.ok) {
+                    this.key(null);
+                    this.user(null);
+                }
+            }, this));
+        }
     }
 };
 

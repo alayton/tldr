@@ -10,3 +10,18 @@ blockquote {
 .btn {
    border-radius: 0;
 }
+
+.page-loading {
+   text-align: center;
+   margin: 4rem 0;
+
+   h2 {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      font-weight: bold;
+   }
+
+   i {
+      font-size: 4rem;
+   }
+}

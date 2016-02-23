@@ -22,11 +22,23 @@
       margin-bottom: 1.5rem;
 
       h3 {
-         border-bottom: 1px solid $body-bgcolor;
+         margin-bottom: 1rem;
       }
 
       p {
          margin-bottom: 0;
+      }
+
+      .image {
+         margin-top: 1.5rem;
+         padding-top: 1.5rem;
+         border-top: 1px solid $body-bgcolor;
+
+         img {
+            display: block;
+            width: 100%;
+            margin: 0 auto;
+         }
       }
    }
 }

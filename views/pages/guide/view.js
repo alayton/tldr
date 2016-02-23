@@ -2,7 +2,11 @@ var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
+var imageurl = require('../../../util/imageurl.js');
 var layout = require('../../layout/sidebar.js');
+
+var md = require('markdown-it')()
+    .disable(['image']);
 
 module.exports = function(vm) {
     if (vm.guide) {
@@ -36,9 +40,15 @@ module.exports = function(vm) {
                 ])
             ]),
             m('.guide-body', _.map(vm.body, function(section) {
+                var img = section.image,
+                    imgWidth = img ? Math.min(871, img.width) : 0;
+
                 return m('.section', [
-                    m('h3', section.title || 'Section Header'),
-                    m('p', section.text)
+                    section.title ? m('h3', section.title || 'Section Header') : [],
+                    m('p', m.trust(md.render(section.text))),
+                    img ?
+                        m('.image', m('img', { src: imageurl(img.id, imgWidth), style: { maxWidth: imgWidth + 'px' } })) :
+                        []
                 ]);
             }))
         ]
