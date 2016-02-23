@@ -1,14 +1,20 @@
+@font-face {
+  font-family: 'Droid Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Droid Sans'), local('DroidSans'), url(https://fonts.gstatic.com/s/droidsans/v6/s-BiyweUPV0v-yRb-cjciAzyDMXhdD8sAj6OAJTFsBI.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
 body {
    background-color: $body-bgcolor;
+   font-family: 'Droid Sans';
 }
-
 blockquote {
    border-left: 0.5em solid $body-bgcolor;
    padding-left: 0.5em;
 }
-
 .btn {
-   border-radius: 0;
+
 }
 
 .page-loading {
@@ -24,4 +30,73 @@ blockquote {
    i {
       font-size: 4rem;
    }
+}
+
+.tldr-logo {
+   position: absolute;
+   background: url("/asset/img/tldr-logo.png") no-repeat;
+   margin-left: auto;
+   margin-right: auto;
+   left: 0;
+   right: 0;
+   width: 142px;
+   height: 90px;
+   z-index: 1;
+}
+.tldr-logo a {
+   display: block;
+   text-decoration: none;
+   width: 142px;
+   height: 90px;
+}
+.topbar {
+   padding: 4px 0px 4px 0px;
+   height:30px;
+   text-align: right;
+   font-size: 14px;
+   background-color: #303030;
+}
+.topbar .fa-twitter {
+   margin-right:5px;
+}
+.topbar a {
+   color: #444444;
+   text-decoration: none;
+}
+.topbar a:hover, .topbar a:visited {
+   color: #f05a00;
+}
+.navbar {
+   height: 60px;
+   padding: 0.6rem 1rem;
+   z-index: 0;
+}
+.navbar .fa-search {
+   position: relative;
+   z-index: 1;
+   left: -25px;
+   top: 1px;
+   color: #aaaaaa;
+}
+.navbar input {
+   background-color: #656565;
+   border: 0px;
+   color:#ffffff
+}
+.navbar input:placeholder-shown {
+   color: #aaaaaa;
+}
+.nav-bg {
+    background-color: #444444;
+}
+nav {
+   margin-bottom: 20px;
+}
+.btn-signup {
+   color: #efefef;
+   background-color: #656565;
+}
+.btn-signup:hover {
+   color: #ffffff;
+   background-color: #f05a00;
 }
