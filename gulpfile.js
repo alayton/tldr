@@ -33,7 +33,7 @@ gulp.task('javascript', ['clean'], function() {
 });
 
 gulp.task('css', ['clean'], function() {
-    gulp.src(['./sass/*.scss', './node_modules/bootstrap/scss/bootstrap-flex.scss', './node_modules/font-awesome/css/font-awesome.min.css'])
+    gulp.src(['./node_modules/bootstrap/scss/bootstrap-flex.scss', './node_modules/font-awesome/css/font-awesome.min.css', './sass/*.scss'])
         .pipe(sass().on('error', sass.logError))
         .pipe(base64({
             baseDir: './',

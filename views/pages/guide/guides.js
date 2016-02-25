@@ -1,6 +1,7 @@
 var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
+var imageurl = require('../../../util/imageurl.js');
 var layout = require('../../layout/sidebar.js');
 var categoryTag = require('../../../controllers/components/tag/categorytag.js');
 
@@ -35,7 +36,10 @@ module.exports = function(vm) {
                 style: { width: '242px', flex: 'none' },
                 config: m.route
             }, [
-                m('img.card-img-top', { src: 'http://lorempixel.com/240/200/cats/' + ((guide.id % 10) + 1) + '/', height: 200 }),
+                m('img.card-img-top', {
+                    src: 'http://lorempixel.com/240/200/cats/' + ((guide.id % 10) + 1) + '/',
+                    height: 200
+                }),
                 m('.card-block', [
                     m('h4.card-title', guide.title),
                     m('p.card-text', guide.author_name)

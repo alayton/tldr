@@ -5,6 +5,14 @@ var auth = new function() {
     var key = null;
     var user = null;
 
+    this.RoleVerified = 1;
+    this.RoleExecutive = 2;
+    this.RoleAdmin = 4;
+    this.RoleModerator = 8;
+
+    this.RolePrivileged = this.RoleExecutive | this.RoleAdmin | this.RoleModerator;
+    this.RoleManager = this.RoleExecutive | this.RoleAdmin;
+
     this.key = function(k) {
         if (k !== undefined) {
             key = k;
@@ -39,6 +47,24 @@ var auth = new function() {
             }
         }
         return user;
+    };
+
+    this.isPrivileged = function() {
+        var user = this.user();
+        if (!user) {
+            return false;
+        }
+
+        return (user.roles & this.RolePrivileged) > 0;
+    };
+
+    this.isManager = function() {
+        var user = this.user();
+        if (!user) {
+            return false;
+        }
+
+        return (user.roles & this.RoleManager) > 0;
     };
 
     this.logout = function(force) {

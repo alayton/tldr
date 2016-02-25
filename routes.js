@@ -2,6 +2,7 @@ var _404 = require('./controllers/404.js');
 var home = require('./controllers/home.js');
 
 var tags = require('./controllers/tag/tags.js');
+var editTag = require('./controllers/tag/edit.js');
 
 var guides = require('./controllers/guide/guides.js');
 var viewGuide = require('./controllers/guide/view.js');
@@ -14,6 +15,8 @@ module.exports = {
     '/': home,
 
     '/tags/:id': tags,
+    '/tag/edit': editTag,
+    '/tag/edit/:id': editTag,
 
     '/guides/:catg': guides,
     '/guides/:catg/:tags': guides,

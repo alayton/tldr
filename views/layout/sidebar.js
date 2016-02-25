@@ -10,5 +10,6 @@ var layout = function(content) {
 };
 
 layout.errors = skeleton.errors;
+layout.notices = skeleton.notices;
 
 module.exports = layout;

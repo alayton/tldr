@@ -1,3 +1,26 @@
+.card-tag {
+   width: 242px;
+   flex: none !important;
+   position: relative;
+
+   img {
+      width: 240px;
+      height: 200px;
+   }
+
+   ul.popup {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+
+      i.fa {
+         color: #fff;
+         background-color: #999;
+         padding: 0.5rem;
+      }
+   }
+}
+
 .tag {
    display: inline-block;
    padding: 0.5em;
@@ -42,4 +65,13 @@
 .tags a i.fa {
    font-size: 0.8em;
    margin-right: 0.4em;
+}
+
+.tag-form {
+   margin-bottom: 2rem;
+
+   .form-group img {
+      display: block;
+      margin-bottom: 0.5rem;
+   }
 }
