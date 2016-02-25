@@ -5,7 +5,7 @@ var layout = require('../layout/sidebar.js');
 
 module.exports = function(vm) {
     return layout([
-        m('h1', 'TLDR.gg'),
+        m('h2', 'Categories'),
         m('.card-deck', _.map(vm.tags, function(tag) {
             return m('a.card', {
                 href: tag.leaf || tag.allow_leafs ?
