@@ -61,13 +61,26 @@ module.exports = function(vm) {
                 className: vm.saved() ? 'btn-success' : 'btn-primary'
             }, [m('i.fa.fa-save'), vm.saved() ? ' Saved!' : ' Save'])
         ])),
-        m('h2', 'Child Tags'),
-        m('.tag-list', _.map(vm.children, function(child) {
-            return m('a.tag', {
-                href: '/tag/edit/' + child.id + '-' + slug(child.name),
+        m('.tag-block', [
+            m('h2', 'Child Tags'),
+            m('.tag-list', _.map(vm.children, function(child) {
+                return m('a.tag', {
+                    href: '/tag/edit/' + child.id + '-' + slug(child.name),
+                    config: m.route
+                }, child.name);
+            })),
+            m('a.btn.btn-secondary', {
+                href: '/tag/new/' + vm.tag.id + '-' + slug(vm.tag.name()),
                 config: m.route
-            }, child.name);
-        })),
+            }, 'Add child')
+        ]),
+        vm.parent ? m('.tag-block', [
+            m('h2', 'Parent Tag'),
+            m('a.tag', {
+                href: '/tag/edit/' + vm.parent.id + '-' + slug(vm.parent.name()),
+                config: m.route
+            }, vm.parent.name())
+        ]) : [],
         m.component(images, { category: vm.tag.category_id, select: pickImage })
     ])
 };

@@ -15,7 +15,7 @@ module.exports = {
     '/': home,
 
     '/tags/:id': tags,
-    '/tag/edit': editTag,
+    '/tag/new/:parent': editTag,
     '/tag/edit/:id': editTag,
 
     '/guides/:catg': guides,

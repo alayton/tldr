@@ -1,14 +1,17 @@
 var browserify = require('browserify');
+var watchify = require('watchify');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var freeze = require('gulp-freeze');
 var base64 = require('gulp-base64');
 var inject = require('gulp-inject');
 var sass = require('gulp-sass');
+var gutil = require('gulp-util');
 var gulp = require('gulp');
 var del = require('del');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
+var es = require('event-stream');
 
 gulp.task('clean', function() {
     del.sync(['./asset/built/css/*', './asset/built/js/*']);
@@ -25,7 +28,6 @@ gulp.task('javascript', ['clean'], function() {
         .pipe(source('./asset/built/js/app.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
-        // Add transformation tasks to the pipeline here.
         //.pipe(uglify())
         .pipe(freeze())
         .pipe(sourcemaps.write('./'))
@@ -54,6 +56,83 @@ gulp.task('inject', ['javascript', 'css'], function() {
 
     return target.pipe(inject(sources))
         .pipe(gulp.dest('./'));
+});
+
+var Watch = {
+    bundle: function(file) {
+        var b = browserify({
+            entries: file,
+            cache: {},
+            debug: true
+        });
+        b.file = file;
+
+        return b;
+    },
+    build: function(bundle) {
+        return bundle.ignore('unicode/category/So').bundle()
+            .pipe(source('./asset/built/js/app.js'))
+            .pipe(buffer())
+            .pipe(sourcemaps.init({ loadMaps: true }))
+            //.pipe(uglify())
+            .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest('./'));
+    },
+    watch: function(bundle) {
+        var w = watchify(bundle, { debug: true });
+        w.on('log', gutil.log);
+        w.on('time', function(time) {
+            gutil.log(gutil.colors.green('Browserify'), bundle.file, gutil.colors.blue('in ' + time + ' ms'));
+        });
+        w.on('update', Watch.build.bind(null, bundle));
+        return w;
+    }
+};
+
+gulp.task('javascript-watch', ['clean'], function() {
+    var streams = ['./client.js'].map(function(file) {
+        return Watch.build(Watch.bundle(file));
+    });
+
+    return es.merge.apply(null, streams);
+});
+
+gulp.task('css-watch', ['clean'], function() {
+    gulp.src(['./node_modules/bootstrap/scss/bootstrap-flex.scss', './node_modules/font-awesome/css/font-awesome.min.css', './sass/*.scss'])
+        .pipe(sass().on('error', sass.logError))
+        .pipe(base64({
+            baseDir: './',
+            maxImageSize: 4096
+        }))
+        .pipe(gulp.dest('./asset/built/css'));
+});
+
+gulp.task('css-watch2', function() {
+    gulp.src(['./node_modules/bootstrap/scss/bootstrap-flex.scss', './node_modules/font-awesome/css/font-awesome.min.css', './sass/*.scss'])
+        .pipe(sass().on('error', sass.logError))
+        .pipe(base64({
+            baseDir: './',
+            maxImageSize: 4096
+        }))
+        .pipe(gulp.dest('./asset/built/css'));
+});
+
+gulp.task('inject-watch', ['javascript-watch', 'css-watch'], function() {
+    var target = gulp.src('./server.js');
+    var sources = gulp.src(['./asset/built/js/*.js', './asset/built/css/*.css'], { read: false });
+
+    return target.pipe(inject(sources))
+        .pipe(gulp.dest('./'));
+});
+
+gulp.task('watch', ['clean', 'css-watch', 'javascript-watch', 'inject-watch'], function() {
+    gulp.watch('./sass/**/*.scss', ['css-watch2']);
+
+    var streams = ['./client.js'].map(function(file) {
+        return Watch.build(Watch.watch(Watch.bundle(file)));
+    });
+
+    return es.merge.apply(null, streams);
 });
 
 gulp.task('default', ['clean', 'javascript', 'css', 'copy', 'inject']);
