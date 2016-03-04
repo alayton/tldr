@@ -28,7 +28,10 @@ module.exports = function(tag) {
                 m('li', m('a', {
                     href: '/tag/edit/' + tag.id + '-' + slug(tag.name),
                     config: m.route
-                }, 'Edit tag'))
+                }, [
+                    m('i.fa.fa-tag'),
+                    'Edit tag'
+                    ]))
             ])
         ])) : []
     ]);
