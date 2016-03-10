@@ -226,7 +226,10 @@ nav {
    }
 
 }
-
+.col-sm-12, .col-md-12 {
+   margin-right: auto;
+   margin-left: auto;
+}
 
 .footer {
    position: absolute;
