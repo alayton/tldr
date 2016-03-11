@@ -17,6 +17,7 @@ var base = function(content, scope) {
         '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">',
         '<link href="/asset/img/favicon.ico" rel="shortcut icon">',
+        '<link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">',
         (scope.canonical ? '<link id="canon" href="' + scope.canonical + '" rel="canonical">' : ''),
         inject.css,
         '</head>',
