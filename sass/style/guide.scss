@@ -185,3 +185,26 @@ a.likeguide {
       }
    }
 }
+
+@media screen and (max-width : 760px){
+   .guides {
+      
+      .guide {
+         
+         .contents {
+            
+            h3 {
+               font-size: 1.2rem !important;
+            }
+            
+            .left-info {
+               display: none !important;
+            }
+            
+            &>var {
+               display: none !important;
+            }
+         }
+      }
+   }   
+}
