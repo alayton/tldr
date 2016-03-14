@@ -31,7 +31,6 @@ var vm = function(params, done) {
         };
 
         this.body.push({
-            title: m.prop(''),
             text: m.prop(''),
             image: m.prop(0)
         });
@@ -60,7 +59,6 @@ var vm = function(params, done) {
         this.guide.title = m.prop(this.guide.title);
 
         _.each(this.body, function(s) {
-            s.title = m.prop(s.title || '');
             s.text = m.prop(s.text || '');
             s.image = m.prop(s.image || 0);
         });
@@ -80,6 +78,11 @@ var vm = function(params, done) {
 };
 
 vm.prototype = {
+    onunload: function(e) {
+        if (!confirm('Do you want to leave the page? Any unsaved changes will be lost.')) {
+            e.preventDefault();
+        }
+    },
     save: function(self) {
         if (self.saving()) {
             return;
@@ -89,7 +92,6 @@ vm.prototype = {
         var body = [];
         _.each(self.body, function(s) {
             body.push({
-                title: s.title(),
                 text: s.text(),
                 image: s.image()
             });
@@ -108,14 +110,16 @@ vm.prototype = {
             endpoint: self.guide.id ? '/guide/' + self.guide.id : '/guide',
             data: data
         }).then(function(data) {
-            self.saving(false);
-            self.saved(true);
+            if (self.guide.id) {
+                self.saving(false);
+                self.saved(true);
 
-            self.guide.id = data.guide.id;
-
-            _.delay(function() {
-                self.saved(false);
-            }, 15000);
+                _.delay(function() {
+                    self.saved(false);
+                }, 15000);
+            } else {
+                m.route('/guide/edit/' + data.guide.id + '-' + slug(data.guide.title));
+            }
         }, function(data) {
             skeleton.errors().push(data.error);
             self.saving(false);

@@ -47,7 +47,7 @@ module.exports = function(vm) {
             ]);
         })),
         m('a.btn.btn-success.btn-lg', {
-            href: '/guide/edit?catg=' + vm.category.id,
+            href: '/guide/new/' + vm.category.id + '-' + slug(vm.category.name),
             config: m.route
         }, [m('i.fa.fa-new'), ' New Guide'])
     ]);

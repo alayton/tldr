@@ -13,6 +13,10 @@ if (typeof window !== 'undefined') {
 
 var search = function(e) {
     e.preventDefault();
+
+    m.route('/search?q=' + encodeURIComponent(layout.search()));
+
+    return false;
 };
 
 var showLogin = function() {
@@ -34,14 +38,16 @@ var layout = function(content) {
                 m('.topbar', [
                     m('.container', [
                         m('a.fa.fa-twitter[href=http://www.twitter.com/tldrplease]'),
-                        m('a.fa.fa-facebook-square[href=http://www.facebook.com/tldrplease]'),
-                    ]),
+                        m('a.fa.fa-facebook-square[href=http://www.facebook.com/tldrplease]')
+                    ])
                 ]),
                 m('nav.navbar.navbar-full.navbar-dark.nav-bg', [
                     m('.container', [
-                        m('form.form-inline.pull-xs-left', [
-                            m('input.form-control[type=text]', { placeholder: 'Search...' }),
-                            m('i.fa.fa-search'),
+                        m('form.form-inline.pull-xs-left', {
+                            onsubmit: search
+                        }, [
+                            m('input.form-control[type=text]', { placeholder: 'Search...', oninput: m.withAttr('value', layout.search), value: layout.search() }),
+                            m('i.fa.fa-search')
                         ]),
                         m('ul.nav.navbar-nav.pull-xs-right', [
                             auth.user() ?
@@ -71,28 +77,28 @@ var layout = function(content) {
                     ]);
                 }),
                 m('.container', [
-                    content,
+                    content
                 ]),
                 m('footer.footer', [
                     m('.container', [
                         m('span.copyright', '© TLDR.gg ' + new Date().getFullYear()),
                         m('ul', [
                             m('li', [
-                                m('a[href=mailto:coolpeople@tldr.gg]', 'Contact'),
+                                m('a[href=mailto:coolpeople@tldr.gg]', 'Contact')
                             ]),
                             m('li.divider', ' - '),
                             m('li', [
-                                 m('a[href=/about]', 'About'),
+                                 m('a[href=/about]', 'About')
                             ]),
                             m('li.divider', ' - '),
                             m('li', [
-                                 m('a[href=/privacy]', 'Privacy'),
+                                 m('a[href=/privacy]', 'Privacy')
                             ]),
                             m('li.divider', ' - '),
                             m('li', [
-                                 m('a[href=/tos]', 'TOS'),
-                            ]),
-                        ]),                       
+                                 m('a[href=/tos]', 'TOS')
+                            ])
+                        ])
                     ])
                 ]),
                 m.component(login),
@@ -102,5 +108,7 @@ var layout = function(content) {
 
 layout.notices = m.prop([]);
 layout.errors = m.prop([]);
+
+layout.search = m.prop('');
 
 module.exports = layout;

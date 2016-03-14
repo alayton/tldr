@@ -8,6 +8,8 @@ var guides = require('./controllers/guide/guides.js');
 var viewGuide = require('./controllers/guide/view.js');
 var editGuide = require('./controllers/guide/edit.js');
 
+var search = require('./controllers/search/search.js');
+
 var activate = require('./controllers/user/activate.js');
 
 module.exports = {
@@ -20,9 +22,11 @@ module.exports = {
 
     '/guides/:catg': guides,
     '/guides/:catg/:tags': guides,
-    '/guide/edit': editGuide,
+    '/guide/new/:catg': editGuide,
     '/guide/edit/:id': editGuide,
     '/guide/:id': viewGuide,
+
+    '/search': search,
 
     '/activate/:token': activate
 };

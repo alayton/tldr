@@ -4,6 +4,7 @@ var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
 var imageurl = require('../../../util/imageurl.js');
+var romanize = require('../../../util/romanize.js');
 var layout = require('../../layout/sidebar.js');
 var categoryTag = require('../../../controllers/components/tag/categorytag.js');
 var mdtextarea = require('../../../controllers/components/mdtextarea.js');
@@ -31,8 +32,10 @@ module.exports = function(vm) {
         m('.alert.alert-danger', vm.error ? vm.error : 'Guide not found!') :
         [
             m('.guide-header', [
-                m('h2', m('input.form-control', { type: 'text', onchange: m.withAttr('value', vm.guide.title), value: vm.guide.title() })),
+                m('input.form-control', { type: 'text', onchange: m.withAttr('value', vm.guide.title), value: vm.guide.title(), placeholder: 'Guide Title' }),
+                m('var', { className: vm.guide.title().length > 120 ? 'limited' : '' }, [vm.guide.title().length, ' / 120']),
                 m('.tags', [
+                    m('label', 'Tags'),
                     m('a.tag.category', {
                         href: '/guides/' + vm.guide.category.id + '-' + slug(vm.guide.category.name),
                         config: m.route
@@ -62,11 +65,12 @@ module.exports = function(vm) {
                     imgWidth = img ? Math.min(871, img.width) : 0;
 
                 return m('.section', [
-                    m('.section-head', [
-                        m('h3', m('input.form-control', { type: 'text', onchange: m.withAttr('value', section.title), value: section.title() }))
-                    ]),
                     m.component(mdtextarea, { val: section.text }),
-                    m('.preview', m.trust(md.render(section.text()))),
+                    m('var', { className: section.text().length > 200 ? 'limited' : '' }, [section.text().length, ' / 200']),
+                    m('.preview', [
+                        m('header', romanize(idx + 1)),
+                        m.trust(md.render(section.text()))
+                    ]),
                     img ?
                         m('.image', m('img', { src: imageurl(img.id, imgWidth), style: { maxWidth: imgWidth + 'px' } })) :
                         [],
@@ -87,7 +91,7 @@ module.exports = function(vm) {
                 m('.fill'),
                 m('a.btn.btn-secondary', vm.guide.id ?
                     {
-                        href: '/guide/' + vm.guide.id + '-' + slug(vm.guide.title),
+                        href: '/guide/' + vm.guide.id + '-' + slug(vm.guide.title()),
                         config: m.route
                     } :
                     {

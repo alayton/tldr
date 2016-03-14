@@ -1,0 +1,28 @@
+.results {
+   .guide {
+      clear: both;
+      background: #fff;
+      height: 120px;
+      margin-top: 1rem;
+
+      img {
+         float: left;
+         margin-right: 1rem;
+         width: 160px;
+         height: 120px;
+      }
+
+      h3 {
+         padding: 0.5rem 1rem 0.4rem;
+      }
+
+      var {
+         float: right;
+         margin-right: 1rem;
+      }
+
+      a.tag {
+         margin: 0 0.5rem 0 0;
+      }
+   }
+}

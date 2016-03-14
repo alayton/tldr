@@ -3,6 +3,7 @@ var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
 var imageurl = require('../../../util/imageurl.js');
+var romanize = require('../../../util/romanize.js');
 var layout = require('../../layout/sidebar.js');
 
 var md = require('markdown-it')()
@@ -39,12 +40,12 @@ module.exports = function(vm) {
                     })
                 ])
             ]),
-            m('.guide-body', _.map(vm.body, function(section) {
+            m('.guide-body', _.map(vm.body, function(section, idx) {
                 var img = section.image,
                     imgWidth = img ? Math.min(871, img.width) : 0;
 
                 return m('.section', [
-                    section.title ? m('h3', section.title || 'Section Header') : [],
+                    m('header', romanize(idx + 1)),
                     m('p', m.trust(md.render(section.text))),
                     img ?
                         m('.image', m('img', { src: imageurl(img.id, imgWidth), style: { maxWidth: imgWidth + 'px' } })) :
