@@ -68,7 +68,7 @@ ul.popup {
 
 .tldr-logo {
    position: absolute;
-   background: url("/asset/img/tldr-logo.png") no-repeat;
+   background: url("/asset/img/tldr-logo.svg") no-repeat;
    margin-left: auto;
    margin-right: auto;
    left: 0;
@@ -149,6 +149,52 @@ nav {
       background-color: #f05a00;
    }
 }
+
+.category-header {
+   padding: 1.5rem 1.5rem 1.1rem;
+   margin-bottom: 1.5rem;
+   background-color: $block-bgcolor;
+
+   .tags {
+      margin-top: 0.4em;
+   }
+   .new-guide {
+      float: right;
+   }
+}
+.card-block {
+   
+   .card-text.author {
+      text-align: right;
+      margin-top: 1em;
+      color: #777;
+   }
+   .fa-user {
+      margin-right: 0.3em;
+   }
+      
+}
+.card-deck {
+   
+   .card {
+      border-radius: 0;
+      
+      img {
+         border-radius: 0;
+      }
+   }
+   
+   a {
+
+      &:hover {
+         color: #000;
+         text-decoration: none;
+      }
+      
+   }
+
+}
+
 
 .footer {
    position: absolute;
