@@ -21,7 +21,7 @@ module.exports = function(vm) {
                     href: '/guides/' + g.category_id + '-' + slug(g.category_name),
                     config: m.route
                 }, g.category_name),
-                m('span', ['By ', g.author_name])
+                m('span', [m('i.fa.fa-user'), g.author_name])
             ]);
         }))
     ]);
