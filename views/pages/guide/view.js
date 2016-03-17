@@ -2,6 +2,7 @@ var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
+var auth = require('../../../models/auth.js');
 var imageurl = require('../../../util/imageurl.js');
 var romanize = require('../../../util/romanize.js');
 var layout = require('../../layout/sidebar.js');
@@ -18,9 +19,9 @@ module.exports = function(vm) {
         m('.alert.alert-danger', vm.error ? vm.error : 'Guide not found!') :
         [
             m('.guide-header', [
-                m('a.btn.btn-info.pull-right', {
+                auth.isUser(vm.guide.user_id) || auth.isPrivileged() ? m('a.btn.btn-info.pull-right', {
                     href: '/guide/edit/' + vm.guide.id + '-' + slug(vm.guide.title), config: m.route
-                }, 'Edit'),
+                }, 'Edit') : [],
                 m('h2', vm.guide.title),
                 m('span.author', [
                     'By ',

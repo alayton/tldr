@@ -1,3 +1,48 @@
+.guides {
+   .guide {
+      clear: both;
+      background: #fff;
+      height: 120px;
+      margin-top: 1rem;
+
+      &.success {
+         background-color: $text-success;
+      }
+      &.warning {
+         background-color: $text-warning;
+      }
+      &.danger {
+         background-color: $text-danger;
+      }
+
+      img {
+         float: left;
+         margin-right: 1rem;
+         width: 160px;
+         height: 120px;
+      }
+
+      h3 {
+         padding: 0.5rem 1rem 0.4rem;
+      }
+
+      var {
+         float: right;
+         margin-right: 1rem;
+      }
+
+      a.tag {
+         margin: 0 0.5rem 0 0;
+      }
+
+      span {
+         i {
+            margin-right: 0.3rem;
+         }
+      }
+   }
+}
+
 .guide-header {
    padding: 1.5rem 1.5rem 1.1rem;
    margin-bottom: 1.5rem;

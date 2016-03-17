@@ -6,11 +6,20 @@ var imageurl = require('../../../util/imageurl.js');
 var layout = require('../../layout/sidebar.js');
 
 module.exports = function(vm) {
+    var status = {
+        0: ['In Progress', 'warning'],
+        1: ['Public', ''],
+        2: ['Moderated', 'danger'],
+        3: ['Deleted', 'danger']
+    };
+
     return layout([
-        m('.text-muted', [(vm.result.page > 1 ? 'Page ' + vm.result.page + ' of ' : ''), vm.result.total_results, ' results']),
-        m('.guides', _.map(vm.result.guides, function(g) {
+        m('.category-header', [
+            m('h2', vm.user.username + "'s Guides")
+        ]),
+        m('.guides', _.map(vm.guides, function(g) {
             var url = '/guide/' + g.id + '-' + slug(g.title);
-            return m('.guide', [
+            return m('.guide', { className: status[g.status][1] }, [
                 m('a', { href: url, config: m.route }, m('img', {
                     src: g.image_id ? imageurl(g.image_id, 160, 120) : 'http://lorempixel.com/160/120/cats/' + ((g.id % 10) + 1) + '/',
                     width: 160,
@@ -18,11 +27,7 @@ module.exports = function(vm) {
                 })),
                 m('a', { href: url, config: m.route }, m('h3', g.title)),
                 m('var', ['Last updated ', m('abbr', { title: moment(g.edited).format('lll') }, moment(g.edited).fromNow())]),
-                m('a.tag.category', {
-                    href: '/guides/' + g.category_id + '-' + slug(g.category_name),
-                    config: m.route
-                }, g.category_name),
-                m('span', [m('i.fa.fa-user'), g.author_name])
+                m('span', status[g.status][0])
             ]);
         }))
     ]);

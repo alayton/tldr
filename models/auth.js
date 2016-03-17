@@ -49,6 +49,10 @@ var auth = new function() {
         return user;
     };
 
+    this.isUser = function(id) {
+        return this.user() && this.user().id == id;
+    };
+
     this.isPrivileged = function() {
         var user = this.user();
         if (!user) {

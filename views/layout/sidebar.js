@@ -4,8 +4,8 @@ var sidebar = require('../components/sidebar.js');
 
 var layout = function(content) {
     return skeleton(m('.row', [
-        m('.col-sm-9.col-md-10', content),
-        m('.col-sm-3.col-md-2', sidebar())
+        m('.col-sm-12.col-md-12', content)
+        //m('.col-sm-3.col-md-2', sidebar())
     ]));
 };
 

@@ -25,6 +25,8 @@ var vm = function(params, done) {
 
         this.guide = {
             category_id: catg,
+            image_id: 0,
+            status: m.prop(0),
             title: m.prop(''),
             tags: [],
             suggestions: []
@@ -56,6 +58,7 @@ var vm = function(params, done) {
         this.guide = data.guide;
         this.body = JSON.parse(this.guide.body);
 
+        this.guide.status = m.prop(this.guide.status);
         this.guide.title = m.prop(this.guide.title);
 
         _.each(this.body, function(s) {
@@ -99,6 +102,8 @@ vm.prototype = {
 
         var data = {
             category: self.guide.category_id,
+            image: self.guide.image_id,
+            status: parseInt(self.guide.status()),
             title: self.guide.title(),
             body: JSON.stringify(body),
             tags: _.pluck(self.guide.tags, 'id'),

@@ -1,6 +1,7 @@
 var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
+var moment = require('moment');
 var imageurl = require('../../../util/imageurl.js');
 var layout = require('../../layout/sidebar.js');
 var categoryTag = require('../../../controllers/components/tag/categorytag.js');
@@ -36,25 +37,18 @@ module.exports = function(vm) {
                         m.component(categoryTag, { tag: tag, addFunc: vm.addTag, context: vm });
             }))
         ]),
-        m('.card-deck.guides', _.map(vm.guides, function(guide) {
-            return m('a.card', {
-                href: '/guide/' + guide.id + '-' + slug(guide.title),
-                style: { width: '242px', flex: 'none' },
-                config: m.route
-            }, [
-                m('img.card-img-top', {
-                    src: 'http://lorempixel.com/240/200/cats/' + ((guide.id % 10) + 1) + '/',
-                    height: 200
-                }),
-                m('.card-block', [
-                    m('h4.card-title', guide.title),
-                    m('p.card-text.author', [
-                                      m('i.fa.fa-user'),
-                                      guide.author_name
-                                      ])
-                ])
+        m('.guides', _.map(vm.guides, function(g) {
+            var url = '/guide/' + g.id + '-' + slug(g.title);
+            return m('.guide', [
+                m('a', { href: url, config: m.route }, m('img', {
+                    src: g.image_id ? imageurl(g.image_id, 160, 120) : 'http://lorempixel.com/160/120/cats/' + ((g.id % 10) + 1) + '/',
+                    width: 160,
+                    height: 120
+                })),
+                m('a', { href: url, config: m.route }, m('h3', g.title)),
+                m('var', ['Last updated ', m('abbr', { title: moment(g.edited).format('lll') }, moment(g.edited).fromNow())]),
+                m('span', [m('i.fa.fa-user'), g.author_name])
             ]);
         }))
-
     ]);
 };

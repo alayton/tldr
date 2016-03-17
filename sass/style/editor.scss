@@ -1,19 +1,59 @@
 .guide-header {
    position: relative;
 
-   input {
-      font-size: 1.5rem;
+   .guide-image {
+      float: left;
+      width: 160px;
+
+      img {
+         width: 160px;
+         height: 120px;
+      }
+
+      button {
+         width: 160px;
+         border-radius: 0;
+      }
    }
 
-   var {
-      position: absolute;
-      top: 5rem;
-      right: 2rem;
-      color: $text-muted;
-      font-size: 0.8rem;
+   .guide-title {
+      margin-left: 170px;
 
-      &.limited {
-         color: $text-error;
+      input {
+         font-size: 1.5rem;
+      }
+
+      &>label {
+         line-height: 38px;
+         font-weight: bold;
+         margin: 1rem 0.5rem 0 0;
+         float: left;
+      }
+
+      select {
+         margin-top: 1rem;
+
+         .success {
+            background-color: $text-success;
+         }
+         .warning {
+            background-color: $text-warning;
+         }
+         .danger {
+            background-color: $text-danger;
+         }
+      }
+
+      var {
+         position: absolute;
+         top: 5rem;
+         right: 2rem;
+         color: $text-muted;
+         font-size: 0.8rem;
+
+         &.limited {
+            color: $text-error;
+         }
       }
    }
 }

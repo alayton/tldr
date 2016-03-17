@@ -7,6 +7,7 @@ var editTag = require('./controllers/tag/edit.js');
 var guides = require('./controllers/guide/guides.js');
 var viewGuide = require('./controllers/guide/view.js');
 var editGuide = require('./controllers/guide/edit.js');
+var userGuides = require('./controllers/guide/user.js');
 
 var search = require('./controllers/search/search.js');
 
@@ -25,6 +26,8 @@ module.exports = {
     '/guide/new/:catg': editGuide,
     '/guide/edit/:id': editGuide,
     '/guide/:id': viewGuide,
+    '/user/guides': userGuides,
+    '/user/guides/:id': userGuides,
 
     '/search': search,
 

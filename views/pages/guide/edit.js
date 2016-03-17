@@ -3,6 +3,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
+var auth = require('../../../models/auth.js');
 var imageurl = require('../../../util/imageurl.js');
 var romanize = require('../../../util/romanize.js');
 var layout = require('../../layout/sidebar.js');
@@ -25,39 +26,57 @@ var pickImage = function(id) {
     }
 };
 
+var guideImage = function(guide, image) {
+    guide.image_id = image.id;
+};
+
 module.exports = function(vm) {
     var images = require('../../../controllers/components/images.js');
+    var moderated = vm.guide.status == 2 && !auth.isPrivileged();
 
     return layout(vm.error !== null ?
         m('.alert.alert-danger', vm.error ? vm.error : 'Guide not found!') :
         [
-            m('.guide-header', [
-                m('input.form-control', { type: 'text', onchange: m.withAttr('value', vm.guide.title), value: vm.guide.title(), placeholder: 'Guide Title' }),
-                m('var', { className: vm.guide.title().length > 120 ? 'limited' : '' }, [vm.guide.title().length, ' / 120']),
-                m('.tags', [
-                    m('label', 'Tags'),
-                    m('a.tag.category', {
-                        href: '/guides/' + vm.guide.category.id + '-' + slug(vm.guide.category.name),
-                        config: m.route
-                    }, vm.guide.category.name),
-                    _.map(vm.guide.tags, function(tag) {
-                        return m('a.tag.current', {
-                            href: 'javascript:;',
-                            onclick: _.bind(vm.removeTag, vm, tag)
-                        }, [m('i.fa.fa-times'), tag.name]);
-                    }),
-                    _.map(vm.tags, function(tag) {
-                        if (vm.hasTag(tag)) {
-                            return null;
-                        } else if (tag.leaf) {
-                            return m('a.tag', {
+            m('.guide-header.clearfix', [
+                m('.guide-image', [
+                    m('img', { src: vm.guide.image_id ? imageurl(vm.guide.image_id, 160, 120) : '/asset/img/guide-ph.png' }),
+                    m('button.btn.btn-secondary', { onclick: _.partial(showImages, _.partial(guideImage, vm.guide)) }, [m('i.fa.fa-picture-o'), ' Choose Image'])
+                ]),
+                m('.guide-title', [
+                    m('input.form-control', { type: 'text', onchange: m.withAttr('value', vm.guide.title), value: vm.guide.title(), placeholder: 'Guide Title' }),
+                    m('var', { className: vm.guide.title().length > 120 ? 'limited' : '' }, [vm.guide.title().length, ' / 120']),
+                    m('label', 'Guide Status'),
+                    m('select.c-select', { onchange: m.withAttr('value', vm.guide.status), value: vm.guide.status() }, [
+                        m('option.warning', { disabled: moderated, value: 0 }, 'In Progress'),
+                        m('option.success', { disabled: moderated, value: 1 }, 'Public'),
+                        m('option.danger', { disabled: moderated, value: 3 }, 'Deleted'),
+                        m('option.danger', { disabled: !auth.isPrivileged(), value: 2 }, 'Moderated')
+                    ]),
+                    m('.tags', [
+                        m('label', 'Tags'),
+                        m('a.tag.category', {
+                            href: '/guides/' + vm.guide.category.id + '-' + slug(vm.guide.category.name),
+                            config: m.route
+                        }, vm.guide.category.name),
+                        _.map(vm.guide.tags, function(tag) {
+                            return m('a.tag.current', {
                                 href: 'javascript:;',
-                                onclick: _.bind(vm.addTag, vm, tag)
-                            }, [m('i.fa.fa-plus'), tag.name]);
-                        } else {
-                            return m.component(categoryTag, { tag: tag, addFunc: vm.addTag, context: vm, onclick: true });
-                        }
-                    })
+                                onclick: _.bind(vm.removeTag, vm, tag)
+                            }, [m('i.fa.fa-times'), tag.name]);
+                        }),
+                        _.map(vm.tags, function(tag) {
+                            if (vm.hasTag(tag)) {
+                                return null;
+                            } else if (tag.leaf) {
+                                return m('a.tag', {
+                                    href: 'javascript:;',
+                                    onclick: _.bind(vm.addTag, vm, tag)
+                                }, [m('i.fa.fa-plus'), tag.name]);
+                            } else {
+                                return m.component(categoryTag, { tag: tag, addFunc: vm.addTag, context: vm, onclick: true });
+                            }
+                        })
+                    ])
                 ])
             ]),
             m('.guide-body', _.map(vm.body, function(section, idx) {

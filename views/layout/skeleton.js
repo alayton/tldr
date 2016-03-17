@@ -54,6 +54,7 @@ var layout = function(content) {
                                 m('li.nav-item.dropdown', [
                                     m('a.nav-link.dropdown-toggle[href=javascript:;]', { 'data-toggle': 'dropdown', onclick: function() { $(this).dropdown(); } }, auth.user().username),
                                     m('.dropdown-menu.dropdown-menu-right', [
+                                        m('a.dropdown-item[href=/user/guides]', { config: m.route }, 'My guides'),
                                         m('a.dropdown-item[href=javascript:;]', { onclick: function() { auth.logout(); } }, 'Log out')
                                     ])
                                 ]) :
