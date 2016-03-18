@@ -17,18 +17,31 @@ module.exports = function(vm) {
         m('.category-header', [
             m('h2', vm.user.username + "'s Guides")
         ]),
-        m('.guides', _.map(vm.guides, function(g) {
-            var url = '/guide/' + g.id + '-' + slug(g.title);
-            return m('.guide', { className: status[g.status][1] }, [
-                m('a', { href: url, config: m.route }, m('img', {
-                    src: g.image_id ? imageurl(g.image_id, 160, 120) : 'http://lorempixel.com/160/120/cats/' + ((g.id % 10) + 1) + '/',
-                    width: 160,
-                    height: 120
-                })),
-                m('a', { href: url, config: m.route }, m('h3', g.title)),
-                m('var', ['Last updated ', m('abbr', { title: moment(g.edited).format('lll') }, moment(g.edited).fromNow())]),
-                m('span', status[g.status][0])
-            ]);
-        }))
+        vm.guides ?
+            vm.guides.length ?
+                m('.guides', _.map(vm.guides, function(g) {
+                    var url = '/guide/' + g.id + '-' + slug(g.title);
+                    return m('.guide', { className: status[g.status][1] }, [
+                        m('a', { href: url, config: m.route }, m('img', {
+                            src: g.image_id ? imageurl(g.image_id, 160, 120) : '/asset/img/guide-ph.png',
+                            width: 160,
+                            height: 120
+                        })),
+                        m('.contents', [
+                            m('a', { href: url, config: m.route }, m('h3', g.title)),
+                            m('var', ['Last updated ', m('abbr', { title: moment(g.edited).format('lll') }, moment(g.edited).fromNow())]),
+                            m('a.tag.category', {
+                                href: '/guides/' + g.category_id + '-' + slug(g.category_name),
+                                config: m.route
+                            }, g.category_name),
+                            m('.status', status[g.status][0])
+                        ])
+                    ]);
+                })) :
+                m('.guides', m('p', 'No guides yet :('))
+            : m('.page-loading', [
+                m('h2', m.trust('Loading &hellip;')),
+                m('i.fa.fa-spinner.fa-pulse')
+            ])
     ]);
 };

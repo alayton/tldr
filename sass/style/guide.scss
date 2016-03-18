@@ -2,7 +2,7 @@
    .guide {
       clear: both;
       background: #fff;
-      height: 120px;
+      min-height: 120px;
       margin-top: 1rem;
 
       &.success {
@@ -17,13 +17,17 @@
 
       img {
          float: left;
-         margin-right: 1rem;
          width: 160px;
          height: 120px;
       }
 
+      .contents {
+         margin-left: 160px;
+         padding-left: 1rem;
+      }
+
       h3 {
-         padding: 0.5rem 1rem 0.4rem;
+         padding: 0.5rem 1rem 0.4rem 0;
       }
 
       var {
@@ -39,6 +43,10 @@
          i {
             margin-right: 0.3rem;
          }
+      }
+
+      .status {
+         margin-top: 0.5rem;
       }
    }
 }

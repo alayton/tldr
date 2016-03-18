@@ -3,6 +3,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var layout = require('../../../views/layout/skeleton.js');
 var auth = require('../../auth.js');
+var title = require('../../../util/title.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 
@@ -79,13 +80,14 @@ var vm = function(params, done) {
             } else if (tag.allow_leafs) {
                 self.tag.category_id = tag.id;
             }
-            console.log(self.tag);
 
             self.parent = tag;
             self.parent.image = m.prop(tag.image_id);
             self.parent.name = m.prop(tag.name);
             self.parent.leaf = m.prop(tag.leaf);
             self.parent.allowLeafs = m.prop(tag.allow_leafs);
+
+            title('New Tag');
 
             if (done) done(null, self);
         });

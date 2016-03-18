@@ -1,6 +1,7 @@
 var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
+var title = require('../../../util/title.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 
@@ -21,6 +22,9 @@ var vm = function(params, done) {
     }, true).then(_.bind(function(data) {
         this.guide = data.guide;
         this.body = JSON.parse(this.guide.body);
+
+        title(this.guide.title);
+
         if (done) done(null, this);
     }, this), _.bind(function(data) {
         this.guide = false;

@@ -2,12 +2,13 @@ var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
 var auth = require('../../auth.js');
+var title = require('../../../util/title.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 var layout = require('../../../views/layout/skeleton.js');
 
 var vm = function(params, done) {
-    this.guides = [];
+    this.guides = null;
     this.user = { username: '???' };
 
     if (done) {
@@ -26,9 +27,13 @@ var vm = function(params, done) {
                 endpoint: '/user/' + userId
             }).then(_.bind(function(data) {
                 this.user = data.user;
+
+                title(this.user.username + "'s Guides");
             }, this));
         } else {
             this.user = auth.user();
+
+            title(this.user.username + "'s Guides");
         }
     }
 };

@@ -14,7 +14,11 @@ var vm = function() {
 };
 
 vm.prototype = {
-    closeModal: function() {
+    closeModal: function(e) {
+        if (e) {
+            e.preventDefault();
+        }
+
         $('#loginModal').modal('hide');
     },
     serialize: function() {

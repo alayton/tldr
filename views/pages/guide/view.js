@@ -45,7 +45,7 @@ module.exports = function(vm) {
                 var img = section.image,
                     imgWidth = img ? Math.min(871, img.width) : 0;
 
-                return m('.section', [
+                return m('.section.clearfix', [
                     m('header', romanize(idx + 1)),
                     m('p', m.trust(md.render(section.text))),
                     img ?

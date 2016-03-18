@@ -4,6 +4,7 @@ var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
 var auth = require('../../../models/auth.js');
+var title = require('../../../util/title.js');
 var imageurl = require('../../../util/imageurl.js');
 var romanize = require('../../../util/romanize.js');
 var layout = require('../../layout/sidebar.js');
@@ -33,6 +34,10 @@ var guideImage = function(guide, image) {
 module.exports = function(vm) {
     var images = require('../../../controllers/components/images.js');
     var moderated = vm.guide.status == 2 && !auth.isPrivileged();
+
+    if (vm.guide.id) {
+        title('Editing ' + vm.guide.title());
+    }
 
     return layout(vm.error !== null ?
         m('.alert.alert-danger', vm.error ? vm.error : 'Guide not found!') :
@@ -86,7 +91,7 @@ module.exports = function(vm) {
                 return m('.section', [
                     m.component(mdtextarea, { val: section.text }),
                     m('var', { className: section.text().length > 200 ? 'limited' : '' }, [section.text().length, ' / 200']),
-                    m('.preview', [
+                    m('.preview.clearfix', [
                         m('header', romanize(idx + 1)),
                         m.trust(md.render(section.text()))
                     ]),

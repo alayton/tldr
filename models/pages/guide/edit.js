@@ -1,6 +1,7 @@
 var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
+var title = require('../../../util/title.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 var skeleton = require('../../../views/layout/skeleton.js');
@@ -22,6 +23,8 @@ var vm = function(params, done) {
             if (done) done(null, this);
             return;
         }
+
+        title('New Guide');
 
         this.guide = {
             category_id: catg,
@@ -48,41 +51,38 @@ var vm = function(params, done) {
             this.error = data.error;
             if (done) done(null, this);
         }, this));
-
-        return;
-    }
-
-    req({
-        endpoint: '/guide/' + guideId
-    }, true).then(_.bind(function(data) {
-        this.guide = data.guide;
-        this.body = JSON.parse(this.guide.body);
-
-        this.guide.status = m.prop(this.guide.status);
-        this.guide.title = m.prop(this.guide.title);
-
-        _.each(this.body, function(s) {
-            s.text = m.prop(s.text || '');
-            s.image = m.prop(s.image || 0);
-        });
-
+    } else {
         req({
-            endpoint: '/tag/children/' + this.guide.category_id
-        }).then(_.bind(function(data) {
-            this.tags = data.children;
+            endpoint: '/guide/' + guideId
+        }, true).then(_.bind(function(data) {
+            this.guide = data.guide;
+            this.body = JSON.parse(this.guide.body);
 
+            this.guide.status = m.prop(this.guide.status);
+            this.guide.title = m.prop(this.guide.title);
+
+            _.each(this.body, function(s) {
+                s.text = m.prop(s.text || '');
+                s.image = m.prop(s.image || 0);
+            });
+
+            req({
+                endpoint: '/tag/children/' + this.guide.category_id
+            }).then(_.bind(function(data) {
+                this.tags = data.children;
+
+                if (done) done(null, this);
+            }, this));
+        }, this), _.bind(function(data) {
+            this.error = data.error;
             if (done) done(null, this);
         }, this));
-    }, this), _.bind(function(data) {
-        this.guide = false;
-        this.error = data.error;
-        if (done) done(null, this);
-    }, this));
+    }
 };
 
 vm.prototype = {
     onunload: function(e) {
-        if (!confirm('Do you want to leave the page? Any unsaved changes will be lost.')) {
+        if (typeof confirm != 'undefined' && !confirm('Do you want to leave the page? Any unsaved changes will be lost.')) {
             e.preventDefault();
         }
     },

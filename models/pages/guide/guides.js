@@ -1,6 +1,7 @@
 var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
+var title = require('../../../util/title.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 var layout = require('../../../views/layout/skeleton.js');
@@ -55,6 +56,8 @@ var vm = function(params, done) {
         }, true).then(_.bind(function(data) {
             this.category = data.tag;
             this.childTags = data.children;
+
+            title(this.category.name + ' Guides');
         }, this))
     );
 

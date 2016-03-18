@@ -10,7 +10,7 @@ module.exports = function(vm) {
     return layout([
         m('.category-header', [
             m('a.btn.btn-success.new-guide', {
-                href: '/guide/edit?catg=' + vm.category.id,
+                href: '/guide/new/' + vm.category.id,
                 config: m.route
             }, [m('i.fa.fa-plus'), ' New Guide']),
             m('h2', vm.category.name),
@@ -41,13 +41,15 @@ module.exports = function(vm) {
             var url = '/guide/' + g.id + '-' + slug(g.title);
             return m('.guide', [
                 m('a', { href: url, config: m.route }, m('img', {
-                    src: g.image_id ? imageurl(g.image_id, 160, 120) : 'http://lorempixel.com/160/120/cats/' + ((g.id % 10) + 1) + '/',
+                    src: g.image_id ? imageurl(g.image_id, 160, 120) : '/asset/img/guide-ph.png',
                     width: 160,
                     height: 120
                 })),
-                m('a', { href: url, config: m.route }, m('h3', g.title)),
-                m('var', ['Last updated ', m('abbr', { title: moment(g.edited).format('lll') }, moment(g.edited).fromNow())]),
-                m('span', [m('i.fa.fa-user'), g.author_name])
+                m('.contents', [
+                    m('a', { href: url, config: m.route }, m('h3', g.title)),
+                    m('var', ['Last updated ', m('abbr', { title: moment(g.edited).format('lll') }, moment(g.edited).fromNow())]),
+                    m('span', [m('i.fa.fa-user'), g.author_name])
+                ])
             ]);
         }))
     ]);
