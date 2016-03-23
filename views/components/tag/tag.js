@@ -14,7 +14,7 @@ module.exports = function(tag) {
         }, m('img.card-img-top', {
             src: tag.image_id ?
                 imageurl(tag.image_id, 240, 200) :
-                'http://lorempixel.com/240/200/cats/' + ((tag.id % 10) + 1) + '/'
+                '/asset/img/guide-ph.png'
         })),
         m('a.card-block', {
             href: tag.leaf || tag.allow_leafs ?

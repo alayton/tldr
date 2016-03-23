@@ -1,14 +1,21 @@
 var $ = require('jquery');
 
-module.exports = function(title) {
+var title = function(text) {
+    if (text) {
+        text += ' - TLDR.gg';
+    } else {
+        text = 'TLDR.gg';
+    }
+
+    title.current = text;
+
     if (!global.window) {
         return;
     }
 
-    var $title = $('title');
-    if (title) {
-        $title.text(title + ' - TLDR.gg');
-    } else {
-        $title.text('TLDR.gg');
-    }
+    $('title').text(text);
 };
+
+title.current = null;
+
+module.exports = title;

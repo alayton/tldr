@@ -37,8 +37,8 @@ var layout = function(content) {
                 ]),
                 m('.topbar', [
                     m('.container', [
-                        m('a.fa.fa-twitter[href=http://www.twitter.com/tldrplease]'),
-                        m('a.fa.fa-facebook-square[href=http://www.facebook.com/tldrplease]')
+                        m('a.fa.fa-twitter[href=https://www.twitter.com/tldrplease]'),
+                        m('a.fa.fa-facebook-square[href=https://www.facebook.com/tldrplease]')
                     ])
                 ]),
                 m('nav.navbar.navbar-full.navbar-dark.nav-bg', [

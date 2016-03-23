@@ -3,6 +3,7 @@ var render = require('mithril-node-render');
 var _ = require('underscore');
 var req = require('./util/request.js');
 var routes = require('./routes.js');
+var title = require('./util/title.js');
 
 var app = express();
 
@@ -11,7 +12,9 @@ var base = function(content) {
         '<!doctype html>',
         '<html lang="en">',
         '<head>',
-        '<title>TLDR.gg</title>',
+        '<title>',
+        title.current,
+        '</title>',
         '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">',
         '<link href="/asset/img/favicon.ico" rel="shortcut icon">',

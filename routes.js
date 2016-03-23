@@ -1,5 +1,8 @@
 var _404 = require('./controllers/404.js');
 var home = require('./controllers/home.js');
+var about = require('./controllers/about.js');
+var privacy = require('./controllers/privacy.js');
+var tos = require('./controllers/tos.js');
 
 var tags = require('./controllers/tag/tags.js');
 var editTag = require('./controllers/tag/edit.js');
@@ -16,6 +19,9 @@ var activate = require('./controllers/user/activate.js');
 module.exports = {
     '/404': _404,
     '/': home,
+    '/about': about,
+    '/privacy': privacy,
+    '/tos': tos,
 
     '/tags/:id': tags,
     '/tag/new/:parent': editTag,
