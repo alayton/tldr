@@ -70,10 +70,11 @@ module.exports = function(vm) {
                 m('.tab-pane.active#uploadimage', [
                     m('div', [
                         m('label.file', [
-                            m('input#imagefile[type=file]'),
+                            m('input#imagefile[type=file]', { onchange: _.partial(vm.loadPreview, vm) }),
                             m('span.file-custom')
                         ])
                     ]),
+                    vm.preview ? m('img', { src: vm.preview }) : [],
                     m('button.btn.btn-primary', { onclick: _.partial(vm.upload, vm) }, 'Upload Image')
                 ])
             ])

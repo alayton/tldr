@@ -48,7 +48,13 @@ module.exports = function(vm) {
                     m('button.btn.btn-secondary', { onclick: _.partial(showImages, _.partial(guideImage, vm.guide)) }, [m('i.fa.fa-picture-o'), ' Choose Image'])
                 ]),
                 m('.guide-title', [
-                    m('input.form-control', { type: 'text', onchange: m.withAttr('value', vm.guide.title), value: vm.guide.title(), placeholder: 'Guide Title' }),
+                    m('input.form-control', {
+                        type: 'text',
+                        onchange: m.withAttr('value', vm.guide.title),
+                        value: vm.guide.title(),
+                        placeholder: 'Guide Title',
+                        className: vm.fieldErrors.Title ? 'error' : ''
+                    }),
                     m('var', { className: vm.guide.title().length > 120 ? 'limited' : '' }, [vm.guide.title().length, ' / 120']),
                     m('label', 'Guide Status'),
                     m('select.c-select', { onchange: m.withAttr('value', vm.guide.status), value: vm.guide.status() }, [

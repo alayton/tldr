@@ -13,6 +13,16 @@ var vm = function(params, done) {
     this.error = null;
     this.saving = m.prop(false);
     this.saved = m.prop(false);
+    this.fieldErrors = {};
+
+    this.savedGuide = {
+        category_id: 0,
+        image_id: 0,
+        status: 0,
+        title: '',
+        tags: [],
+        suggestions: []
+    };
 
     var guideId = parseInt(param(params, 'id', 0));
 
@@ -58,6 +68,8 @@ var vm = function(params, done) {
             this.guide = data.guide;
             this.body = JSON.parse(this.guide.body);
 
+            this.savedGuide = JSON.parse(JSON.stringify(data.guide));
+
             this.guide.status = m.prop(this.guide.status);
             this.guide.title = m.prop(this.guide.title);
 
@@ -82,9 +94,42 @@ var vm = function(params, done) {
 
 vm.prototype = {
     onunload: function(e) {
-        if (typeof confirm != 'undefined' && !confirm('Do you want to leave the page? Any unsaved changes will be lost.')) {
+        if (typeof confirm != 'undefined' && this.isModified() && !confirm('Do you want to leave the page? Any unsaved changes will be lost.')) {
             e.preventDefault();
         }
+    },
+    isModified: function() {
+        if (this.guide.id != this.savedGuide.id ||
+            this.guide.category_id != this.savedGuide.category_id ||
+            this.guide.image_id != this.savedGuide.image_id ||
+            this.guide.status() != this.savedGuide.status ||
+            this.guide.title() != this.savedGuide.title) {
+            return true;
+        }
+
+        var body = [];
+        _.each(this.body, function(s) {
+            body.push({
+                text: s.text(),
+                image: s.image()
+            });
+        });
+
+        if (JSON.stringify(body) != this.savedGuide.body) {
+            return true;
+        }
+
+        var tags = _.intersection(_.pluck(this.guide.tags, 'id'), _.pluck(this.savedGuide.tags, 'id'));
+        if (tags.length != this.savedGuide.tags.length || tags.length != this.guide.tags.length) {
+            return true;
+        }
+
+        var guides = _.intersection(_.pluck(this.guide.suggestions, 'id'), _.pluck(this.savedGuide.suggestions, 'id'));
+        if (guides.length != this.savedGuide.suggestions.length || guides.length != this.guide.suggestions.length) {
+            return true;
+        }
+
+        return false;
     },
     save: function(self) {
         if (self.saving()) {
@@ -115,9 +160,13 @@ vm.prototype = {
             endpoint: self.guide.id ? '/guide/' + self.guide.id : '/guide',
             data: data
         }).then(function(data) {
+            self.fieldErrors = {};
+
             if (self.guide.id) {
                 self.saving(false);
                 self.saved(true);
+
+                self.savedGuide = JSON.parse(JSON.stringify(data.guide));
 
                 _.delay(function() {
                     self.saved(false);
@@ -126,7 +175,11 @@ vm.prototype = {
                 m.route('/guide/edit/' + data.guide.id + '-' + slug(data.guide.title));
             }
         }, function(data) {
-            skeleton.errors().push(data.error);
+            if (data.error) {
+                skeleton.errors().push(data.error);
+            } else if (data.field_errors) {
+                self.fieldErrors = data.field_errors;
+            }
             self.saving(false);
         });
     },

@@ -8,6 +8,7 @@ var req = require('../../util/request.js');
 var vm = function(select, catg) {
     this.select = select;
     this.category = catg;
+    this.preview = null;
 
     this.categoryImages = m.prop(null);
     this.userImages = m.prop(null);
@@ -32,6 +33,22 @@ vm.prototype = {
         self.select(img);
         self.closeModal();
         return false;
+    },
+    loadPreview: function(self, e) {
+        if (!this.files || this.files.length == 0) {
+            self.preview = null;
+            return;
+        }
+
+        var file = this.files[0],
+            reader = new FileReader();
+
+        reader.onload = function() {
+            self.preview = reader.result;
+            m.redraw();
+        };
+
+        reader.readAsDataURL(file);
     },
     upload: function(self, e) {
         e.preventDefault();

@@ -2,6 +2,7 @@ var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
+var auth = require('../../../models/auth.js');
 var imageurl = require('../../../util/imageurl.js');
 var layout = require('../../layout/sidebar.js');
 var categoryTag = require('../../../controllers/components/tag/categorytag.js');
@@ -9,10 +10,10 @@ var categoryTag = require('../../../controllers/components/tag/categorytag.js');
 module.exports = function(vm) {
     return layout([
         m('.category-header', [
-            m('a.btn.btn-success.new-guide', {
+            auth.user() ? m('a.btn.btn-success.new-guide', {
                 href: '/guide/new/' + vm.category.id,
                 config: m.route
-            }, [m('i.fa.fa-plus'), ' New Guide']),
+            }, [m('i.fa.fa-plus'), ' New Guide']) : [],
             m('h2', vm.category.name),
             m('.tags.current-tags', _.map(vm.tags, function(tag) {
                 return tag.id == vm.category.id ?
