@@ -4,7 +4,8 @@ var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
 var auth = require('../../../models/auth.js');
-var title = require('../../../util/title.js');
+var title = require('../../../util/page/title.js');
+var guideurl = require('../../../util/guideurl.js');
 var imageurl = require('../../../util/imageurl.js');
 var romanize = require('../../../util/romanize.js');
 var layout = require('../../layout/sidebar.js');
@@ -94,16 +95,18 @@ module.exports = function(vm) {
                 var img = section.image(),
                     imgWidth = img ? Math.min(871, img.width) : 0;
 
-                return m('.section', [
+                return m('section', [
                     m.component(mdtextarea, { val: section.text }),
-                    m('var', { className: section.text().length > 200 ? 'limited' : '' }, [section.text().length, ' / 200']),
+                    m('var', { className: section.text().length > vm.sectionLength ? 'limited' : '' }, [section.text().length, ' / ', vm.sectionLength]),
                     m('.preview.clearfix', [
                         m('header', romanize(idx + 1)),
-                        m.trust(md.render(section.text()))
+                        m('article', [
+                            m.trust(md.render(section.text())),
+                            img ?
+                                m('.image', m('img', { src: imageurl(img.id, imgWidth), style: { maxWidth: imgWidth + 'px' } })) :
+                                []
+                        ])
                     ]),
-                    img ?
-                        m('.image', m('img', { src: imageurl(img.id, imgWidth), style: { maxWidth: imgWidth + 'px' } })) :
-                        [],
                     m('.section-controls', [
                         m('button.btn.btn-secondary', {
                             onclick: _.partial(showImages, section.image)
@@ -116,12 +119,14 @@ module.exports = function(vm) {
             })),
             m('.guide-controls', [
                 m('button.btn.btn-info', {
+                    className: (vm.body.length >= vm.maxSections ? 'disabled' : ''),
+                    title: (vm.body.length >= vm.maxSections ? 'Limit of 5 sections reached' : ''),
                     onclick: _.partial(vm.addSection, vm)
                 }, [m('i.fa.fa-plus'), ' Add Section']),
                 m('.fill'),
                 m('a.btn.btn-secondary', vm.guide.id ?
                     {
-                        href: '/guide/' + vm.guide.id + '-' + slug(vm.guide.title()),
+                        href: guideurl(vm.guide),
                         config: m.route
                     } :
                     {

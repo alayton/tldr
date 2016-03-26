@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var req = require('../util/request.js');
+var canonical = require('../util/page/canonical.js');
 var layout = require('../views/layout/skeleton.js');
 var auth = require('../models/auth.js');
 
@@ -17,6 +18,8 @@ var base = function(controller) {
                 }
             });
         }
+
+        canonical(null);
 
         return controller(params, done);
     };

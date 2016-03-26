@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var m = require('mithril');
-var title = require('../../../util/title.js');
+var title = require('../../../util/page/title.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 

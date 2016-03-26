@@ -31,6 +31,7 @@ module.exports = {
     '/guides/:catg/:tags': guides,
     '/guide/new/:catg': editGuide,
     '/guide/edit/:id': editGuide,
+    '/guide/:catg/:id': viewGuide,
     '/guide/:id': viewGuide,
     '/user/guides': userGuides,
     '/user/guides/:id': userGuides,

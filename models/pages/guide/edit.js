@@ -1,7 +1,8 @@
 var m = require('mithril');
+var $ = require('jquery');
 var _ = require('underscore');
 var slug = require('slug');
-var title = require('../../../util/title.js');
+var title = require('../../../util/page/title.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 var skeleton = require('../../../views/layout/skeleton.js');
@@ -14,6 +15,9 @@ var vm = function(params, done) {
     this.saving = m.prop(false);
     this.saved = m.prop(false);
     this.fieldErrors = {};
+
+    this.maxSections = 5;
+    this.sectionLength = 200;
 
     this.savedGuide = {
         category_id: 0,
@@ -38,6 +42,7 @@ var vm = function(params, done) {
 
         this.guide = {
             category_id: catg,
+            category_name: '',
             image_id: 0,
             status: m.prop(0),
             title: m.prop(''),
@@ -99,6 +104,10 @@ vm.prototype = {
         }
     },
     isModified: function() {
+        if (this.created) {
+            return false;
+        }
+
         if (this.guide.id != this.savedGuide.id ||
             this.guide.category_id != this.savedGuide.category_id ||
             this.guide.image_id != this.savedGuide.image_id ||
@@ -161,21 +170,23 @@ vm.prototype = {
             data: data
         }).then(function(data) {
             self.fieldErrors = {};
+            self.savedGuide = JSON.parse(JSON.stringify(data.guide));
 
             if (self.guide.id) {
                 self.saving(false);
                 self.saved(true);
 
-                self.savedGuide = JSON.parse(JSON.stringify(data.guide));
-
                 _.delay(function() {
                     self.saved(false);
                 }, 15000);
             } else {
+                self.created = true;
+
                 m.route('/guide/edit/' + data.guide.id + '-' + slug(data.guide.title));
             }
         }, function(data) {
             if (data.error) {
+                $(window).scrollTop(0);
                 skeleton.errors().push(data.error);
             } else if (data.field_errors) {
                 self.fieldErrors = data.field_errors;
@@ -184,6 +195,10 @@ vm.prototype = {
         });
     },
     addSection: function(self) {
+        if (self.body.length >= self.maxSections) {
+            return;
+        }
+
         self.body.push({
             title: m.prop(''),
             text: m.prop(''),

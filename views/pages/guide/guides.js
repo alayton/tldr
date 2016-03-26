@@ -3,6 +3,7 @@ var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
 var auth = require('../../../models/auth.js');
+var guideurl = require('../../../util/guideurl.js');
 var imageurl = require('../../../util/imageurl.js');
 var layout = require('../../layout/sidebar.js');
 var categoryTag = require('../../../controllers/components/tag/categorytag.js');
@@ -11,7 +12,7 @@ module.exports = function(vm) {
     return layout([
         m('.category-header', [
             auth.user() ? m('a.btn.btn-success.new-guide', {
-                href: '/guide/new/' + vm.category.id,
+                href: '/guide/new/' + vm.category.id + '-' + slug(vm.category.name),
                 config: m.route
             }, [m('i.fa.fa-plus'), ' New Guide']) : [],
             m('h2', vm.category.name),
@@ -39,7 +40,7 @@ module.exports = function(vm) {
             }))
         ]),
         m('.guides', _.map(vm.guides, function(g) {
-            var url = '/guide/' + g.id + '-' + slug(g.title);
+            var url = guideurl(g);
             return m('.guide', [
                 m('a', { href: url, config: m.route }, m('img', {
                     src: g.image_id ? imageurl(g.image_id, 160, 120) : '/asset/img/guide-ph.png',

@@ -3,7 +3,9 @@ var render = require('mithril-node-render');
 var _ = require('underscore');
 var req = require('./util/request.js');
 var routes = require('./routes.js');
-var title = require('./util/title.js');
+var canonical = require('./util/page/canonical.js');
+var title = require('./util/page/title.js');
+var inject = require('./inject.js');
 
 var app = express();
 
@@ -18,12 +20,13 @@ var base = function(content) {
         '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">',
         '<link href="/asset/img/favicon.ico" rel="shortcut icon">',
-        '<!-- inject:css --><link rel="stylesheet" href="/asset/built/css/bootstrap-flex_39b8cb883b728793bac8f263309f618e.css"><link rel="stylesheet" href="/asset/built/css/font-awesome.min_a926580456892ca47e8fe14e69af5d08.css"><link rel="stylesheet" href="/asset/built/css/style_2bb0630613a743d41ca5f8a9b7abcb37.css"><!-- endinject -->',
+        (canonical.current ? '<link id="canon" href="' + canonical.current + '" rel="canonical">' : ''),
+        inject.css,
         '</head>',
         '<body>',
         content,
         (req.cache ? ('<script type="text/javascript">var tldrRequests = ' + JSON.stringify(req.cache) + ';</script>') : ''),
-        '<!-- inject:js --><script src="/asset/built/js/app_31b37ebf4f5a1b315723eb370c0e1a67.js"></script><!-- endinject -->',
+        inject.js,
         '</body>',
         '</html>'
     ].join('');

@@ -2,6 +2,7 @@ var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
+var guideurl = require('../../../util/guideurl.js');
 var imageurl = require('../../../util/imageurl.js');
 var layout = require('../../layout/sidebar.js');
 
@@ -9,7 +10,7 @@ module.exports = function(vm) {
     return layout([
         m('.text-muted', [(vm.result.page > 1 ? 'Page ' + vm.result.page + ' of ' : ''), vm.result.total_results, ' results']),
         m('.guides', _.map(vm.result.guides, function(g) {
-            var url = '/guide/' + g.id + '-' + slug(g.title);
+            var url = guideurl(g);
             return m('.guide', [
                 m('a', { href: url, config: m.route }, m('img', {
                     src: g.image_id ? imageurl(g.image_id, 160, 120) : '/asset/img/guide-ph.png',

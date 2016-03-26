@@ -54,7 +54,11 @@ vm.prototype = {
         var area = getTextarea(this).focus();
         var sel = area.getSelection();
         if (sel.length > 0) {
-            area.surroundSelectedText('* ', '\n* ');
+            var lines = sel.text.split('\n');
+            lines = _.map(lines, function(line) {
+                return '* ' + line.trim();
+            });
+            area.replaceSelectedText(lines.join('\n'));
         } else {
             area.replaceSelectedText('* ');
         }
@@ -64,7 +68,11 @@ vm.prototype = {
         var area = getTextarea(this).focus();
         var sel = area.getSelection();
         if (sel.length > 0) {
-            area.surroundSelectedText('1. ', '\n2. ');
+            var lines = sel.text.split('\n');
+            lines = _.map(lines, function(line, idx) {
+                return (idx + 1) + '. ' + line.trim();
+            });
+            area.replaceSelectedText(lines.join('\n'));
         } else {
             area.replaceSelectedText('1. ');
         }

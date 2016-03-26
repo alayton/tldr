@@ -65,19 +65,19 @@ var layout = function(content) {
                         ])
                     ])
                 ]),
-                _.map(layout.errors(), function(err) {
-                    return m('.alert.alert-warning.alert-dismissable.fade.in', [
-                        m('button.close[type=button]', { 'data-dismiss': 'alert' }, m('span', m.trust('&times;'))),
-                        err
-                    ]);
-                }),
-                _.map(layout.notices(), function(err) {
-                    return m('.alert.alert-info.alert-dismissable.fade.in', [
-                        m('button.close[type=button]', { 'data-dismiss': 'alert' }, m('span', m.trust('&times;'))),
-                        err
-                    ]);
-                }),
                 m('.container', [
+                    _.map(layout.errors(), function(err) {
+                        return m('.alert.alert-warning.alert-dismissable.fade.in', [
+                            m('button.close[type=button]', { 'data-dismiss': 'alert' }, m('span', m.trust('&times;'))),
+                            err
+                        ]);
+                    }),
+                    _.map(layout.notices(), function(err) {
+                        return m('.alert.alert-info.alert-dismissable.fade.in', [
+                            m('button.close[type=button]', { 'data-dismiss': 'alert' }, m('span', m.trust('&times;'))),
+                            err
+                        ]);
+                    }),
                     content
                 ]),
                 m('footer.footer', [

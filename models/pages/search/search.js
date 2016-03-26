@@ -1,6 +1,6 @@
 var layout = require('../../../views/layout/skeleton.js');
 var auth = require('../../auth.js');
-var title = require('../../../util/title.js');
+var title = require('../../../util/page/title.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 

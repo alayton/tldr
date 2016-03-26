@@ -56,6 +56,10 @@
    margin-bottom: 1.5rem;
    background-color: $block-bgcolor;
 
+   .guide-title {
+      margin-left: 170px;
+   }
+
    .author, .updated {
       color: $text-muted;
       font-size: 0.8em;
@@ -75,7 +79,7 @@
 }
 
 .guide-body {
-   .section {
+   section {
       padding: 1.5rem 1.5rem 1.1rem;
       background-color: $block-bgcolor;
       margin-bottom: 1.5rem;
@@ -84,18 +88,25 @@
          float: left;
          font-size: 3rem;
          line-height: 3rem;
-         padding: 0 1rem 0.5rem 0;
+         width: 4rem;
+         text-align: center;
          color: $text-muted;
       }
 
-      p {
-         margin-bottom: 0;
+      article {
+         margin-left: 4.5rem;
       }
 
       .image {
          margin-top: 1.5rem;
          padding-top: 1.5rem;
          border-top: 1px solid $body-bgcolor;
+
+         &:first-child {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: 0;
+         }
 
          img {
             display: block;
