@@ -16,7 +16,7 @@ var vm = function(params, done) {
     this.saved = m.prop(false);
     this.fieldErrors = {};
 
-    this.maxSections = 5;
+    this.maxSections = 7;
     this.sectionLength = 200;
 
     this.savedGuide = {

@@ -120,7 +120,7 @@ module.exports = function(vm) {
             m('.guide-controls', [
                 m('button.btn.btn-info', {
                     className: (vm.body.length >= vm.maxSections ? 'disabled' : ''),
-                    title: (vm.body.length >= vm.maxSections ? 'Limit of 5 sections reached' : ''),
+                    title: (vm.body.length >= vm.maxSections ? 'Limit of ' + vm.maxSections + ' sections reached' : ''),
                     onclick: _.partial(vm.addSection, vm)
                 }, [m('i.fa.fa-plus'), ' Add Section']),
                 m('.fill'),
