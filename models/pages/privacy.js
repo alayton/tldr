@@ -1,8 +1,5 @@
-var _ = require('underscore');
-var title = require('../../util/page/title.js');
-
 var vm = function(done) {
-    title('Privacy');
+    this.title = 'Privacy';
 
     if (done) {
         done(null, this);

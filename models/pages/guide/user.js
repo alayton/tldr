@@ -1,8 +1,6 @@
-var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
 var auth = require('../../auth.js');
-var title = require('../../../util/page/title.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 var layout = require('../../../views/layout/skeleton.js');
@@ -10,6 +8,7 @@ var layout = require('../../../views/layout/skeleton.js');
 var vm = function(params, done) {
     this.guides = null;
     this.user = { username: '???' };
+    this.ratings = {};
 
     if (done) {
         done(null, this);
@@ -20,6 +19,17 @@ var vm = function(params, done) {
             endpoint: '/userguides/' + userId
         }).then(_.bind(function(data) {
             this.guides = data.guides;
+
+            if (auth.key()) {
+                var ids = _.pluck(this.guides, 'id');
+                if (ids && ids.length > 0) {
+                    req({
+                        endpoint: '/rateguide/' + ids.join(',')
+                    }).then(_.bind(function(data) {
+                        this.ratings = data.ratings;
+                    }, this));
+                }
+            }
         }, this));
 
         if (userId > 0) {
@@ -28,12 +38,12 @@ var vm = function(params, done) {
             }).then(_.bind(function(data) {
                 this.user = data.user;
 
-                title(this.user.username + "'s Guides");
+                this.title = this.user.username + "'s Guides";
             }, this));
         } else {
             this.user = auth.user();
 
-            title(this.user.username + "'s Guides");
+            this.title = this.user.username + "'s Guides";
         }
     }
 };

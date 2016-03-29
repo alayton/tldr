@@ -6,6 +6,7 @@ var auth = require('../../../models/auth.js');
 var guideurl = require('../../../util/guideurl.js');
 var imageurl = require('../../../util/imageurl.js');
 var layout = require('../../layout/sidebar.js');
+var rate = require('../../../controllers/components/guide/rate.js');
 var categoryTag = require('../../../controllers/components/tag/categorytag.js');
 
 module.exports = function(vm) {
@@ -42,6 +43,7 @@ module.exports = function(vm) {
         m('.guides', _.map(vm.guides, function(g) {
             var url = guideurl(g);
             return m('.guide', [
+                m.component(rate, { guide: g, parent: vm }),
                 m('a', { href: url, config: m.route }, m('img', {
                     src: g.image_id ? imageurl(g.image_id, 160, 120) : '/asset/img/guide-ph.png',
                     width: 160,
@@ -49,8 +51,8 @@ module.exports = function(vm) {
                 })),
                 m('.contents', [
                     m('a', { href: url, config: m.route }, m('h3', g.title)),
-                    m('var', ['Last updated ', m('abbr', { title: moment(g.edited).format('lll') }, moment(g.edited).fromNow())]),
-                    m('span', [m('i.fa.fa-user'), g.author_name])
+                    m('span', [m('i.fa.fa-user'), g.author_name]),
+                    m('var', ['Last updated ', m('abbr', { title: moment(g.edited).format('lll') }, moment(g.edited).fromNow())])
                 ])
             ]);
         }))

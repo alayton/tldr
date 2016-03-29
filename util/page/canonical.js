@@ -1,11 +1,11 @@
 var $ = require('jquery');
 var config = require('../../config.js');
 
-var canonical = function(url) {
+module.exports = function(vm, url) {
     if (!url) {
-        canonical.current = null;
+        vm.canonical = null;
     } else {
-        canonical.current = config.appRoot + url;
+        vm.canonical = config.appRoot + url;
     }
 
     if (!global.window) {
@@ -15,15 +15,11 @@ var canonical = function(url) {
     var link = $('#canon');
     if (url) {
         if (link && link.length > 0) {
-            link.attr('href', canonical.current);
+            link.attr('href', vm.canonical);
         } else {
-            $('head').append($('<link>', { id: 'canon', rel: 'canonical', href: canonical.current }));
+            $('head').append($('<link>', { id: 'canon', rel: 'canonical', href: vm.canonical }));
         }
     } else if (link && link.length > 0) {
         link.detach();
     }
 };
-
-canonical.current = null;
-
-module.exports = canonical;

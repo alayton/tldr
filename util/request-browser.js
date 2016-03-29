@@ -27,6 +27,7 @@ var req = function(options, skipAuth) {
     }
 
     options.unwrapSuccess = options.unwrapError = function(data, xhr) {
+        data = data || {};
         data.statusCode = xhr.status;
         return data;
     };

@@ -1,7 +1,13 @@
 var m = require('mithril');
 var _ = require('underscore');
+var $ = require('jquery');
 var layout = require('../../layout/skeleton.js');
 var auth = require('../../../models/auth.js');
+
+var showLogin = function() {
+    $('#signupModal').modal('hide');
+    $('#loginModal').modal('show');
+};
 
 module.exports = function(vm) {
     return m('#signupModal.modal.fade', m('.modal-dialog', m('form.modal-content', { onsubmit: _.bind(vm.submit, vm) }, [
@@ -33,6 +39,10 @@ module.exports = function(vm) {
             ])
         ]),
         m('.modal-footer', [
+            m('.pull-left', [
+                'Already have an account? ',
+                m('a[href=javascript:;]', { onclick: showLogin }, 'Log in')
+            ]),
             m('button.btn.btn-secondary', { onclick: vm.closeModal }, 'Close'),
             m('button.btn.btn-primary', { onclick: function(e) { vm.submit(e); } }, 'Sign up')
         ])

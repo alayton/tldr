@@ -33,7 +33,9 @@
     "sifter": "~0.4.5",
     "moment": "~2.11.1",
     "mithril": "~0.2.0",
-    "mithril-node-render": "~0.4.2"
+    "mithril-node-render": "~0.4.2",
+    "autotrack": "~0.6.3",
+    "numeral": "~1.5.3"
   },
   "devDependencies": {
   },

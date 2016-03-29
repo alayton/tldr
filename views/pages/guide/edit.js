@@ -4,13 +4,13 @@ var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
 var auth = require('../../../models/auth.js');
-var title = require('../../../util/page/title.js');
 var guideurl = require('../../../util/guideurl.js');
 var imageurl = require('../../../util/imageurl.js');
 var romanize = require('../../../util/romanize.js');
 var layout = require('../../layout/sidebar.js');
 var categoryTag = require('../../../controllers/components/tag/categorytag.js');
 var mdtextarea = require('../../../controllers/components/mdtextarea.js');
+var rate = require('../../../controllers/components/guide/rate.js');
 
 var md = require('markdown-it')()
     .disable(['image']);
@@ -36,14 +36,11 @@ module.exports = function(vm) {
     var images = require('../../../controllers/components/images.js');
     var moderated = vm.guide.status == 2 && !auth.isPrivileged();
 
-    if (vm.guide.id) {
-        title('Editing ' + vm.guide.title());
-    }
-
     return layout(vm.error !== null ?
         m('.alert.alert-danger', vm.error ? vm.error : 'Guide not found!') :
         [
             m('.guide-header.clearfix', [
+                m.component(rate, { guide: vm.guide, parent: vm }),
                 m('.guide-image', [
                     m('img', { src: vm.guide.image_id ? imageurl(vm.guide.image_id, 160, 120) : '/asset/img/guide-ph.png' }),
                     m('button.btn.btn-secondary', { onclick: _.partial(showImages, _.partial(guideImage, vm.guide)) }, [m('i.fa.fa-picture-o'), ' Choose Image'])
@@ -56,7 +53,7 @@ module.exports = function(vm) {
                         placeholder: 'Guide Title',
                         className: vm.fieldErrors.Title ? 'error' : ''
                     }),
-                    m('var', { className: vm.guide.title().length > 120 ? 'limited' : '' }, [vm.guide.title().length, ' / 120']),
+                    m('var', { className: vm.guide.title().length > vm.titleLength ? 'limited' : '' }, [vm.guide.title().length, ' / ', vm.titleLength]),
                     m('label', 'Guide Status'),
                     m('select.c-select', { onchange: m.withAttr('value', vm.guide.status), value: vm.guide.status() }, [
                         m('option.warning', { disabled: moderated, value: 0 }, 'In Progress'),

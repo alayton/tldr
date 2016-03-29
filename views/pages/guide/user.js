@@ -5,6 +5,7 @@ var moment = require('moment');
 var guideurl = require('../../../util/guideurl.js');
 var imageurl = require('../../../util/imageurl.js');
 var layout = require('../../layout/sidebar.js');
+var rate = require('../../../controllers/components/guide/rate.js');
 
 module.exports = function(vm) {
     var status = {
@@ -23,6 +24,7 @@ module.exports = function(vm) {
                 m('.guides', _.map(vm.guides, function(g) {
                     var url = guideurl(g);
                     return m('.guide', { className: status[g.status][1] }, [
+                        m.component(rate, { guide: g, parent: vm }),
                         m('a', { href: url, config: m.route }, m('img', {
                             src: g.image_id ? imageurl(g.image_id, 160, 120) : '/asset/img/guide-ph.png',
                             width: 160,

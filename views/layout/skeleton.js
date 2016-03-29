@@ -6,6 +6,7 @@ var auth = require('../../models/auth.js');
 global.jQuery = require('jquery');
 
 if (typeof window !== 'undefined') {
+    require('autotrack');
     window.Tether = require('tether');
     require('bootstrap');
     require('../../asset/js/rangyinputs-jquery.js');

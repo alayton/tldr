@@ -2,7 +2,6 @@ var m = require('mithril');
 var $ = require('jquery');
 var _ = require('underscore');
 var slug = require('slug');
-var title = require('../../../util/page/title.js');
 var imageurl = require('../../../util/imageurl.js');
 var layout = require('../../layout/sidebar.js');
 var auth = require('../../../models/auth.js');
@@ -26,10 +25,6 @@ var pickImage = function(img) {
 
 module.exports = function(vm) {
     var images = require('../../../controllers/components/images.js');
-
-    if (vm.tag.id) {
-        title('Editing ' + vm.tag.name());
-    }
 
     return layout([
         m('h2', vm.tag.id ? 'Editing Tag: ' + vm.tag.name() : 'Create Tag'),

@@ -2,7 +2,7 @@ var m = require('mithril');
 var $ = require('jquery');
 var _ = require('underscore');
 var slug = require('slug');
-var title = require('../../../util/page/title.js');
+var auth = require('../../../models/auth.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 var skeleton = require('../../../views/layout/skeleton.js');
@@ -14,10 +14,12 @@ var vm = function(params, done) {
     this.error = null;
     this.saving = m.prop(false);
     this.saved = m.prop(false);
+    this.ratings = null;
     this.fieldErrors = {};
 
     this.maxSections = 7;
     this.sectionLength = 200;
+    this.titleLength = 80;
 
     this.savedGuide = {
         category_id: 0,
@@ -38,7 +40,7 @@ var vm = function(params, done) {
             return;
         }
 
-        title('New Guide');
+        this.title = 'New Guide';
 
         this.guide = {
             category_id: catg,
@@ -71,6 +73,8 @@ var vm = function(params, done) {
             endpoint: '/guide/' + guideId
         }, true).then(_.bind(function(data) {
             this.guide = data.guide;
+            this.title = 'Editing ' + this.guide.title;
+
             this.body = JSON.parse(this.guide.body);
 
             this.savedGuide = JSON.parse(JSON.stringify(data.guide));
@@ -90,6 +94,14 @@ var vm = function(params, done) {
 
                 if (done) done(null, this);
             }, this));
+
+            if (!done && auth.key()) {
+                req({
+                    endpoint: '/rateguide/' + this.guide.id
+                }).then(_.bind(function(data) {
+                    this.ratings = data.ratings;
+                }, this));
+            }
         }, this), _.bind(function(data) {
             this.error = data.error;
             if (done) done(null, this);

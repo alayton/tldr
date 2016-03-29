@@ -6,6 +6,7 @@ var auth = require('../../../models/auth.js');
 var imageurl = require('../../../util/imageurl.js');
 var romanize = require('../../../util/romanize.js');
 var layout = require('../../layout/sidebar.js');
+var rate = require('../../../controllers/components/guide/rate.js');
 
 var md = require('markdown-it')()
     .disable(['image']);
@@ -19,8 +20,9 @@ module.exports = function(vm) {
         m('.alert.alert-danger', vm.error ? vm.error : 'Guide not found!') :
         [
             m('.guide-header.clearfix', [
+                m.component(rate, { guide: vm.guide, parent: vm }),
                 m('.guide-image', [
-                    vm.guide.image_id ? m('img', { src: imageurl(vm.guide.image_id, 160, 120) }) : [],
+                    m('img', { src: (vm.guide.image_id ? imageurl(vm.guide.image_id, 160, 120) : '/asset/img/guide-ph.png') })
                 ]),
                 m('.guide-title', [
                     auth.isUser(vm.guide.user_id) || auth.isPrivileged() ? m('a.btn.btn-info.pull-right', {

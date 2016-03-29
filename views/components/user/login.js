@@ -4,6 +4,11 @@ var $ = require('jquery');
 var layout = require('../../layout/skeleton.js');
 var auth = require('../../../models/auth.js');
 
+var showSignup = function() {
+    $('#loginModal').modal('hide');
+    $('#signupModal').modal('show');
+};
+
 module.exports = function(vm) {
     return m('#loginModal.modal.fade', m('.modal-dialog', m('form.modal-content', { onsubmit: _.bind(vm.submit, vm) }, [
         m('.modal-header', [
@@ -24,6 +29,10 @@ module.exports = function(vm) {
             ])
         ]),
         m('.modal-footer', [
+            m('.pull-left', [
+                'Don\'t have an account? ',
+                m('a[href=javascript:;]', { onclick: showSignup }, 'Sign up')
+            ]),
             m('button.btn.btn-secondary', { onclick: vm.closeModal }, 'Close'),
             m('button.btn.btn-primary', { onclick: function(e) { vm.submit(e); } }, 'Log in')
         ])

@@ -1,7 +1,6 @@
 var m = require('mithril');
 var _ = require('underscore');
 var auth = require('../../../models/auth.js');
-var title = require('../../../util/page/title.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 var layout = require('../../../views/layout/skeleton.js');
@@ -13,7 +12,7 @@ var vm = function(params, done) {
         m.route('/');
     }
 
-    title('Activate Your Account');
+    this.title = 'Activate Your Account';
 
     if (done) {
         done(null, this);
@@ -24,7 +23,7 @@ var vm = function(params, done) {
             data: {
                 token: token
             }
-        }, true).then(_.bind(function(data) {
+        }, this).then(_.bind(function(data) {
             auth.key(data.token);
             auth.user(data.user);
 
