@@ -2,6 +2,7 @@ var _ = require('underscore');
 var m = require('mithril');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
+var title = require('../../../util/page/title.js');
 
 var vm = function(params, done) {
     this.tag = null;
@@ -15,7 +16,7 @@ var vm = function(params, done) {
         this.tag = data.tag;
         this.tags = data.children;
 
-        this.title = this.tag.name;
+        title(this, this.tag.name);
 
         if (done) done(null, this);
     }, this));

@@ -3,6 +3,7 @@ var slug = require('slug');
 var auth = require('../../auth.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
+var title = require('../../../util/page/title.js');
 var layout = require('../../../views/layout/skeleton.js');
 
 var vm = function(params, done) {
@@ -38,12 +39,12 @@ var vm = function(params, done) {
             }).then(_.bind(function(data) {
                 this.user = data.user;
 
-                this.title = this.user.username + "'s Guides";
+                title(this, this.user.username + "'s Guides");
             }, this));
         } else {
             this.user = auth.user();
 
-            this.title = this.user.username + "'s Guides";
+            title(this, this.user.username + "'s Guides");
         }
     }
 };

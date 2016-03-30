@@ -3,6 +3,7 @@ var _ = require('underscore');
 var auth = require('../../../models/auth.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
+var title = require('../../../util/page/title.js');
 var layout = require('../../../views/layout/skeleton.js');
 
 var vm = function(params, done) {
@@ -12,7 +13,7 @@ var vm = function(params, done) {
         m.route('/');
     }
 
-    this.title = 'Activate Your Account';
+    title(this, 'Activate Your Account');
 
     if (done) {
         done(null, this);

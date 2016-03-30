@@ -3,8 +3,12 @@ var _ = require('underscore');
 var config = require('../config.js');
 var auth = require('../models/auth.js');
 
-var addAuthHeader = function(xhr) {
+var addAuthHeader = function(config, xhr) {
     xhr.setRequestHeader('Authorization', auth.key());
+
+    if (config) {
+        config(xhr);
+    }
 };
 
 var req = function(options, skipAuth) {
@@ -23,7 +27,7 @@ var req = function(options, skipAuth) {
     }
 
     if (!skipAuth && auth.key()) {
-        options.config = addAuthHeader;
+        options.config = _.partial(addAuthHeader, options.config);
     }
 
     options.unwrapSuccess = options.unwrapError = function(data, xhr) {

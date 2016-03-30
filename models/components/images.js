@@ -9,6 +9,10 @@ var vm = function(select, catg) {
     this.select = select;
     this.category = catg;
     this.preview = null;
+    this.image = null;
+    this.error = null;
+    this.progress = null;
+    this.uploading = false;
 
     this.categoryImages = m.prop(null);
     this.userImages = m.prop(null);
@@ -19,6 +23,23 @@ var vm = function(select, catg) {
 
 var serializeReader = function(data) {
     return new Int8Array(data);
+};
+
+var addProgress = function(vm, xhr) {
+    if (xhr.upload) {
+        xhr.upload.addEventListener('progress', _.partial(onProgress, vm));
+    }
+};
+
+var onProgress = function(vm, e) {
+    if (e.lengthComputable) {
+        var pos = e.position || e.loaded,
+            total = e.totalSize || e.total;
+        vm.progress = pos / total;
+        m.redraw();
+    } else {
+        vm.progress = null;
+    }
 };
 
 vm.prototype = {
@@ -35,49 +56,77 @@ vm.prototype = {
         return false;
     },
     loadPreview: function(self, e) {
+        self.preview = self.image = null;
+        self.error = null;
+
         if (!this.files || this.files.length == 0) {
-            self.preview = null;
             return;
         }
 
         var file = this.files[0],
             reader = new FileReader();
 
+        if (!{'image/jpeg': true, 'image/png': true, 'image/gif': true}[file.type]) {
+            self.error = 'Images must be a JPG, PNG, or GIF file.';
+            return;
+        } else if (file.size > 8 * 1024 * 1024) {
+            self.error = 'Images must be less than 8MB in size.';
+            return;
+        }
+
         reader.onload = function() {
             self.preview = reader.result;
-            m.redraw();
+
+            var bufReader = new FileReader();
+            bufReader.onload = function() {
+                self.image = bufReader.result;
+                m.redraw();
+            };
+            bufReader.readAsArrayBuffer(file);
         };
 
         reader.readAsDataURL(file);
     },
     upload: function(self, e) {
         e.preventDefault();
-
-        var files = $('#imagefile')[0].files;
-        if (!files.length) {
+        if (self.uploading) {
             return;
         }
 
-        var file = files[0],
-            reader = new FileReader();
+        if (!self.image) {
+            self.error = 'No image selected.';
+            return;
+        }
 
-        reader.onload = function() {
-            req({
-                endpoint: '/image',
-                method: 'POST',
-                data: reader.result,
-                serialize: serializeReader
-            }).then(function(data) {
-                if (data.ok && data.image) {
-                    self.click(self, data.image);
+        self.uploading = true;
 
-                    if (self.userImages()) {
-                        self.userImages().unshift(data.image);
-                    }
+        req({
+            endpoint: '/image',
+            method: 'POST',
+            data: self.image,
+            config: _.partial(addProgress, self),
+            serialize: serializeReader
+        }).then(function(data) {
+            self.progress = null;
+            self.uploading = false;
+
+            if (data.ok && data.image) {
+                self.click(self, data.image);
+
+                if (self.userImages()) {
+                    self.userImages().unshift(data.image);
                 }
-            });
-        };
-        reader.readAsArrayBuffer(file);
+            }
+        }, function(data) {
+            self.progress = null;
+            self.uploading = false;
+
+            if (data.error) {
+                self.error = data.error;
+            } else if (data.statusCode == 413) {
+                self.error = 'Image file is too large.';
+            }
+        });
     },
     loadCategory: function() {
         var self = this;

@@ -4,6 +4,7 @@ var slug = require('slug');
 var auth = require('../../../models/auth.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
+var title = require('../../../util/page/title.js');
 var layout = require('../../../views/layout/skeleton.js');
 
 var vm = function(params, done) {
@@ -69,7 +70,7 @@ var vm = function(params, done) {
             this.category = data.tag;
             this.childTags = data.children;
 
-            this.title = this.category.name + ' Guides';
+            title(this, this.category.name + ' Guides');
         }, this))
     );
 
