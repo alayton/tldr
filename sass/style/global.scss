@@ -208,6 +208,8 @@ nav {
    
    .card {
       border-radius: 0;
+      margin-right: auto;
+      margin-left: auto;
       
       img {
          border-radius: 0;
@@ -224,7 +226,10 @@ nav {
    }
 
 }
-
+.col-sm-12, .col-md-12 {
+   margin-right: auto;
+   margin-left: auto;
+}
 
 .footer {
    position: absolute;
