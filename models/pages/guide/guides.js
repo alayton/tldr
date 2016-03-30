@@ -1,6 +1,7 @@
 var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
+var auth = require('../../../models/auth.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 var layout = require('../../../views/layout/skeleton.js');
@@ -10,6 +11,7 @@ var vm = function(params, done) {
     this.tags = null;
     this.category = null;
     this.childTags = null;
+    this.ratings = null;
 
     var tagIds = [],
         catgId = parseInt(param(params, 'catg', 0)),
@@ -35,7 +37,7 @@ var vm = function(params, done) {
         promises.push(
             req({
                 endpoint: '/tag/list/' + tagIds.join(',')
-            }, true).then(_.bind(function(data) {
+            }, this).then(_.bind(function(data) {
                 this.tags = data.tags;
             }, this))
         );
@@ -44,17 +46,30 @@ var vm = function(params, done) {
     promises.push(
         req({
             endpoint: '/guide?catg=' + catgId + '&tags=' + tagIds.join(',')
-        }, true).then(_.bind(function(data) {
+        }, this).then(_.bind(function(data) {
             this.guides = data.guides;
+
+            if (auth.key()) {
+                var ids = _.pluck(this.guides, 'id');
+                if (ids && ids.length > 0) {
+                    req({
+                        endpoint: '/rateguide/' + ids.join(',')
+                    }).then(_.bind(function(data) {
+                        this.ratings = data.ratings;
+                    }, this));
+                }
+            }
         }, this))
     );
 
     promises.push(
         req({
             endpoint: '/tag/children/' + catgId
-        }, true).then(_.bind(function(data) {
+        }, this).then(_.bind(function(data) {
             this.category = data.tag;
             this.childTags = data.children;
+
+            this.title = this.category.name + ' Guides';
         }, this))
     );
 

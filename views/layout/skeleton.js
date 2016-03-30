@@ -6,6 +6,7 @@ var auth = require('../../models/auth.js');
 global.jQuery = require('jquery');
 
 if (typeof window !== 'undefined') {
+    require('autotrack');
     window.Tether = require('tether');
     require('bootstrap');
     require('../../asset/js/rangyinputs-jquery.js');
@@ -13,6 +14,10 @@ if (typeof window !== 'undefined') {
 
 var search = function(e) {
     e.preventDefault();
+
+    m.route('/search?q=' + encodeURIComponent(layout.search()));
+
+    return false;
 };
 
 var showLogin = function() {
@@ -33,21 +38,24 @@ var layout = function(content) {
                 ]),
                 m('.topbar', [
                     m('.container', [
-                        m('a.fa.fa-twitter[href=http://www.twitter.com/tldrplease]'),
-                        m('a.fa.fa-facebook-square[href=http://www.facebook.com/tldrplease]'),
-                    ]),
+                        m('a.fa.fa-twitter[href=https://www.twitter.com/tldrplease]'),
+                        m('a.fa.fa-facebook-square[href=https://www.facebook.com/tldrplease]')
+                    ])
                 ]),
                 m('nav.navbar.navbar-full.navbar-dark.nav-bg', [
                     m('.container', [
-                        m('form.form-inline.pull-xs-left', [
-                            m('input.form-control[type=text]', { placeholder: 'Search...' }),
-                            m('i.fa.fa-search'),
+                        m('form.form-inline.pull-xs-left', {
+                            onsubmit: search
+                        }, [
+                            m('input.form-control[type=text]', { placeholder: 'Search...', oninput: m.withAttr('value', layout.search), value: layout.search() }),
+                            m('i.fa.fa-search')
                         ]),
                         m('ul.nav.navbar-nav.pull-xs-right', [
                             auth.user() ?
                                 m('li.nav-item.dropdown', [
                                     m('a.nav-link.dropdown-toggle[href=javascript:;]', { 'data-toggle': 'dropdown', onclick: function() { $(this).dropdown(); } }, auth.user().username),
                                     m('.dropdown-menu.dropdown-menu-right', [
+                                        m('a.dropdown-item[href=/user/guides]', { config: m.route }, 'My guides'),
                                         m('a.dropdown-item[href=javascript:;]', { onclick: function() { auth.logout(); } }, 'Log out')
                                     ])
                                 ]) :
@@ -58,41 +66,41 @@ var layout = function(content) {
                         ])
                     ])
                 ]),
-                _.map(layout.errors(), function(err) {
-                    return m('.alert.alert-warning.alert-dismissable.fade.in', [
-                        m('button.close[type=button]', { 'data-dismiss': 'alert' }, m('span', m.trust('&times;'))),
-                        err
-                    ]);
-                }),
-                _.map(layout.notices(), function(err) {
-                    return m('.alert.alert-info.alert-dismissable.fade.in', [
-                        m('button.close[type=button]', { 'data-dismiss': 'alert' }, m('span', m.trust('&times;'))),
-                        err
-                    ]);
-                }),
                 m('.container', [
-                    content,
+                    _.map(layout.errors(), function(err) {
+                        return m('.alert.alert-warning.alert-dismissable.fade.in', [
+                            m('button.close[type=button]', { 'data-dismiss': 'alert' }, m('span', m.trust('&times;'))),
+                            err
+                        ]);
+                    }),
+                    _.map(layout.notices(), function(err) {
+                        return m('.alert.alert-info.alert-dismissable.fade.in', [
+                            m('button.close[type=button]', { 'data-dismiss': 'alert' }, m('span', m.trust('&times;'))),
+                            err
+                        ]);
+                    }),
+                    content
                 ]),
                 m('footer.footer', [
                     m('.container', [
                         m('span.copyright', '© TLDR.gg ' + new Date().getFullYear()),
                         m('ul', [
                             m('li', [
-                                m('a[href=mailto:coolpeople@tldr.gg]', 'Contact'),
+                                m('a[href=mailto:coolpeople@tldr.gg]', 'Contact')
                             ]),
                             m('li.divider', ' - '),
                             m('li', [
-                                 m('a[href=/about]', 'About'),
+                                 m('a[href=/about]', 'About')
                             ]),
                             m('li.divider', ' - '),
                             m('li', [
-                                 m('a[href=/privacy]', 'Privacy'),
+                                 m('a[href=/privacy]', 'Privacy')
                             ]),
                             m('li.divider', ' - '),
                             m('li', [
-                                 m('a[href=/tos]', 'TOS'),
-                            ]),
-                        ]),                       
+                                 m('a[href=/tos]', 'TOS')
+                            ])
+                        ])
                     ])
                 ]),
                 m.component(login),
@@ -102,5 +110,7 @@ var layout = function(content) {
 
 layout.notices = m.prop([]);
 layout.errors = m.prop([]);
+
+layout.search = m.prop('');
 
 module.exports = layout;

@@ -1,0 +1,4 @@
+module.exports = {
+    css: '<!-- inject:css --><!-- endinject -->',
+    js: '<!-- inject:js --><!-- endinject -->'
+};

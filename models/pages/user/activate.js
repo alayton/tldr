@@ -12,6 +12,8 @@ var vm = function(params, done) {
         m.route('/');
     }
 
+    this.title = 'Activate Your Account';
+
     if (done) {
         done(null, this);
     } else {
@@ -21,7 +23,7 @@ var vm = function(params, done) {
             data: {
                 token: token
             }
-        }, true).then(_.bind(function(data) {
+        }, this).then(_.bind(function(data) {
             auth.key(data.token);
             auth.user(data.user);
 

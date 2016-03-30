@@ -1,7 +1,8 @@
 var _ = require('underscore');
-var req = require('../../util/request.js');
 
 var vm = function(done) {
+    this.title = 'Page Not Found';
+
     if (done) {
         done(null, this);
     }

@@ -1,7 +1,112 @@
+.guides {
+   .guide {
+      position: relative;
+      clear: both;
+      background: #fff;
+      min-height: 120px;
+      margin-top: 1rem;
+
+      &.success {
+         background-color: $text-success;
+      }
+      &.warning {
+         background-color: $text-warning;
+      }
+      &.danger {
+         background-color: $text-danger;
+      }
+
+      img {
+         float: left;
+         width: 160px;
+         height: 120px;
+      }
+
+      .contents {
+         margin-left: 4.5rem;
+         padding-left: 168px;
+
+         h3 {
+            padding: 0.5rem 1rem 0.4rem 0;
+         }
+
+         &>span, &>var {
+            position: absolute;
+            bottom: 0.5rem;
+         }
+
+         &>span {
+            i {
+               margin-right: 0.3rem;
+            }
+         }
+
+         &>var {
+            right: 1rem;
+         }
+      }
+
+      a.tag {
+         margin: 0 0.5rem 0 0;
+      }
+
+      .status {
+         margin-top: 0.5rem;
+      }
+   }
+}
+
+a.likeguide {
+   color: $text-muted;
+   text-decoration: none;
+   float: left;
+   display: block;
+   width: 4.5rem;
+   margin-top: 1.5rem;
+   text-align: center;
+   font-size: 1.5rem;
+
+   &:hover {
+      color: $text-success;
+   }
+
+   &.liked {
+      color: $text-success;
+      &:hover {
+         color: $text-muted;
+      }
+   }
+
+   i {
+      display: block;
+      font-size: 3rem;
+   }
+}
+
 .guide-header {
-   padding: 1.5rem 1.5rem 1.1rem;
+   padding: 1.5rem 1.5rem 1.1rem 0.5rem;
    margin-bottom: 1.5rem;
    background-color: $block-bgcolor;
+
+   .guide-image {
+      float: left;
+      width: 160px;
+
+      img {
+         width: 160px;
+         height: 120px;
+      }
+
+      button {
+         width: 160px;
+         border-radius: 0;
+      }
+   }
+
+   .guide-title {
+      margin-left: 4.5rem;
+      padding-left: 168px;
+   }
 
    .author, .updated {
       color: $text-muted;
@@ -11,28 +116,45 @@
    }
 
    .tags {
-      margin-top: 0.4em;
+      label {
+         display: block;
+         font-weight: bold;
+         margin-bottom: 0.25rem;
+      }
+
+      margin-top: 0.5rem;
    }
 }
 
 .guide-body {
-   .section {
+   section {
       padding: 1.5rem 1.5rem 1.1rem;
       background-color: $block-bgcolor;
       margin-bottom: 1.5rem;
 
-      h3 {
-         margin-bottom: 1rem;
+      header {
+         float: left;
+         font-size: 3rem;
+         line-height: 3rem;
+         width: 4rem;
+         text-align: center;
+         color: $text-muted;
       }
 
-      p {
-         margin-bottom: 0;
+      article {
+         margin-left: 4.5rem;
       }
 
       .image {
          margin-top: 1.5rem;
          padding-top: 1.5rem;
          border-top: 1px solid $body-bgcolor;
+
+         &:first-child {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: 0;
+         }
 
          img {
             display: block;

@@ -1,26 +1,31 @@
 var express = require('express');
 var render = require('mithril-node-render');
 var _ = require('underscore');
-var req = require('./util/request.js');
 var routes = require('./routes.js');
+var inject = require('./inject.js');
 
 var app = express();
 
-var base = function(content) {
+var base = function(content, scope) {
     return [
         '<!doctype html>',
         '<html lang="en">',
         '<head>',
-        '<title>TLDR.gg</title>',
+        '<title>',
+        (scope.title ? scope.title + ' - ' : '') + 'TLDR.gg',
+        '</title>',
         '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">',
         '<link href="/asset/img/favicon.ico" rel="shortcut icon">',
-        '<!-- inject:css --><link rel="stylesheet" href="/asset/built/css/bootstrap-flex_39b8cb883b728793bac8f263309f618e.css"><link rel="stylesheet" href="/asset/built/css/font-awesome.min_a926580456892ca47e8fe14e69af5d08.css"><link rel="stylesheet" href="/asset/built/css/style_2bb0630613a743d41ca5f8a9b7abcb37.css"><!-- endinject -->',
+        (scope.canonical ? '<link id="canon" href="' + scope.canonical + '" rel="canonical">' : ''),
+        inject.css,
         '</head>',
         '<body>',
         content,
-        (req.cache ? ('<script type="text/javascript">var tldrRequests = ' + JSON.stringify(req.cache) + ';</script>') : ''),
-        '<!-- inject:js --><script src="/asset/built/js/app_31b37ebf4f5a1b315723eb370c0e1a67.js"></script><!-- endinject -->',
+        (scope._reqs ? ('<script type="text/javascript">var tldrRequests = ' + JSON.stringify(scope._reqs) + ';</script>') : ''),
+        inject.js,
+        "<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create', 'UA-75462303-1', 'auto');ga('require', 'autotrack');ga('send', 'pageview');</script>",
+        '<script async src="https://www.google-analytics.com/analytics.js"></script>',
         '</body>',
         '</html>'
     ].join('');
@@ -28,13 +33,14 @@ var base = function(content) {
 
 var dispatch = function(req, res, next, module, route) {
     function send(scope) {
-        res.end(base(render(module.view(scope))));
+        res.end(base(render(module.view(scope)), scope));
         scope && scope.onunload && scope.onunload();
     }
 
-    var params = _.extend({}, req.params, req.query);
+    var params = _.extend({}, req.params, req.query), scope;
     if (module.controller.length < 2) { //sync, response immediately
-        return send(module.controller(params));
+        scope = module.controller(params);
+        return send(scope);
     } else { // async, call with callback
         return module.controller(params, function(err, scope) {
             if (err) {

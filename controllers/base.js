@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var req = require('../util/request.js');
 var layout = require('../views/layout/skeleton.js');
 var auth = require('../models/auth.js');
@@ -6,6 +5,7 @@ var auth = require('../models/auth.js');
 var base = function(controller) {
     return function(params, done) {
         layout.errors().length = 0;
+        layout.notices().length = 0;
 
         if (!auth.user() && auth.key()) {
             req({
@@ -17,7 +17,9 @@ var base = function(controller) {
             });
         }
 
-        return controller(params, done);
+        var vm = controller(params, done);
+        vm._reqs = {};
+        return vm;
     };
 };
 

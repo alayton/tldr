@@ -34,7 +34,7 @@ var vm = function(params, done) {
     if (id > 0) {
         req({
             endpoint: '/tag/children/' + id
-        }, true).then(function(data) {
+        }, self).then(function(data) {
             if (!data.tag) {
                 if (done) {
                     done(null, self);
@@ -53,11 +53,13 @@ var vm = function(params, done) {
             self.tag.leaf(tag.leaf);
             self.tag.allowLeafs(tag.allow_leafs);
 
+            self.title = 'Editing ' + self.tag.name();
+
             self.children = data.children;
 
             req({
                 endpoint: '/tag/get/' + tag.parent_id
-            }, true).then(function(data) {
+            }, self).then(function(data) {
                 var tag = data.tag;
                 self.parent = tag;
                 self.parent.image = m.prop(tag.image_id);
@@ -71,7 +73,7 @@ var vm = function(params, done) {
     } else if (parent > 0) {
         req({
             endpoint: '/tag/children/' + parent
-        }, true).then(function(data) {
+        }, self).then(function(data) {
             var tag = data.tag;
             self.tag.parent_id = tag.id;
             if (tag.category_id > 0) {
@@ -79,13 +81,14 @@ var vm = function(params, done) {
             } else if (tag.allow_leafs) {
                 self.tag.category_id = tag.id;
             }
-            console.log(self.tag);
 
             self.parent = tag;
             self.parent.image = m.prop(tag.image_id);
             self.parent.name = m.prop(tag.name);
             self.parent.leaf = m.prop(tag.leaf);
             self.parent.allowLeafs = m.prop(tag.allow_leafs);
+
+            self.title = 'New Tag';
 
             if (done) done(null, self);
         });

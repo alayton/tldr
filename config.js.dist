@@ -1,0 +1,4 @@
+module.exports = {
+    apiRoot: 'https://api.tldr.gg',
+    appRoot: 'https://tldr.gg'
+};

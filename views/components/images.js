@@ -3,6 +3,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var layout = require('../layout/skeleton.js');
 var auth = require('../../models/auth.js');
+var config = require('../../config.js');
 
 var categoryConfig = function(vm, el, isInitialized) {
     if (isInitialized) return;
@@ -31,26 +32,26 @@ module.exports = function(vm) {
         ]),
         m('.modal-body', [
             m('ul.nav.nav-tabs', [
-                m('li.nav-item', m('a.nav-link[href=#imagelibrary]', { 'data-toggle': 'tab', config: _.partial(categoryConfig, vm) }, 'Image Library')),
+                //m('li.nav-item', m('a.nav-link[href=#imagelibrary]', { 'data-toggle': 'tab', config: _.partial(categoryConfig, vm) }, 'Image Library')),
                 m('li.nav-item', m('a.nav-link[href=#yourimages]', { 'data-toggle': 'tab', config: _.partial(userConfig, vm) }, 'Your Images')),
                 m('li.nav-item.active', m('a.nav-link[href=#uploadimage]', { 'data-toggle': 'tab' }, 'Upload Image'))
             ]),
             m('.tab-content', [
-                m('.tab-pane#imagelibrary', catgImages ?
+                /*m('.tab-pane#imagelibrary', catgImages ?
                     m('.card-deck', _.map(catgImages, function(img) {
                         return m('a.card', {
                             href: 'javascript:;',
                             style: { width: '200px', flex: 'none' },
                             onclick: _.partial(vm.click, vm, img)
                         }, [
-                            m('img.card-img-top', { src: '//tldrapi.alayton.com/image/' + img.id + '/200/0', width: 200, height: (200 * (img.height / img.width)) }),
+                            m('img.card-img-top', { src: config.apiRoot + '/image/' + img.id + '/200/0', width: 200, height: (200 * (img.height / img.width)) }),
                             m('.card-block', [
                                 m('p.card-text', img.name)
                             ])
                         ]);
                     })) :
                     m('i.fa.fa-spinner.fa-pulse')
-                ),
+                ),*/
                 m('.tab-pane#yourimages', userImages ?
                     m('.card-deck', _.map(userImages, function(img) {
                         return m('a.card', {
@@ -58,7 +59,7 @@ module.exports = function(vm) {
                             style: { width: '200px', flex: 'none' },
                             onclick: _.partial(vm.click, vm, img)
                         }, [
-                            m('img.card-img-top', { src: '//tldrapi.alayton.com/image/' + img.id + '/200/0', width: 200, height: (200 * (img.height / img.width)) }),
+                            m('img.card-img-top', { src: config.apiRoot + '/image/' + img.id + '/200/0', width: 200, height: (200 * (img.height / img.width)) }),
                             m('.card-block', [
                                 m('p.card-text', img.name)
                             ])
@@ -69,10 +70,11 @@ module.exports = function(vm) {
                 m('.tab-pane.active#uploadimage', [
                     m('div', [
                         m('label.file', [
-                            m('input#imagefile[type=file]'),
+                            m('input#imagefile[type=file]', { onchange: _.partial(vm.loadPreview, vm) }),
                             m('span.file-custom')
                         ])
                     ]),
+                    vm.preview ? m('img', { src: vm.preview }) : [],
                     m('button.btn.btn-primary', { onclick: _.partial(vm.upload, vm) }, 'Upload Image')
                 ])
             ])

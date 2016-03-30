@@ -3,7 +3,7 @@ var m = require('mithril');
 var _ = require('underscore');
 var config = require('../config.js');
 
-var reqCallback = function(deferred, url, error, response, body) {
+var reqCallback = function(deferred, url, vm, error, response, body) {
     if (error) {
         try {
             var errorData = JSON.parse(body);
@@ -13,12 +13,14 @@ var reqCallback = function(deferred, url, error, response, body) {
         }
     } else {
         var data = JSON.parse(body);
-        req.cache[url] = data;
+        if (vm && vm._reqs) {
+            vm._reqs[url] = data;
+        }
         deferred.resolve(data);
     }
 };
 
-var req = function(options) {
+var req = function(options, vm) {
     var deferred = m.deferred();
     var opts = {};
 
@@ -35,10 +37,8 @@ var req = function(options) {
         opts.json = true;
     }
 
-    request(opts, _.partial(reqCallback, deferred, opts.uri));
+    request(opts, _.partial(reqCallback, deferred, opts.uri, vm));
     return deferred.promise;
 };
-
-req.cache = {};
 
 module.exports = req;

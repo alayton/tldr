@@ -1,6 +1,8 @@
 var m = require('mithril');
+var $ = require('jquery');
 var _ = require('underscore');
 var slug = require('slug');
+var auth = require('../../../models/auth.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
 var skeleton = require('../../../views/layout/skeleton.js');
@@ -12,6 +14,21 @@ var vm = function(params, done) {
     this.error = null;
     this.saving = m.prop(false);
     this.saved = m.prop(false);
+    this.ratings = null;
+    this.fieldErrors = {};
+
+    this.maxSections = 7;
+    this.sectionLength = 200;
+    this.titleLength = 80;
+
+    this.savedGuide = {
+        category_id: 0,
+        image_id: 0,
+        status: 0,
+        title: '',
+        tags: [],
+        suggestions: []
+    };
 
     var guideId = parseInt(param(params, 'id', 0));
 
@@ -23,15 +40,19 @@ var vm = function(params, done) {
             return;
         }
 
+        this.title = 'New Guide';
+
         this.guide = {
             category_id: catg,
+            category_name: '',
+            image_id: 0,
+            status: m.prop(0),
             title: m.prop(''),
             tags: [],
             suggestions: []
         };
 
         this.body.push({
-            title: m.prop(''),
             text: m.prop(''),
             image: m.prop(0)
         });
@@ -47,39 +68,90 @@ var vm = function(params, done) {
             this.error = data.error;
             if (done) done(null, this);
         }, this));
-
-        return;
-    }
-
-    req({
-        endpoint: '/guide/' + guideId
-    }, true).then(_.bind(function(data) {
-        this.guide = data.guide;
-        this.body = JSON.parse(this.guide.body);
-
-        this.guide.title = m.prop(this.guide.title);
-
-        _.each(this.body, function(s) {
-            s.title = m.prop(s.title || '');
-            s.text = m.prop(s.text || '');
-            s.image = m.prop(s.image || 0);
-        });
-
+    } else {
         req({
-            endpoint: '/tag/children/' + this.guide.category_id
-        }).then(_.bind(function(data) {
-            this.tags = data.children;
+            endpoint: '/guide/' + guideId
+        }, true).then(_.bind(function(data) {
+            this.guide = data.guide;
+            this.title = 'Editing ' + this.guide.title;
 
+            this.body = JSON.parse(this.guide.body);
+
+            this.savedGuide = JSON.parse(JSON.stringify(data.guide));
+
+            this.guide.status = m.prop(this.guide.status);
+            this.guide.title = m.prop(this.guide.title);
+
+            _.each(this.body, function(s) {
+                s.text = m.prop(s.text || '');
+                s.image = m.prop(s.image || 0);
+            });
+
+            req({
+                endpoint: '/tag/children/' + this.guide.category_id
+            }).then(_.bind(function(data) {
+                this.tags = data.children;
+
+                if (done) done(null, this);
+            }, this));
+
+            if (!done && auth.key()) {
+                req({
+                    endpoint: '/rateguide/' + this.guide.id
+                }).then(_.bind(function(data) {
+                    this.ratings = data.ratings;
+                }, this));
+            }
+        }, this), _.bind(function(data) {
+            this.error = data.error;
             if (done) done(null, this);
         }, this));
-    }, this), _.bind(function(data) {
-        this.guide = false;
-        this.error = data.error;
-        if (done) done(null, this);
-    }, this));
+    }
 };
 
 vm.prototype = {
+    onunload: function(e) {
+        if (typeof confirm != 'undefined' && this.isModified() && !confirm('Do you want to leave the page? Any unsaved changes will be lost.')) {
+            e.preventDefault();
+        }
+    },
+    isModified: function() {
+        if (this.created) {
+            return false;
+        }
+
+        if (this.guide.id != this.savedGuide.id ||
+            this.guide.category_id != this.savedGuide.category_id ||
+            this.guide.image_id != this.savedGuide.image_id ||
+            this.guide.status() != this.savedGuide.status ||
+            this.guide.title() != this.savedGuide.title) {
+            return true;
+        }
+
+        var body = [];
+        _.each(this.body, function(s) {
+            body.push({
+                text: s.text(),
+                image: s.image()
+            });
+        });
+
+        if (JSON.stringify(body) != this.savedGuide.body) {
+            return true;
+        }
+
+        var tags = _.intersection(_.pluck(this.guide.tags, 'id'), _.pluck(this.savedGuide.tags, 'id'));
+        if (tags.length != this.savedGuide.tags.length || tags.length != this.guide.tags.length) {
+            return true;
+        }
+
+        var guides = _.intersection(_.pluck(this.guide.suggestions, 'id'), _.pluck(this.savedGuide.suggestions, 'id'));
+        if (guides.length != this.savedGuide.suggestions.length || guides.length != this.guide.suggestions.length) {
+            return true;
+        }
+
+        return false;
+    },
     save: function(self) {
         if (self.saving()) {
             return;
@@ -89,7 +161,6 @@ vm.prototype = {
         var body = [];
         _.each(self.body, function(s) {
             body.push({
-                title: s.title(),
                 text: s.text(),
                 image: s.image()
             });
@@ -97,6 +168,8 @@ vm.prototype = {
 
         var data = {
             category: self.guide.category_id,
+            image: self.guide.image_id,
+            status: parseInt(self.guide.status()),
             title: self.guide.title(),
             body: JSON.stringify(body),
             tags: _.pluck(self.guide.tags, 'id'),
@@ -108,20 +181,36 @@ vm.prototype = {
             endpoint: self.guide.id ? '/guide/' + self.guide.id : '/guide',
             data: data
         }).then(function(data) {
-            self.saving(false);
-            self.saved(true);
+            self.fieldErrors = {};
+            self.savedGuide = JSON.parse(JSON.stringify(data.guide));
 
-            self.guide.id = data.guide.id;
+            if (self.guide.id) {
+                self.saving(false);
+                self.saved(true);
 
-            _.delay(function() {
-                self.saved(false);
-            }, 15000);
+                _.delay(function() {
+                    self.saved(false);
+                }, 15000);
+            } else {
+                self.created = true;
+
+                m.route('/guide/edit/' + data.guide.id + '-' + slug(data.guide.title));
+            }
         }, function(data) {
-            skeleton.errors().push(data.error);
+            if (data.error) {
+                $(window).scrollTop(0);
+                skeleton.errors().push(data.error);
+            } else if (data.field_errors) {
+                self.fieldErrors = data.field_errors;
+            }
             self.saving(false);
         });
     },
     addSection: function(self) {
+        if (self.body.length >= self.maxSections) {
+            return;
+        }
+
         self.body.push({
             title: m.prop(''),
             text: m.prop(''),

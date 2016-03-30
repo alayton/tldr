@@ -1,13 +1,72 @@
-.guide-body {
-   .section-head {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.5em;
+.guide-header {
+   position: relative;
 
-      h3 {
-         flex: 1 0 auto;
-         border-bottom: 0;
+   .guide-image {
+      button {
+         width: 160px;
+         border-radius: 0;
+      }
+   }
+
+   .guide-title {
+      input {
+         font-size: 1.5rem;
+      }
+
+      &>label {
+         line-height: 38px;
+         font-weight: bold;
+         margin: 1rem 0.5rem 0 0;
+         float: left;
+      }
+
+      select {
+         margin-top: 1rem;
+
+         .success {
+            background-color: $text-success;
+         }
+         .warning {
+            background-color: $text-warning;
+         }
+         .danger {
+            background-color: $text-danger;
+         }
+      }
+
+      var {
+         position: absolute;
+         top: 5rem;
+         right: 2rem;
+         color: $text-muted;
+         font-size: 0.8rem;
+
+         &.limited {
+            color: $text-error;
+         }
+      }
+   }
+}
+
+.guide-body {
+   section {
+      .md-controls {
          margin-bottom: 0;
+      }
+
+      &>var {
+         float: right;
+         margin: 0 0.5rem 0.5rem 0;
+         color: $text-muted;
+         font-size: 0.8rem;
+
+         &.limited {
+            color: $text-error;
+         }
+      }
+
+      .preview {
+         clear: right;
       }
    }
 
