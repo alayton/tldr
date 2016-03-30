@@ -7,6 +7,7 @@ var imageurl = require('../../../util/imageurl.js');
 var romanize = require('../../../util/romanize.js');
 var layout = require('../../layout/sidebar.js');
 var rate = require('../../../controllers/components/guide/rate.js');
+var guideList = require('../../components/guide/list.js');
 
 var md = require('markdown-it')()
     .disable(['image']);
@@ -61,7 +62,15 @@ module.exports = function(vm) {
                             []
                     ])
                 ]);
-            }))
+            })),
+            vm.guide.suggestions.length > 0 ? m('.guide-extras', [
+                m('section.suggested', [
+                    m('h3', 'Suggested Guides'),
+                    guideList(vm, vm.guide.suggestions, {
+                        category: true
+                    })
+                ])
+            ]) : []
         ]
     );
 };

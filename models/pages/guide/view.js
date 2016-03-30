@@ -3,6 +3,7 @@ var _ = require('underscore');
 var slug = require('slug');
 var auth = require('../../../models/auth.js');
 var canonical = require('../../../util/page/canonical.js');
+var title = require('../../../util/page/title.js');
 var guideurl = require('../../../util/guideurl.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
@@ -26,7 +27,7 @@ var vm = function(params, done) {
         this.guide = data.guide;
         this.body = JSON.parse(this.guide.body);
 
-        this.title = this.guide.title;
+        title(this, this.guide.title);
         canonical(this, guideurl(this.guide));
 
         if (done) {

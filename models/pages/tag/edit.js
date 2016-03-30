@@ -5,6 +5,7 @@ var layout = require('../../../views/layout/skeleton.js');
 var auth = require('../../auth.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
+var title = require('../../../util/page/title.js');
 
 var vm = function(params, done) {
     var self = this;
@@ -53,7 +54,7 @@ var vm = function(params, done) {
             self.tag.leaf(tag.leaf);
             self.tag.allowLeafs(tag.allow_leafs);
 
-            self.title = 'Editing ' + self.tag.name();
+            title(self, 'Editing ' + self.tag.name());
 
             self.children = data.children;
 
@@ -88,7 +89,7 @@ var vm = function(params, done) {
             self.parent.leaf = m.prop(tag.leaf);
             self.parent.allowLeafs = m.prop(tag.allow_leafs);
 
-            self.title = 'New Tag';
+            title(self, 'New Tag');
 
             if (done) done(null, self);
         });

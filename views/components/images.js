@@ -34,7 +34,7 @@ module.exports = function(vm) {
             m('ul.nav.nav-tabs', [
                 //m('li.nav-item', m('a.nav-link[href=#imagelibrary]', { 'data-toggle': 'tab', config: _.partial(categoryConfig, vm) }, 'Image Library')),
                 m('li.nav-item', m('a.nav-link[href=#yourimages]', { 'data-toggle': 'tab', config: _.partial(userConfig, vm) }, 'Your Images')),
-                m('li.nav-item.active', m('a.nav-link[href=#uploadimage]', { 'data-toggle': 'tab' }, 'Upload Image'))
+                m('li.nav-item', m('a.nav-link.active[href=#uploadimage]', { 'data-toggle': 'tab' }, 'Upload Image'))
             ]),
             m('.tab-content', [
                 /*m('.tab-pane#imagelibrary', catgImages ?
@@ -74,8 +74,13 @@ module.exports = function(vm) {
                             m('span.file-custom')
                         ])
                     ]),
+                    vm.error ? m('.alert.alert-danger', vm.error) : [],
                     vm.preview ? m('img', { src: vm.preview }) : [],
-                    m('button.btn.btn-primary', { onclick: _.partial(vm.upload, vm) }, 'Upload Image')
+                    vm.progress ? m('progress.progress.progress-info', { value: vm.progress, max: 1 }, (vm.progress * 100) + '%') : [],
+                    m('button.btn.btn-primary', {
+                        className: vm.uploading ? 'disabled' : '',
+                        onclick: _.partial(vm.upload, vm)
+                    }, vm.uploading ? m('i.fa.fa-spinner.fa-pulse') : 'Upload Image')
                 ])
             ])
         ]),

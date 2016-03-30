@@ -1,122 +1,154 @@
-.guide-header {
-   position: relative;
+.guide-editor {
+   .guide-header {
+      position: relative;
 
-   .guide-image {
-      button {
-         width: 160px;
-         border-radius: 0;
-      }
-   }
-
-   .guide-title {
-      input {
-         font-size: 1.5rem;
-      }
-
-      &>label {
-         line-height: 38px;
-         font-weight: bold;
-         margin: 1rem 0.5rem 0 0;
-         float: left;
-      }
-
-      select {
-         margin-top: 1rem;
-
-         .success {
-            background-color: $text-success;
-         }
-         .warning {
-            background-color: $text-warning;
-         }
-         .danger {
-            background-color: $text-danger;
+      .guide-image {
+         button {
+            width: 160px;
+            border-radius: 0;
          }
       }
 
-      var {
-         position: absolute;
-         top: 5rem;
-         right: 2rem;
-         color: $text-muted;
-         font-size: 0.8rem;
-
-         &.limited {
-            color: $text-error;
+      .guide-title {
+         input {
+            font-size: 1.5rem;
          }
-      }
-   }
-}
 
-.guide-body {
-   section {
-      .md-controls {
-         margin-bottom: 0;
-      }
-
-      &>var {
-         float: right;
-         margin: 0 0.5rem 0.5rem 0;
-         color: $text-muted;
-         font-size: 0.8rem;
-
-         &.limited {
-            color: $text-error;
+         & > label {
+            line-height: 38px;
+            font-weight: bold;
+            margin: 1rem 0.5rem 0 0;
+            float: left;
          }
-      }
 
-      .preview {
-         clear: right;
-      }
-   }
+         select {
+            margin-top: 1rem;
 
-   .section-controls {
-      margin-top: 1.5rem;
-      text-align: right;
+            .success {
+               background-color: $text-success;
+            }
+            .warning {
+               background-color: $text-warning;
+            }
+            .danger {
+               background-color: $text-danger;
+            }
+         }
 
-      button {
-         margin: 0 0.75rem;
-      }
-   }
-}
+         var {
+            position: absolute;
+            top: 5rem;
+            right: 2rem;
+            color: $text-muted;
+            font-size: 0.8rem;
 
-.md-controls {
-   div {
-      background-color: $body-bgcolor;
-      height: 1.9em;
-
-      a {
-         padding: 0.25em 0.5em 0.15em;
-         margin: 0 0.25em;
-         width: 2em;
-         color: #000;
-         font-size: 1em;
-         text-align: center;
-         display: inline-block;
-
-         &:hover, &:active {
-            background-color: $block-bgcolor;
+            &.limited {
+               color: $text-error;
+            }
          }
       }
    }
 
-   textarea {
-      border-color: $body-bgcolor;
-      border-top: 0;
-      width: 100%;
+   .guide-body {
+      section {
+         .md-controls {
+            margin-bottom: 0;
+         }
+
+         & > var {
+            float: right;
+            margin: 0 0.5rem 0.5rem 0;
+            color: $text-muted;
+            font-size: 0.8rem;
+
+            &.limited {
+               color: $text-error;
+            }
+         }
+
+         .preview {
+            clear: right;
+         }
+      }
+
+      .section-controls {
+         margin-top: 1.5rem;
+         text-align: right;
+
+         button {
+            margin: 0 0.75rem;
+         }
+      }
    }
-}
 
-.guide-controls {
-   margin-bottom: 1.5em;
-   display: flex;
+   .guide-extras {
+      .suggested {
+         .guides {
+            h3 {
+               padding-right: 3rem;
+            }
 
-   a, button {
-      flex: 0 1 auto;
-      margin: 0 0.5em;
+            button.remove {
+               position: absolute;
+               top: 4px;
+               right: 4px;
+               padding: 0.375rem 0.75rem;
+            }
+         }
+
+         form {
+            display: flex;
+
+            input {
+               flex: 1 0;
+               margin-right: 1rem;
+               border: 1px solid $line-rule;
+               border-radius: 4px;
+               padding: 2px 4px;
+               line-height: 2rem;
+            }
+         }
+      }
    }
 
-   .fill {
-      flex: 1 0 auto;
+   .md-controls {
+      div {
+         background-color: $body-bgcolor;
+         height: 1.9em;
+
+         a {
+            padding: 0.25em 0.5em 0.15em;
+            margin: 0 0.25em;
+            width: 2em;
+            color: #000;
+            font-size: 1em;
+            text-align: center;
+            display: inline-block;
+
+            &:hover, &:active {
+               background-color: $block-bgcolor;
+            }
+         }
+      }
+
+      textarea {
+         border-color: $body-bgcolor;
+         border-top: 0;
+         width: 100%;
+      }
+   }
+
+   .guide-controls {
+      margin-bottom: 1.5em;
+      display: flex;
+
+      a, button {
+         flex: 0 1 auto;
+         margin: 0 0.5em;
+      }
+
+      .fill {
+         flex: 1 0 auto;
+      }
    }
 }

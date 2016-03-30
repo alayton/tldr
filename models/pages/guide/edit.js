@@ -3,8 +3,10 @@ var $ = require('jquery');
 var _ = require('underscore');
 var slug = require('slug');
 var auth = require('../../../models/auth.js');
+var prop = require('../../../util/prop.js');
 var param = require('../../../util/param.js');
 var req = require('../../../util/request.js');
+var title = require('../../../util/page/title.js');
 var skeleton = require('../../../views/layout/skeleton.js');
 
 var vm = function(params, done) {
@@ -16,6 +18,10 @@ var vm = function(params, done) {
     this.saved = m.prop(false);
     this.ratings = null;
     this.fieldErrors = {};
+
+    this.addingSuggestion = false;
+    this.suggestionError = null;
+    this.suggestionUrl = prop('', function(v) { this.suggestionError = null;}.bind(this));
 
     this.maxSections = 7;
     this.sectionLength = 200;
@@ -40,7 +46,7 @@ var vm = function(params, done) {
             return;
         }
 
-        this.title = 'New Guide';
+        title(this, 'New Guide');
 
         this.guide = {
             category_id: catg,
@@ -73,7 +79,7 @@ var vm = function(params, done) {
             endpoint: '/guide/' + guideId
         }, true).then(_.bind(function(data) {
             this.guide = data.guide;
-            this.title = 'Editing ' + this.guide.title;
+            title(this, 'Editing ' + this.guide.title);
 
             this.body = JSON.parse(this.guide.body);
 
@@ -232,6 +238,53 @@ vm.prototype = {
     },
     removeTag: function(tag) {
         this.guide.tags = _.filter(this.guide.tags, function(t) { return t.id != tag.id; });
+    },
+    hasSuggestion: function(guideId) {
+        return (_.findWhere(this.guide.suggestions, { id: guideId }) !== undefined);
+    },
+    addSuggestion: function(e) {
+        if (e) e.preventDefault();
+
+        this.suggestionError = '';
+        if (this.addingSuggestion) {
+            return;
+        }
+
+        if (!this.suggestionUrl()) {
+            this.suggestionError = 'No guide URL given.';
+            return;
+        }
+
+        var match = this.suggestionUrl().match(/\/guide\/(?:\S+\/)?(\d+)/);
+        if (!match) {
+            this.suggestionError = 'Invalid guide URL.';
+            return;
+        }
+
+        var guideId = match[1];
+
+        if (this.hasSuggestion(guideId)) {
+            this.suggestionError = 'Guide has already been added.';
+            return;
+        } else if (this.guide.id == guideId) {
+            this.suggestionError = 'You can\'t suggest this guide for this guide.';
+            return;
+        }
+
+        this.addingSuggestion = true;
+
+        req({
+            endpoint: '/guide/' + guideId
+        }, true).then(function(data) {
+            this.addingSuggestion = false;
+            this.guide.suggestions.push(data.guide);
+        }.bind(this), function(data) {
+            this.addingSuggestion = false;
+            this.suggestionError = data.error;
+        }.bind(this));
+    },
+    removeSuggestion: function(guide) {
+        this.guide.suggestions = _.filter(this.guide.suggestions, function(t) { return t.id != guide.id; });
     }
 };
 

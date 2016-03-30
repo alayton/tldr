@@ -192,8 +192,8 @@ nav {
       float: right;
    }
 }
+
 .card-block {
-   
    .card-text.author {
       text-align: right;
       margin-top: 1em;
@@ -202,14 +202,15 @@ nav {
    .fa-user {
       margin-right: 0.3em;
    }
-      
 }
+
 .card-deck {
-   
+   display: flex;
+   flex-flow: row wrap;
+   justify-content: space-between;
+
    .card {
       border-radius: 0;
-      margin-right: auto;
-      margin-left: auto;
       
       img {
          border-radius: 0;
@@ -217,18 +218,11 @@ nav {
    }
    
    a {
-
       &:hover {
          color: #000;
          text-decoration: none;
       }
-      
    }
-
-}
-.col-sm-12, .col-md-12 {
-   margin-right: auto;
-   margin-left: auto;
 }
 
 .footer {

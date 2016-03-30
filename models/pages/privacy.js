@@ -1,5 +1,7 @@
+var title = require('../../util/page/title.js');
+
 var vm = function(done) {
-    this.title = 'Privacy';
+    title(this, 'Privacy');
 
     if (done) {
         done(null, this);

@@ -11,6 +11,7 @@ var layout = require('../../layout/sidebar.js');
 var categoryTag = require('../../../controllers/components/tag/categorytag.js');
 var mdtextarea = require('../../../controllers/components/mdtextarea.js');
 var rate = require('../../../controllers/components/guide/rate.js');
+var guideList = require('../../components/guide/list.js');
 
 var md = require('markdown-it')()
     .disable(['image']);
@@ -38,7 +39,7 @@ module.exports = function(vm) {
 
     return layout(vm.error !== null ?
         m('.alert.alert-danger', vm.error ? vm.error : 'Guide not found!') :
-        [
+        m('.guide-editor', [
             m('.guide-header.clearfix', [
                 m.component(rate, { guide: vm.guide, parent: vm }),
                 m('.guide-image', [
@@ -114,6 +115,26 @@ module.exports = function(vm) {
                     ])
                 ]);
             })),
+            m('.guide-extras', [
+                m('section.suggested', [
+                    m('h3', 'Suggested Guides'),
+                    guideList(vm, vm.guide.suggestions, true, function(g) {
+                        return m('button.remove.btn.btn-danger', { onclick: vm.removeSuggestion.bind(vm, g) }, m('i.fa.fa-times'));
+                    }),
+                    vm.suggestionError ? m('.alert.alert-danger', vm.suggestionError) : [],
+                    m('form', { onsubmit: vm.addSuggestion.bind(vm) }, [
+                        m('input[type=text]', {
+                            oninput: m.withAttr('value', vm.suggestionUrl),
+                            value: vm.suggestionUrl(),
+                            placeholder: 'Guide URL...'
+                        }),
+                        m('button[type=submit].btn.btn-info', [
+                            vm.addingSuggestion ? m('i.fa.fa-spinner.fa-pulse') : m('i.fa.fa-plus'),
+                            ' Add Suggestion'
+                        ])
+                    ])
+                ])
+            ]),
             m('.guide-controls', [
                 m('button.btn.btn-info', {
                     className: (vm.body.length >= vm.maxSections ? 'disabled' : ''),
@@ -138,6 +159,6 @@ module.exports = function(vm) {
                 }, [m('i.fa.fa-save'), vm.saved() ? ' Saved!' : ' Save'])
             ]),
             m.component(images, { category: vm.guide.category_id, select: pickImage })
-        ]
+        ])
     );
 };
