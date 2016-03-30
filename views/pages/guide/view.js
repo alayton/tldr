@@ -63,14 +63,14 @@ module.exports = function(vm) {
                     ])
                 ]);
             })),
-            m('.guide-extras', [
+            vm.guide.suggestions.length > 0 ? m('.guide-extras', [
                 m('section.suggested', [
                     m('h3', 'Suggested Guides'),
                     guideList(vm, vm.guide.suggestions, {
                         category: true
                     })
                 ])
-            ])
+            ]) : []
         ]
     );
 };
