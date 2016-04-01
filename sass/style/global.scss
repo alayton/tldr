@@ -13,7 +13,7 @@ html {
 
 body {
    background-color: $body-bgcolor;
-   font-family: 'Droid Sans';
+   font-family: 'Droid Sans' !important;
    margin: 0 0 100px;
 }
 
@@ -160,6 +160,7 @@ ul.popup {
          color: #aaaaaa;
       }
    }
+   
 }
 
 .nav-bg {
@@ -225,6 +226,34 @@ nav {
    }
 }
 
+
+   .show-menu {
+       text-decoration: none;
+       color: #aaa;
+       font-size: 20px !important;
+       margin-top: 4px;
+       float: right;
+       margin-right: 20px;
+       display: none;
+   }
+   
+   input[type=checkbox]{
+      display: none;
+      -webkit-appearance: none;
+   }
+   
+   input[type=checkbox]:checked ~ #mobile-menu {
+
+      max-width: none;
+      margin: 0;
+      padding: 0;
+
+      ul {
+         display: block;
+      }
+   }
+
+
 .footer {
    position: absolute;
    left: 0;
@@ -263,4 +292,110 @@ nav {
       float: right;
       color: #888888;
    }
+}
+
+
+
+
+
+@media screen and (max-width : 760px){
+   .tldr-logo {
+      background: url("/asset/img/tldr-logo-mobile.svg") no-repeat;
+
+      width: 142px;
+      height: 50px;
+      z-index: 3;   
+      a {
+         width: 142px;
+         height: 50px;
+      }
+   }
+
+
+   .topbar {
+      height:50px;
+      font-size: 24px;
+      padding-top: 6px;
+
+      .fa-twitter {
+         margin-right:20px;
+      }
+      
+      .container {
+         max-width: 100% !important;
+      }
+   }
+   
+   
+   .navbar {
+      min-height: 60px;
+      height: auto;
+      padding: 0.6rem 0 0 0;
+      
+      form {
+         float: none !important;
+      }
+      .form-inline .form-control {
+         width: 100% !important;
+      }
+
+      .fa-search {
+         display: none;
+      }
+      
+      .search-box {
+         float: left;
+         width: 90%;
+      }
+      
+      .pull-xs-right {
+         float: none !important;
+      }
+  
+      .navbar-nav .nav-item {
+         float: none;
+      }
+      
+      .show-menu {
+          display:block;
+      }      
+   }
+   .card-tag {
+      margin-right: auto;
+      margin-left: auto;
+   }
+
+   #mobile-menu {
+      ul {
+          position: static;
+          display: none;
+          background-color: #333;
+          margin-top:50px;
+      }
+
+      li {
+          margin-bottom: 1px;
+      }
+
+      ul li, li a {
+          width: 100%;
+      }
+     
+      .nav-item {
+         margin-left: 0 !important;
+         padding: 10px;
+         text-align: center;
+         border-top: 1px solid #444;
+      }
+
+      .btn-signup {
+         background-color: transparent;
+         
+         &:hover {
+            color: #ffffff;
+            background-color: transparent;
+         }
+      }
+   }
+      
 }

@@ -43,13 +43,17 @@ var layout = function(content) {
                     ])
                 ]),
                 m('nav.navbar.navbar-full.navbar-dark.nav-bg', [
-                    m('.container', [
+                    m('.container.search-box', [
                         m('form.form-inline.pull-xs-left', {
                             onsubmit: search
                         }, [
                             m('input.form-control[type=text]', { placeholder: 'Search...', oninput: m.withAttr('value', layout.search), value: layout.search() }),
                             m('i.fa.fa-search')
                         ]),
+                    ]),                       
+                    m('label.show-menu', {for: 'show-menu'}, [m('i.fa.fa-bars')]),
+                    m('input.menu-control[type=checkbox]#show-menu', {role: 'button'}),
+                    m('.container#mobile-menu', [
                         m('ul.nav.navbar-nav.pull-xs-right', [
                             auth.user() ?
                                 m('li.nav-item.dropdown', [
