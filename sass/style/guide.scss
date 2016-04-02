@@ -186,6 +186,26 @@ a.likeguide {
    }
 }
 
+@media screen and (max-width : 411px){
+   .guides {
+      
+      .guide {
+         
+         img {
+            display: none;
+         }
+         
+         h3 {
+            font-size: 1.5rem !important;
+         }
+         
+         .contents {
+            padding-left: 0;
+         }
+      }
+   }
+}
+
 @media screen and (max-width : 760px){
    .guides {
       
@@ -194,7 +214,7 @@ a.likeguide {
          .contents {
             
             h3 {
-               font-size: 1.2rem !important;
+               font-size: 1.2rem;
             }
             
             .left-info {
@@ -206,5 +226,30 @@ a.likeguide {
             }
          }
       }
-   }   
+   }
+   .guide-header {
+      
+      .guide-title {
+         clear: both;
+         padding: 0.7rem 0 0 0;
+      }
+      
+   }
+   .guide-body {
+      
+      section {
+         
+         header {
+            font-size: 2rem;
+            width: 2rem;
+         }
+         
+         article {
+            margin-left: 3.5rem;         
+         }
+         
+         
+         
+      }
+   }
 }
