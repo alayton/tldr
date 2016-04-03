@@ -80,7 +80,7 @@ module.exports = function(vm) {
                     //vm.preview ? m('img', { src: vm.preview }) : [],
                     preview ?
                         (vm.mime == 'image/gif' ?
-                            m('img', { src: vm.preview }) :
+                            m('img', { src: preview }) :
                             m.component(crop, { src: preview, buffer: vm.buffer, preview: vm.preview })
                         ) :
                         [],

@@ -4,6 +4,9 @@
          margin-top: 0.5rem;
       }
 
+      &>img {
+         display: block;
+      }
 
       .crop-container {
          max-width: 500px;
