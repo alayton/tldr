@@ -1,8 +1,7 @@
 var _ = require('underscore');
-var m = require('mithril');
-var param = require('../../../util/param.js');
-var req = require('../../../util/request.js');
-var title = require('../../../util/page/title.js');
+var param = require('util/param.js');
+var req = require('util/request.js');
+var title = require('util/page/title.js');
 
 var vm = function(params, done) {
     this.tag = null;

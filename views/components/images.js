@@ -1,9 +1,10 @@
 var m = require('mithril');
 var $ = require('jquery');
 var _ = require('underscore');
-var layout = require('../layout/skeleton.js');
-var auth = require('../../models/auth.js');
-var config = require('../../config.js');
+var layout = require('views/layout/skeleton.js');
+var auth = require('models/auth.js');
+var config = require('config.js');
+var crop = require('controllers/components/crop.js');
 
 var categoryConfig = function(vm, el, isInitialized) {
     if (isInitialized) return;
@@ -23,7 +24,8 @@ var userConfig = function(vm, el, isInitialized) {
 
 module.exports = function(vm) {
     var catgImages = vm.categoryImages(),
-        userImages = vm.userImages();
+        userImages = vm.userImages(),
+        preview = vm.preview();
 
     return m('#imagesModal.modal.fade', m('.modal-dialog.modal-lg', m('.modal-content', [
         m('.modal-header', [
@@ -68,14 +70,20 @@ module.exports = function(vm) {
                     m('i.fa.fa-spinner.fa-pulse')
                 ),
                 m('.tab-pane.active#uploadimage', [
-                    m('div', [
+                    m('.choose', [
                         m('label.file', [
                             m('input#imagefile[type=file]', { onchange: _.partial(vm.loadPreview, vm) }),
                             m('span.file-custom')
                         ])
                     ]),
                     vm.error ? m('.alert.alert-danger', vm.error) : [],
-                    vm.preview ? m('img', { src: vm.preview }) : [],
+                    //vm.preview ? m('img', { src: vm.preview }) : [],
+                    preview ?
+                        (vm.mime == 'image/gif' ?
+                            m('img', { src: vm.preview }) :
+                            m.component(crop, { src: preview, buffer: vm.buffer, preview: vm.preview })
+                        ) :
+                        [],
                     vm.progress ? m('progress.progress.progress-info', { value: vm.progress, max: 1 }, (vm.progress * 100) + '%') : [],
                     m('button.btn.btn-primary', {
                         className: vm.uploading ? 'disabled' : '',

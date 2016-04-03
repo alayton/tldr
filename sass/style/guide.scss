@@ -58,6 +58,22 @@
    }
 }
 
+.category-header {
+   h2 {
+      a.fa {
+         font-size: 1.25rem;
+         vertical-align: middle;
+         margin-left: 0.5rem;
+         color: #888;
+         text-decoration: none;
+
+         &:hover {
+            color: #000;
+         }
+      }
+   }
+}
+
 a.likeguide {
    color: $text-muted;
    text-decoration: none;
@@ -188,11 +204,8 @@ a.likeguide {
 
 @media screen and (max-width : 760px){
    .guides {
-      
       .guide {
-         
          .contents {
-            
             h3 {
                font-size: 1.2rem !important;
             }

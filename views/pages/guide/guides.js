@@ -2,10 +2,10 @@ var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
-var auth = require('../../../models/auth.js');
-var layout = require('../../layout/sidebar.js');
-var guideList = require('../../components/guide/list.js');
-var categoryTag = require('../../../controllers/components/tag/categorytag.js');
+var auth = require('models/auth.js');
+var layout = require('views/layout/sidebar.js');
+var guideList = require('views/components/guide/list.js');
+var categoryTag = require('controllers/components/tag/categorytag.js');
 
 module.exports = function(vm) {
     return layout([
@@ -14,7 +14,10 @@ module.exports = function(vm) {
                 href: '/guide/new/' + vm.category.id + '-' + slug(vm.category.name),
                 config: m.route
             }, [m('i.fa.fa-plus'), ' New Guide']) : [],
-            m('h2', vm.category.name),
+            m('h2', [
+                vm.category.name,
+                auth.isPrivileged() ? m('a.fa.fa-pencil', { href: '/tag/edit/' + vm.category.id + '-' + slug(vm.category.name), config: m.route }) : []
+            ]),
             m('.tags.current-tags', _.map(vm.tags, function(tag) {
                 return tag.id == vm.category.id ?
                     null :
