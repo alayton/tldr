@@ -53,7 +53,7 @@ gulp.task('css', ['clean'], function() {
 });
 
 gulp.task('copy', ['css'], function() {
-    gulp.src('./node_modules/font-awesome/fonts/*.{ttf,woff,eof,svg}')
+    gulp.src('./node_modules/font-awesome/fonts/*.{ttf,woff,woff2,eof,svg}')
         .pipe(gulp.dest('./asset/built/fonts'));
 });
 

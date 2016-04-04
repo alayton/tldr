@@ -6,6 +6,7 @@ var auth = require('models/auth.js');
 var layout = require('views/layout/sidebar.js');
 var guideList = require('views/components/guide/list.js');
 var categoryTag = require('controllers/components/tag/categorytag.js');
+var pagination = require('views/components/pagination.js');
 
 module.exports = function(vm) {
     return layout([
@@ -41,6 +42,7 @@ module.exports = function(vm) {
                         m.component(categoryTag, { tag: tag, addFunc: vm.addTag, context: vm });
             }))
         ]),
-        guideList(vm, vm.guides)
+        guideList(vm, vm.guides),
+        vm.pagination ? pagination(vm.buildUrl() + '&page=%page%', vm.pagination.page, vm.pagination.total_results, vm.pagination.results_per_page) : []
     ]);
 };

@@ -1,11 +1,11 @@
 var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
-var auth = require('../../../models/auth.js');
-var param = require('../../../util/param.js');
-var req = require('../../../util/request.js');
-var title = require('../../../util/page/title.js');
-var layout = require('../../../views/layout/skeleton.js');
+var auth = require('models/auth.js');
+var param = require('util/param.js');
+var req = require('util/request.js');
+var title = require('util/page/title.js');
+var layout = require('views/layout/skeleton.js');
 
 var vm = function(params, done) {
     this.guides = null;
@@ -17,6 +17,7 @@ var vm = function(params, done) {
     var tagIds = [],
         catgId = parseInt(param(params, 'catg', 0)),
         tags = param(params, 'tags', '').split(','),
+        page = param(params, 'page', 1),
         promises = [];
 
     if (!catgId) {
@@ -46,9 +47,14 @@ var vm = function(params, done) {
 
     promises.push(
         req({
-            endpoint: '/guide?catg=' + catgId + '&tags=' + tagIds.join(',')
+            endpoint: '/guide?catg=' + catgId + '&tags=' + tagIds.join(',') + '&page=' + page
         }, this).then(_.bind(function(data) {
             this.guides = data.guides;
+            this.pagination = {
+                page: data.page,
+                total_results: data.total_results,
+                results_per_page: data.results_per_page
+            };
 
             if (auth.key()) {
                 var ids = _.pluck(this.guides, 'id');
@@ -81,15 +87,15 @@ var vm = function(params, done) {
 
 vm.prototype = {
     addTag: function(tag) {
-        return this._buildUrl(tag, null);
+        return this.buildUrl(tag, null);
     },
     removeTag: function(tag) {
-        return this._buildUrl(null, tag);
+        return this.buildUrl(null, tag);
     },
     hasTag: function(tag) {
         return _.findWhere(this.tags, { id: tag.id }) !== undefined;
     },
-    _buildUrl: function(toAdd, toRemove) {
+    buildUrl: function(toAdd, toRemove) {
         var url = '/guides/' + this.category.id + '-' + slug(this.category.name);
         toAdd = toAdd || { id: 0 };
         toRemove = toRemove || { id: 0 };
