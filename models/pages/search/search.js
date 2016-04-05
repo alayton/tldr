@@ -1,9 +1,9 @@
 var _ = require('underscore');
-var layout = require('../../../views/layout/skeleton.js');
-var auth = require('../../auth.js');
-var param = require('../../../util/param.js');
-var req = require('../../../util/request.js');
-var title = require('../../../util/page/title.js');
+var layout = require('views/layout/skeleton.js');
+var auth = require('models/auth.js');
+var param = require('util/param.js');
+var req = require('util/request.js');
+var title = require('util/page/title.js');
 
 var vm = function(params, done) {
     var self = this;
@@ -12,10 +12,12 @@ var vm = function(params, done) {
     var query = param(params, 'q', '');
     layout.search(query);
 
+    var page = param(params, 'page', 1);
+
     title(this, query ? query + ' - Search' : 'Search');
 
     req({
-        endpoint: '/search?q=' + query
+        endpoint: '/search?q=' + query + '&page=' + page
     }, this).then(function(data) {
         self.result = data;
 

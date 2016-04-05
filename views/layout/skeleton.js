@@ -49,7 +49,7 @@ var layout = function(content) {
                         }, [
                             m('input.form-control[type=text]', { placeholder: 'Search...', oninput: m.withAttr('value', layout.search), value: layout.search() }),
                             m('i.fa.fa-search')
-                        ]),
+                        ])
                     ]),                       
                     m('label.show-menu', {for: 'show-menu'}, [m('i.fa.fa-bars')]),
                     m('input.menu-control[type=checkbox]#show-menu', {role: 'button'}),
@@ -60,6 +60,7 @@ var layout = function(content) {
                                     m('a.nav-link.dropdown-toggle[href=javascript:;]', { 'data-toggle': 'dropdown', onclick: function() { $(this).dropdown(); } }, auth.user().username),
                                     m('.dropdown-menu.dropdown-menu-right', [
                                         m('a.dropdown-item[href=/user/guides]', { config: m.route }, 'My guides'),
+                                        auth.isPrivileged() ? m('a.dropdown-item[href=/recent/guides]', { config: m.route }, 'Recent guides') : [],
                                         m('a.dropdown-item[href=javascript:;]', { onclick: function() { auth.logout(); } }, 'Log out')
                                     ])
                                 ]) :

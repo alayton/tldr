@@ -1,25 +1,31 @@
 var _ = require('underscore');
 var slug = require('slug');
-var auth = require('../../auth.js');
-var param = require('../../../util/param.js');
-var req = require('../../../util/request.js');
-var title = require('../../../util/page/title.js');
-var layout = require('../../../views/layout/skeleton.js');
+var auth = require('models/auth.js');
+var param = require('util/param.js');
+var req = require('util/request.js');
+var title = require('util/page/title.js');
+var layout = require('views/layout/skeleton.js');
 
 var vm = function(params, done) {
     this.guides = null;
-    this.user = { username: '???' };
+    this.user = { id: 0, username: '???' };
     this.ratings = {};
 
     if (done) {
         done(null, this);
     } else {
         var userId = parseInt(param(params, 'id', 0));
+        var page = param(params, 'page', 1);
 
         req({
-            endpoint: '/userguides/' + userId
+            endpoint: '/userguides/' + userId + '?page=' + page
         }).then(_.bind(function(data) {
             this.guides = data.guides;
+            this.pagination = {
+                page: data.page,
+                total_results: data.total_results,
+                results_per_page: data.results_per_page
+            };
 
             if (auth.key()) {
                 var ids = _.pluck(this.guides, 'id');

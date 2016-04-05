@@ -1,11 +1,10 @@
 var m = require('mithril');
 var _ = require('underscore');
-var $ = require('jquery');
-var layout = require('../../../views/layout/skeleton.js');
-var auth = require('../../auth.js');
-var param = require('../../../util/param.js');
-var req = require('../../../util/request.js');
-var title = require('../../../util/page/title.js');
+var layout = require('views/layout/skeleton.js');
+var auth = require('models/auth.js');
+var param = require('util/param.js');
+var req = require('util/request.js');
+var title = require('util/page/title.js');
 
 var vm = function(params, done) {
     var self = this;
@@ -63,10 +62,12 @@ var vm = function(params, done) {
             }, self).then(function(data) {
                 var tag = data.tag;
                 self.parent = tag;
-                self.parent.image = m.prop(tag.image_id);
-                self.parent.name = m.prop(tag.name);
-                self.parent.leaf = m.prop(tag.leaf);
-                self.parent.allowLeafs = m.prop(tag.allow_leafs);
+                if (tag) {
+                    self.parent.image = m.prop(tag.image_id);
+                    self.parent.name = m.prop(tag.name);
+                    self.parent.leaf = m.prop(tag.leaf);
+                    self.parent.allowLeafs = m.prop(tag.allow_leafs);
+                }
 
                 if (done) done(null, self);
             });

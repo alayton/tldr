@@ -1,8 +1,7 @@
 var m = require('mithril');
-var _ = require('underscore');
 var slug = require('slug');
-var auth = require('../../../models/auth.js');
-var imageurl = require('../../../util/imageurl.js');
+var auth = require('models/auth.js');
+var imageurl = require('util/imageurl.js');
 
 module.exports = function(tag) {
     return m('.card.card-tag', [

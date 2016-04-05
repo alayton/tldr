@@ -1,14 +1,16 @@
 var m = require('mithril');
 var _ = require('underscore');
 var $ = require('jquery');
-var layout = require('../../views/layout/skeleton.js');
-var auth = require('../auth.js');
-var req = require('../../util/request.js');
+var layout = require('views/layout/skeleton.js');
+var auth = require('models/auth.js');
+var req = require('util/request.js');
 
 var vm = function(select, catg) {
     this.select = select;
     this.category = catg;
-    this.preview = null;
+    this.mime = null;
+    this.preview = m.prop(null);
+    this.buffer = m.prop(null);
     this.image = null;
     this.error = null;
     this.progress = null;
@@ -21,8 +23,12 @@ var vm = function(select, catg) {
     this.loadingUser = false;
 };
 
-var serializeReader = function(data) {
+var serializeArrayBufferView = function(data) {
     return new Int8Array(data);
+};
+
+var serializePassthrough = function(data) {
+    return data;
 };
 
 var addProgress = function(vm, xhr) {
@@ -56,7 +62,9 @@ vm.prototype = {
         return false;
     },
     loadPreview: function(self, e) {
-        self.preview = self.image = null;
+        self.buffer(null);
+        self.preview(null);
+        self.image = null;
         self.error = null;
 
         if (!this.files || this.files.length == 0) {
@@ -74,8 +82,10 @@ vm.prototype = {
             return;
         }
 
+        self.mime = file.type;
+
         reader.onload = function() {
-            self.preview = reader.result;
+            self.preview(reader.result);
 
             var bufReader = new FileReader();
             bufReader.onload = function() {
@@ -93,24 +103,34 @@ vm.prototype = {
             return;
         }
 
-        if (!self.image) {
+        var buf = self.buffer();
+        if (!self.image && !buf) {
             self.error = 'No image selected.';
             return;
         }
 
         self.uploading = true;
 
+        if (buf) {
+            console.log(buf.length);
+        }
+
         req({
             endpoint: '/image',
             method: 'POST',
-            data: self.image,
+            data: buf ? buf : self.image,
             config: _.partial(addProgress, self),
-            serialize: serializeReader
+            serialize: buf ? serializePassthrough : serializeArrayBufferView
         }).then(function(data) {
             self.progress = null;
             self.uploading = false;
 
             if (data.ok && data.image) {
+                self.preview(null);
+                self.buffer(null);
+                self.image = null;
+                self.mime = null;
+
                 self.click(self, data.image);
 
                 if (self.userImages()) {

@@ -1,13 +1,20 @@
 #imagesModal {
    div#uploadimage {
-      div, button {
+      .choose, &>button {
          margin-top: 0.5rem;
       }
 
-      img {
+      &>img {
          display: block;
-         max-width: 400px;
-         max-height: 400px;
+      }
+
+      .crop-container {
+         max-width: 500px;
+         max-height: 500px;
+
+         img {
+            max-width: 100%;
+         }
       }
 
       .progress {
@@ -16,6 +23,77 @@
 
       button {
          width: 9rem;
+      }
+   }
+}
+
+.image-crop {
+   .crop-container {
+      position: relative;
+
+      .overlays {
+         position: absolute;
+         left: 0;
+         top: 0;
+         right: 0;
+         bottom: 0;
+
+         -webkit-user-select: none;
+         -moz-user-select: none;
+         -ms-user-select: none;
+         user-select: none;
+
+         div {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+         }
+
+         .crop {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+         }
+         .left, .right, .top, .bottom, .topleft, .topright, .botleft, .botright {
+            position: absolute;
+            border: 0 dotted #fff;
+            padding: 3px;
+         }
+         .left { cursor: ew-resize; border-left-width: 1px; }
+         .right { cursor: ew-resize; border-right-width: 1px; margin-left: -7px; }
+         .top { cursor: ns-resize; border-top-width: 1px; }
+         .bottom { cursor: ns-resize; border-bottom-width: 1px; margin-top: -7px; }
+         .topleft { cursor: nwse-resize; border-top-width: 1px; border-left-width: 1px; }
+         .topright { cursor: nesw-resize; border-top-width: 1px; border-right-width: 1px; margin-left: -7px; }
+         .botleft { cursor: nesw-resize; border-bottom-width: 1px; border-left-width: 1px; margin-top: -7px; }
+         .botright { cursor: nwse-resize; border-bottom-width: 1px; border-right-width: 1px; margin: -7px 0 0 -7px; }
+         .move {
+            position: absolute;
+            cursor: move;
+         }
+      }
+   }
+
+   .controls {
+      button {
+         border-radius: 0;
+         margin-bottom: 0.5rem;
+
+         &:first-child {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+         }
+         &:last-child {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+         }
+      }
+   }
+
+   .constraints {
+      label {
+         margin-bottom: 0;
       }
    }
 }

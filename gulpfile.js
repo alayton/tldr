@@ -14,17 +14,20 @@ var buffer = require('vinyl-buffer');
 var es = require('event-stream');
 
 gulp.task('clean', function() {
-    del.sync(['./asset/built/css/*', './asset/built/js/*']);
+    del.sync(['./asset/built/css/*', './asset/built/js/*', './server.built.js']);
 });
 
 gulp.task('javascript', ['clean'], function() {
     // set up the browserify instance on a task basis
     var b = browserify({
         entries: './client.js',
+        paths: ['./node_modules', './'],
+        cache: {},
         debug: true
     });
 
-    return b.ignore('unicode/category/So').bundle()
+    return b.ignore('unicode/category/So')
+        .bundle()
         .pipe(source('./asset/built/js/app.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
@@ -35,7 +38,11 @@ gulp.task('javascript', ['clean'], function() {
 });
 
 gulp.task('css', ['clean'], function() {
-    gulp.src(['./node_modules/bootstrap/scss/bootstrap-flex.scss', './node_modules/font-awesome/css/font-awesome.min.css', './sass/*.scss'])
+    gulp.src([
+            './node_modules/bootstrap/scss/bootstrap-flex.scss',
+            './node_modules/font-awesome/css/font-awesome.min.css',
+            './sass/*.scss'
+        ])
         .pipe(sass().on('error', sass.logError))
         .pipe(base64({
             baseDir: './',
@@ -46,7 +53,7 @@ gulp.task('css', ['clean'], function() {
 });
 
 gulp.task('copy', ['css'], function() {
-    gulp.src('./node_modules/font-awesome/fonts/*.{ttf,woff,eof,svg}')
+    gulp.src('./node_modules/font-awesome/fonts/*.{ttf,woff,woff2,eof,svg}')
         .pipe(gulp.dest('./asset/built/fonts'));
 });
 
@@ -62,6 +69,7 @@ var Watch = {
     bundle: function(file) {
         var b = browserify({
             entries: file,
+            paths: ['./node_modules', './'],
             cache: {},
             debug: true
         });
@@ -70,7 +78,8 @@ var Watch = {
         return b;
     },
     build: function(bundle) {
-        return bundle.ignore('unicode/category/So').bundle()
+        return bundle.ignore('unicode/category/So')
+            .bundle()
             .pipe(source('./asset/built/js/app.js'))
             .pipe(buffer())
             .pipe(sourcemaps.init({ loadMaps: true }))
@@ -98,7 +107,11 @@ gulp.task('javascript-watch', ['clean'], function() {
 });
 
 gulp.task('css-watch', ['clean'], function() {
-    gulp.src(['./node_modules/bootstrap/scss/bootstrap-flex.scss', './node_modules/font-awesome/css/font-awesome.min.css', './sass/*.scss'])
+    gulp.src([
+            './node_modules/bootstrap/scss/bootstrap-flex.scss',
+            './node_modules/font-awesome/css/font-awesome.min.css',
+            './sass/*.scss'
+        ])
         .pipe(sass().on('error', sass.logError))
         .pipe(base64({
             baseDir: './',

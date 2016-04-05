@@ -2,9 +2,9 @@ var m = require('mithril');
 var $ = require('jquery');
 var _ = require('underscore');
 var slug = require('slug');
-var imageurl = require('../../../util/imageurl.js');
-var layout = require('../../layout/sidebar.js');
-var auth = require('../../../models/auth.js');
+var imageurl = require('util/imageurl.js');
+var layout = require('views/layout/sidebar.js');
+var auth = require('models/auth.js');
 
 var currentImage = null;
 
@@ -46,13 +46,13 @@ module.exports = function(vm) {
             m('.checkbox', [
                 m('label', [
                     m('input[type=checkbox]', { onclick: m.withAttr('checked', vm.tag.leaf), checked: vm.tag.leaf() }),
-                    'Leaf'
+                    ' Can assign to guides'
                 ])
             ]),
             m('.checkbox', [
                 m('label', [
                     m('input[type=checkbox]', { onclick: m.withAttr('checked', vm.tag.allowLeafs), checked: vm.tag.allowLeafs() }),
-                    'Allow Leafs'
+                    ' Can have child tags'
                 ])
             ]),
             m('button.btn', {
