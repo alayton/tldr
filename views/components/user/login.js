@@ -33,8 +33,8 @@ module.exports = function(vm) {
                 'Don\'t have an account? ',
                 m('a[href=javascript:;]', { onclick: showSignup }, 'Sign up')
             ]),
-            m('button.btn.btn-secondary[type=button]', { onclick: vm.closeModal }, 'Close'),
-            m('button.btn.btn-primary[type=submit]', 'Log in')
+            m('button.btn.btn-secondary', { onclick: vm.closeModal }, 'Close'),
+            m('button.btn.btn-primary', { onclick: function(e) { vm.submit(e); } }, 'Log in')
         ])
     ])))
 };

@@ -1,14 +1,12 @@
 var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
-var auth = require('models/auth.js');
-var canonical = require('util/page/canonical.js');
-var title = require('util/page/title.js');
-var ogImage = require('util/page/og-image.js');
-var guideurl = require('util/guideurl.js');
-var imageurl = require('util/imageurl.js');
-var param = require('util/param.js');
-var req = require('util/request.js');
+var auth = require('../../../models/auth.js');
+var canonical = require('../../../util/page/canonical.js');
+var title = require('../../../util/page/title.js');
+var guideurl = require('../../../util/guideurl.js');
+var param = require('../../../util/param.js');
+var req = require('../../../util/request.js');
 
 var vm = function(params, done) {
     this.guide = null;
@@ -31,11 +29,6 @@ var vm = function(params, done) {
 
         title(this, this.guide.title);
         canonical(this, guideurl(this.guide));
-        if (this.guide.image_id) {
-            ogImage(this, imageurl(this.guide.image_id));
-        } else {
-            ogImage(this, '/asset/img/guide-ph.png');
-        }
 
         if (done) {
             done(null, this);

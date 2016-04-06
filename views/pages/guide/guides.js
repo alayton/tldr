@@ -1,6 +1,5 @@
 var m = require('mithril');
 var _ = require('underscore');
-var $ = require('jquery');
 var slug = require('slug');
 var moment = require('moment');
 var auth = require('models/auth.js');
@@ -9,30 +8,14 @@ var guideList = require('views/components/guide/list.js');
 var categoryTag = require('controllers/components/tag/categorytag.js');
 var pagination = require('views/components/pagination.js');
 
-var showSignup = function() {
-    $('#signupModal').modal('show');
-};
-
 module.exports = function(vm) {
     return layout([
         m('.category-header', [
-<<<<<<< HEAD
             auth.user() ? m('a.btn.btn-success.new-guide', {
                 href: '/guide/new/' + vm.category.id + '-' + slug(vm.category.name),
                 config: m.route
             }, [m('i.fa.fa-plus'), ' New Guide']) : [],
             m('h1', [
-=======
-            auth.user() ?
-                m('a.btn.btn-success.new-guide', {
-                    href: '/guide/new/' + vm.category.id + '-' + slug(vm.category.name),
-                    config: m.route
-                }, [m('i.fa.fa-plus'), ' Create Guide']) :
-                m('a.btn.btn-success.new-guide[href=javascript:;]', {
-                    onclick: showSignup
-                }, [m('i.fa.fa-plus'), ' Create Guide']),
-            m('h2', [
->>>>>>> master
                 vm.category.name,
                 auth.isPrivileged() ? m('a.fa.fa-pencil', { href: '/tag/edit/' + vm.category.id + '-' + slug(vm.category.name), config: m.route }) : []
             ]),
