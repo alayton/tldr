@@ -4,7 +4,9 @@ var slug = require('slug');
 var auth = require('models/auth.js');
 var param = require('util/param.js');
 var req = require('util/request.js');
+var imageurl = require('util/imageurl.js');
 var title = require('util/page/title.js');
+var ogImage = require('util/page/og-image.js');
 var layout = require('views/layout/skeleton.js');
 
 var vm = function(params, done) {
@@ -77,6 +79,9 @@ var vm = function(params, done) {
             this.childTags = data.children;
 
             title(this, this.category.name + ' Guides');
+            if (this.category.image_id) {
+                ogImage(this, imageurl(this.category.image_id));
+            }
         }, this))
     );
 
