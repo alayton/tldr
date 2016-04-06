@@ -19,6 +19,7 @@ var base = function(content, scope) {
         '<link href="/asset/img/favicon.ico" rel="shortcut icon">',
         '<link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">',
         (scope.canonical ? '<link id="canon" href="' + scope.canonical + '" rel="canonical">' : ''),
+        (scope.ogImage ? '<meta property="og:image" content="' + scope.ogImage + '" />' : ''),
         inject.css,
         '</head>',
         '<body>',
