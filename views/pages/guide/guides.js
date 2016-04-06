@@ -15,7 +15,7 @@ module.exports = function(vm) {
                 href: '/guide/new/' + vm.category.id + '-' + slug(vm.category.name),
                 config: m.route
             }, [m('i.fa.fa-plus'), ' New Guide']) : [],
-            m('h2', [
+            m('h1', [
                 vm.category.name,
                 auth.isPrivileged() ? m('a.fa.fa-pencil', { href: '/tag/edit/' + vm.category.id + '-' + slug(vm.category.name), config: m.route }) : []
             ]),
