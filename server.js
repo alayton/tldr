@@ -15,8 +15,6 @@ var base = function(content, scope) {
         (scope.title ? scope.title + ' - ' : '') + 'TLDR.gg',
         '</title>',
         '<meta charset="utf-8">',
-        '<meta name="description" content="Short guides."/>',
-        '<meta name="keywords" content="tldr guides short quick howto games "/>',
         '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">',
         '<link href="/asset/img/favicon.ico" rel="shortcut icon">',
         '<link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">',

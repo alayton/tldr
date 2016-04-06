@@ -29,7 +29,7 @@ module.exports = function(vm) {
                     auth.isUser(vm.guide.user_id) || auth.isPrivileged() ? m('a.btn.btn-info.pull-right', {
                         href: '/guide/edit/' + vm.guide.id + '-' + slug(vm.guide.title), config: m.route
                     }, 'Edit') : [],
-                    m('h1', vm.guide.title),
+                    m('h2', vm.guide.title),
                     m('span.author', [
                         'By ',
                         m('a', { href: '/search?q=' + vm.guide.author_name, config: m.route }, vm.guide.author_name)
