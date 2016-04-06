@@ -24,7 +24,7 @@ module.exports = function(vm) {
                 m('a.btn.btn-success.new-guide[href=javascript:;]', {
                     onclick: showSignup
                 }, [m('i.fa.fa-plus'), ' Create Guide']),
-            m('h2', [
+            m('h1', [
                 vm.category.name,
                 auth.isPrivileged() ? m('a.fa.fa-pencil', { href: '/tag/edit/' + vm.category.id + '-' + slug(vm.category.name), config: m.route }) : []
             ]),
