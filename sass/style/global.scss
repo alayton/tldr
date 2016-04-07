@@ -18,8 +18,12 @@ input.error {
    border: 2px solid $text-danger;
 }
 
-a:hover {
-   text-decoration: none;
+a {
+   color: $text-link;
+
+   &:hover {
+      text-decoration: none;
+   }
 }
 
 .page-loading {
@@ -227,6 +231,7 @@ nav {
    display: flex;
    flex-flow: row wrap;
    justify-content: space-between;
+   align-items: flex-start;
 
    .card {
       border-radius: 0;

@@ -34,10 +34,8 @@
             position: absolute;
             bottom: 0.5rem;
 
-            span {
-               i {
-                  margin-right: 0.3rem;
-               }
+            a i {
+               color: $text-muted;
             }
          }
 
@@ -59,7 +57,9 @@
 }
 
 .category-header {
-   h2 {
+   h1 {
+      font-size: 2rem;
+
       a.fa {
          font-size: 1.25rem;
          vertical-align: middle;
@@ -124,6 +124,10 @@ a.likeguide {
    .guide-title {
       margin-left: 4.5rem;
       padding-left: 168px;
+
+      h1 {
+         font-size: 2rem;
+      }
    }
 
    .author, .updated {

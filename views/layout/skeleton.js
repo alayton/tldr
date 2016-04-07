@@ -1,7 +1,8 @@
 var m = require('mithril');
 var _ = require('underscore');
 var $ = require('jquery');
-var auth = require('../../models/auth.js');
+var slug = require('slug');
+var auth = require('models/auth.js');
 
 global.jQuery = require('jquery');
 
@@ -9,7 +10,7 @@ if (typeof window !== 'undefined') {
     require('autotrack');
     window.Tether = require('tether');
     require('bootstrap');
-    require('../../asset/js/rangyinputs-jquery.js');
+    require('asset/js/rangyinputs-jquery.js');
 }
 
 var search = function(e) {
@@ -28,9 +29,9 @@ var showSignup = function() {
     $('#signupModal').modal('show');
 };
 
-var layout = function(content) {
-    var login = require('../../controllers/components/user/login.js');
-    var signup = require('../../controllers/components/user/signup.js');
+var layout = function(content, contentClass) {
+    var login = require('controllers/components/user/login.js');
+    var signup = require('controllers/components/user/signup.js');
 
     return  m('.wrapper', [
                 m('.tldr-logo', [
@@ -59,7 +60,7 @@ var layout = function(content) {
                                 m('li.nav-item.dropdown', [
                                     m('a.nav-link.dropdown-toggle[href=javascript:;]', { 'data-toggle': 'dropdown', onclick: function() { $(this).dropdown(); } }, auth.user().username),
                                     m('.dropdown-menu.dropdown-menu-right', [
-                                        m('a.dropdown-item[href=/user/guides]', { config: m.route }, 'My guides'),
+                                        m('a.dropdown-item', { config: m.route, href: '/user/guides/' + auth.user().id + '-' + slug(auth.user().username) }, 'My guides'),
                                         auth.isPrivileged() ? m('a.dropdown-item[href=/recent/guides]', { config: m.route }, 'Recent guides') : [],
                                         m('a.dropdown-item[href=javascript:;]', { onclick: function() { auth.logout(); } }, 'Log out')
                                     ])
@@ -71,7 +72,7 @@ var layout = function(content) {
                         ])
                     ])
                 ]),
-                m('.container', [
+                m('.container', { className: (contentClass ? contentClass : '') }, [
                     _.map(layout.errors(), function(err) {
                         return m('.alert.alert-warning.alert-dismissable.fade.in', [
                             m('button.close[type=button]', { 'data-dismiss': 'alert' }, m('span', m.trust('&times;'))),
