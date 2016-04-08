@@ -1,0 +1,47 @@
+.home {
+   .tag-search {
+      float: right;
+
+      i {
+         position: relative;
+         right: -15.5rem;
+         color: $text-muted;
+      }
+
+      input {
+         display: inline-block;
+         width: 16rem;
+         border: 0;
+         padding: 0.25rem 0.75rem;
+      }
+   }
+
+   h3 {
+      line-height: 2rem;
+   }
+
+   .show-more {
+      text-align: center;
+
+      hr {
+         border-top-color: $line-rule;
+         margin: 1.5rem 0 0;
+      }
+
+      button {
+         margin-top: -1.75rem;
+         border: 0;
+         background-color: $line-rule;
+         color: $block-bgcolor;
+         font-size: 0.9rem;
+      }
+   }
+
+   .guides {
+      margin-bottom: 1rem;
+
+      .guide:first-child {
+         margin-top: 0;
+      }
+   }
+}

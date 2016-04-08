@@ -32,7 +32,7 @@ module.exports = function(vm) {
                     m('h1', vm.guide.title),
                     m('span.author', [
                         'By ',
-                        m('a', { href: '/search?q=' + vm.guide.author_name, config: m.route }, vm.guide.author_name)
+                        m('a', { href: '/user/guides/' + vm.guide.user_id + '-' + slug(vm.guide.author_name), config: m.route }, vm.guide.author_name)
                     ]),
                     m('span.updated', ['Last updated ', m('abbr', { title: moment(vm.guide.edited).format('lll') }, moment(vm.guide.edited).fromNow())]),
                     m('.tags', [

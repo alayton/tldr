@@ -1,3 +1,4 @@
+var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
 var auth = require('models/auth.js');
@@ -7,19 +8,21 @@ var title = require('util/page/title.js');
 var layout = require('views/layout/skeleton.js');
 
 var vm = function(params, done) {
-    this.guides = null;
+    this.guides = [];
     this.user = { id: 0, username: '???' };
     this.ratings = {};
 
-    if (done) {
+    var userId = parseInt(param(params, 'id', 0)),
+        page = param(params, 'page', 1);
+
+    if (!userId && done) {
         done(null, this);
     } else {
-        var userId = parseInt(param(params, 'id', 0));
-        var page = param(params, 'page', 1);
+        var promises = [];
 
-        req({
+        promises.push(req({
             endpoint: '/userguides/' + userId + '?page=' + page
-        }).then(_.bind(function(data) {
+        }).then(function(data) {
             this.guides = data.guides;
             this.pagination = {
                 page: data.page,
@@ -32,26 +35,30 @@ var vm = function(params, done) {
                 if (ids && ids.length > 0) {
                     req({
                         endpoint: '/rateguide/' + ids.join(',')
-                    }).then(_.bind(function(data) {
+                    }).then(function(data) {
                         this.ratings = data.ratings;
-                    }, this));
+                    }.bind(this));
                 }
             }
-        }, this));
+        }.bind(this)));
 
         if (userId > 0) {
-            req({
+            promises.push(req({
                 endpoint: '/user/' + userId
-            }).then(_.bind(function(data) {
+            }).then(function(data) {
                 this.user = data.user;
 
-                title(this, this.user.username + "'s Guides");
-            }, this));
+                title(this, this.user.username);
+            }.bind(this)));
         } else {
             this.user = auth.user();
 
-            title(this, this.user.username + "'s Guides");
+            title(this, this.user.username);
         }
+
+        m.sync(promises).then(function() {
+            if (done) done(null, this);
+        }.bind(this));
     }
 };
 

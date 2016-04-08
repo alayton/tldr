@@ -11,13 +11,16 @@ var vm = function(params, done) {
     this.guides = null;
     this.ratings = null;
 
-    var page = param(params, 'page', 1);
+    var page = param(params, 'page', 1),
+        unfinished = param(params, 'unfinished', false);
+
+    this.unfinished = !!unfinished;
 
     title(this, 'Recent Guides');
 
     req({
         endpoint: '/recent/guides' + '?page=' + page
-    }, this).then(function(data) {
+    }, unfinished ? undefined : this).then(function(data) {
         this.guides = data.guides;
         this.pagination = {
             page: data.page,
