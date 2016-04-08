@@ -1,6 +1,7 @@
 var m = require('mithril');
 var _ = require('underscore');
 var Sifter = require('sifter');
+var auth = require('models/auth.js');
 var title = require('util/page/title.js');
 var req = require('util/request.js');
 
@@ -35,6 +36,17 @@ var vm = function(params, done) {
         endpoint: '/hot/guides'
     }, this).then(function(data) {
         this.guides = data.guides.slice(0, 3);
+
+        if (auth.key()) {
+            var ids = _.pluck(this.guides, 'id');
+            if (ids && ids.length > 0) {
+                req({
+                    endpoint: '/rateguide/' + ids.join(',')
+                }).then(function(data) {
+                    this.ratings = data.ratings;
+                }.bind(this));
+            }
+        }
     }.bind(this)));
 
     m.sync(promises).then(function() {
