@@ -8,7 +8,7 @@ var layout = require('views/layout/sidebar.js');
 var pagination = require('views/components/pagination.js');
 
 module.exports = function(vm) {
-    var url = '/user/images' + (auth.user() && vm.user.id != auth.user().id ? '/' + vm.user.id : '') + '?page=%page%';
+    var url = '/user/images/' + vm.user.id + '-' + slug(vm.user.username) + '?page=%page%';
 
     return layout([
         m('.category-header', [

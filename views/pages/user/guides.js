@@ -14,7 +14,7 @@ module.exports = function(vm) {
             2: ['Moderated', 'danger'],
             3: ['Deleted', 'danger']
         },
-        url = '/user/guides' + (auth.user() && vm.user.id != auth.user().id ? '/' + vm.user.id : '') + '?page=%page%';
+        url = '/user/guides/' + vm.user.id + '-' + slug(vm.user.username) + '?page=%page%';
 
     return layout([
         m('.category-header', [

@@ -26,6 +26,7 @@ module.exports = function(vm) {
             m('h2', 'Recent Guides')
         ]),
         guideList(vm, vm.guides, vm.unfinished ? {
+            category: true,
             className: function(g) {
                 return status[g.status][1]
             },
