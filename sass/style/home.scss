@@ -45,3 +45,19 @@
       }
    }
 }
+
+
+@media screen and (max-width : 760px){
+   .home {
+      .tag-search {
+         float: none;
+         text-align: center;
+         margin: 15px 0 10px -15px;
+      }
+      h3 {
+         text-align: center;
+      }
+   }
+   
+   
+}
