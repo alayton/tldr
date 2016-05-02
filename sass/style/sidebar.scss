@@ -1,0 +1,41 @@
+.activity-feed {
+   .feed-guide, .feed-rating {
+      background: $block-bgcolor;
+      padding: 0.5rem;
+      margin-bottom: 0.75rem;
+
+      a.title {
+         display: block;
+         font-size: 1.2rem;
+      }
+
+      a.user i {
+         color: $text-muted;
+      }
+
+      var {
+         display: block;
+      }
+   }
+
+   .feed-rating {
+      a.title {
+         font-size: inherit;
+      }
+      .likeguide {
+         margin-top: 0.5rem;
+         width: 3.5rem;
+
+         &:hover {
+            color: $text-success;
+         }
+
+         i {
+            font-size: 2rem;
+         }
+      }
+      div {
+         margin-left: 3.5rem;
+      }
+   }
+}
