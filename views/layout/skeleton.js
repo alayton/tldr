@@ -2,6 +2,8 @@ var m = require('mithril');
 var _ = require('underscore');
 var $ = require('jquery');
 var slug = require('slug');
+var moment = require('moment');
+var supports = require('util/supports.js');
 var auth = require('models/auth.js');
 
 global.jQuery = require('jquery');
@@ -29,9 +31,22 @@ var showSignup = function() {
     $('#signupModal').modal('show');
 };
 
+var toggleSidebar = function(e) {
+    if (!supports.localStorage()) return;
+
+    var collapsed = JSON.parse(localStorage.getItem('collapse-sidebar')) || false;
+
+    localStorage.setItem('collapse-sidebar', JSON.stringify(!collapsed));
+    localStorage.setItem('sidebar-activity', JSON.stringify({ count: 0, last: moment().format() }));
+};
+
 var layout = function(content, contentClass) {
     var login = require('controllers/components/user/login.js');
     var signup = require('controllers/components/user/signup.js');
+    var collapsed = supports.localStorage() ? JSON.parse(localStorage.getItem('collapse-sidebar')) : false,
+        activity = supports.localStorage() ? JSON.parse(localStorage.getItem('sidebar-activity')) : null;
+
+    if (!activity) activity = { count: 0 };
 
     return  m('.wrapper', [
                 m('.tldr-logo', [
@@ -51,10 +66,17 @@ var layout = function(content, contentClass) {
                             m('input.form-control[type=text]', { placeholder: 'Search...', oninput: m.withAttr('value', layout.search), value: layout.search() }),
                             m('i.fa.fa-search')
                         ])
-                    ]),                       
-                    m('label.show-menu', {for: 'show-menu'}, [m('i.fa.fa-bars')]),
-                    m('input.menu-control[type=checkbox]#show-menu', {role: 'button'}),
+                    ]),
+                    m('label.show-menu', { for: 'show-menu' }, [m('i.fa.fa-bars')]),
+                    m('input.menu-control[type=checkbox]#show-menu', { role: 'button' }),
                     m('.container#mobile-menu', [
+                        m('a.sidebar-alert.pull-xs-right.hidden-md-down[href=javascript:;]', {
+                            className: (collapsed ? '' : 'open'),
+                            onclick: toggleSidebar
+                        }, [
+                            m('i.fa.fa-bell-o.fa-fw'),
+                            collapsed ? m('span.label.label-pill.label-primary', activity.count) : []
+                        ]),
                         m('ul.nav.navbar-nav.pull-xs-right', [
                             auth.user() ?
                                 m('li.nav-item.dropdown', [

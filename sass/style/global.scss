@@ -156,7 +156,23 @@ ul.popup {
          color: #aaaaaa;
       }
    }
-   
+
+   .sidebar-alert {
+      line-height: 2.375rem;
+      margin-left: 1rem;
+      color: $text-muted;
+
+      &.open {
+         color: $tag-color;
+      }
+
+      span.label {
+         position: relative;
+         top: -2px;
+         background-color: #ef5c23;
+      }
+   }
+
 }
 
 .nav-bg {
