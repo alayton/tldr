@@ -84,9 +84,9 @@ var layout = function(content, contentClass) {
                             collapsed ? m('span.label.label-pill.label-primary', activity.count) : []
                         ]),
                         //m('a.fa.fa-comments-o.discord.pull-xs-right[href=https://discord.gg/011MJzqDXvhlAe3aE]'),
-                        m('a.discord.pull-xs-right[href=https://discord.gg/011MJzqDXvhlAe3aE]', {title:'Join our public Discord channel!'} , [
-                               m('img[src=/asset/img/discord-logo-color.svg]', {height:'24'}),
-                              ]),
+                        m('div.discord.pull-xs-right', [
+                            m('a.discord.pull-xs-right[href=https://discord.gg/011MJzqDXvhlAe3aE]', {title:'Join our public Discord channel!'}),
+                        ]),
                         m('ul.nav.navbar-nav.pull-xs-right', [
                             auth.user() ?
                                 m('li.nav-item.dropdown', [
