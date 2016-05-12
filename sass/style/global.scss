@@ -219,6 +219,37 @@ nav {
    }
 }
 
+#google-signin {
+   float: left;
+
+   &>div {
+      box-shadow: none !important;
+   }
+}
+
+#facebook-signin {
+   display: block;
+   float: left;
+   width: 240px;
+   height: 50px;
+   background: #4267B2;
+   color: #fff;
+   border: 0;
+   padding: 0;
+   margin-left: 1rem;
+   line-height: 50px;
+
+   i {
+      display: block;
+      float: left;
+      width: 48px;
+      line-height: 48px;
+      margin: 1px;
+      font-size: 24px;
+      text-align: center;
+   }
+}
+
 .category-header {
    padding: 1.5rem 1.5rem 1.1rem;
    margin-bottom: 1.5rem;

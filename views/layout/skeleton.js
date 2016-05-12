@@ -31,6 +31,10 @@ var showSignup = function() {
     $('#signupModal').modal('show');
 };
 
+var showRename = function() {
+    $('#renameModal').modal('show');
+};
+
 var toggleSidebar = function(e) {
     if (!supports.localStorage()) return;
 
@@ -43,10 +47,12 @@ var toggleSidebar = function(e) {
 var layout = function(content, contentClass) {
     var login = require('controllers/components/user/login.js');
     var signup = require('controllers/components/user/signup.js');
+    var rename = require('controllers/components/user/rename.js');
     var collapsed = supports.localStorage() ? JSON.parse(localStorage.getItem('collapse-sidebar')) : false,
         activity = supports.localStorage() ? JSON.parse(localStorage.getItem('sidebar-activity')) : null;
 
     if (!activity) activity = { count: 0 };
+    if (auth.user() && !auth.user().username) _.defer(showRename);
 
     return  m('.wrapper', [
                 m('.tldr-logo', [
@@ -80,7 +86,10 @@ var layout = function(content, contentClass) {
                         m('ul.nav.navbar-nav.pull-xs-right', [
                             auth.user() ?
                                 m('li.nav-item.dropdown', [
-                                    m('a.nav-link.dropdown-toggle[href=javascript:;]', { 'data-toggle': 'dropdown', onclick: function() { $(this).dropdown(); } }, auth.user().username),
+                                    m('a.nav-link.dropdown-toggle[href=javascript:;]', {
+                                        'data-toggle': 'dropdown',
+                                        onclick: function() { $(this).dropdown(); }
+                                    }, auth.user().username ? auth.user().username : '[Unnamed]'),
                                     m('.dropdown-menu.dropdown-menu-right', [
                                         m('a.dropdown-item', { config: m.route, href: '/user/guides/' + auth.user().id + '-' + slug(auth.user().username) }, 'My guides'),
                                         auth.isPrivileged() ? m('a.dropdown-item[href=/recent/guides]', { config: m.route }, 'Recent guides') : [],
@@ -132,7 +141,8 @@ var layout = function(content, contentClass) {
                     ])
                 ]),
                 m.component(login),
-                m.component(signup)
+                m.component(signup),
+                auth.user() && !auth.user().username ? m.component(rename) : []
             ]);
 };
 

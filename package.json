@@ -32,7 +32,7 @@
     "slug": "~0.9.1",
     "sifter": "~0.4.5",
     "moment": "~2.11.1",
-    "mithril": "~0.2.0",
+    "mithril": "~0.2.4",
     "mithril-node-render": "~0.4.2",
     "autotrack": "~0.6.3",
     "numeral": "~1.5.3"

@@ -87,6 +87,18 @@ var auth = new function() {
                 }
             }, this));
         }
+
+        if (gapi && gapi.auth2 && gapi.auth2.getAuthInstance()) {
+            gapi.auth2.getAuthInstance().signOut();
+        }
+
+        if (window['FB'] !== undefined) {
+            FB.getLoginStatus(function(resp) {
+                if (resp.status == 'connected') {
+                    FB.logout();
+                }
+            });
+        }
     }
 };
 
