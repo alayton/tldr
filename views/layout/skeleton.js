@@ -83,6 +83,10 @@ var layout = function(content, contentClass) {
                             m('i.fa.fa-bell-o.fa-fw'),
                             collapsed ? m('span.label.label-pill.label-primary', activity.count) : []
                         ]),
+                        //m('a.fa.fa-comments-o.discord.pull-xs-right[href=https://discord.gg/011MJzqDXvhlAe3aE]'),
+                        m('a.discord.pull-xs-right[href=https://discord.gg/011MJzqDXvhlAe3aE]', {title:'Join our public Discord channel!'} , [
+                               m('img[src=/asset/img/discord-logo-color.svg]', {height:'24'}),
+                              ]),
                         m('ul.nav.navbar-nav.pull-xs-right', [
                             auth.user() ?
                                 m('li.nav-item.dropdown', [
