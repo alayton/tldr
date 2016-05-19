@@ -76,7 +76,7 @@ module.exports = function(vm) {
                     m('button[type=submit].btn.btn-primary', 'Change Password')
                 ])
             ]),
-            m('.settings-field', [
+            /*m('.settings-field', [
                 m('h2', 'Change Email Address'),
                 m('form', { onsubmit: vm.updateEmail.bind(vm) }, [
                     vm.emailError() ? m('p.error', vm.emailError()) : [],
@@ -104,7 +104,7 @@ module.exports = function(vm) {
                     ]),
                     m('button[type=submit].btn.btn-primary', 'Change Email')
                 ])
-            ]),
+            ]),*/
             auth.isManager() ? m('.settings-field', [
                 m('h2', 'Change Roles'),
                 m('form', { onsubmit: vm.updateRoles.bind(vm) }, [

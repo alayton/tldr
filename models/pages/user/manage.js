@@ -107,7 +107,7 @@ vm.prototype = {
             }.bind(this));
         }
     },
-    updateEmail: function(e) {
+    /*updateEmail: function(e) {
         e.preventDefault();
         this.emailError(null);
 
@@ -135,7 +135,7 @@ vm.prototype = {
                 }
             }.bind(this));
         }
-    },
+    },*/
     updateRoles: function(e) {
         e.preventDefault();
         this.rolesError(null);
