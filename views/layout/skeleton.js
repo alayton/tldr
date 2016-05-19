@@ -91,6 +91,7 @@ var layout = function(content, contentClass) {
                                         onclick: function() { $(this).dropdown(); }
                                     }, auth.user().username ? auth.user().username : '[Unnamed]'),
                                     m('.dropdown-menu.dropdown-menu-right', [
+                                        m('a.dropdown-item', { config: m.route, href: '/user' }, 'Account settings'),
                                         m('a.dropdown-item', { config: m.route, href: '/user/guides/' + auth.user().id + '-' + slug(auth.user().username) }, 'My guides'),
                                         auth.isPrivileged() ? m('a.dropdown-item[href=/recent/guides]', { config: m.route }, 'Recent guides') : [],
                                         m('a.dropdown-item[href=javascript:;]', { onclick: function() { auth.logout(); } }, 'Log out')

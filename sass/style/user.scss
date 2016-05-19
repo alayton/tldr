@@ -3,3 +3,25 @@
       margin-bottom: 1rem;
    }
 }
+
+.user-settings {
+   .settings-field {
+      background-color: $block-bgcolor;
+      padding: 1.5rem 1.5rem 1.1rem;
+      margin-top: 1.5rem;
+
+      button {
+         display: block;
+      }
+   }
+
+   p {
+      &.error {
+         color: $text-danger;
+      }
+   }
+
+   .loading-container {
+      text-align: center;
+   }
+}

@@ -104,7 +104,7 @@ module.exports = function(vm) {
         ]),
         m('.modal-footer', [
             m('#google-signin', { config: _.partial(setupGoogleSignin, vm) }),
-            m('button#facebook-signin', { onclick: _.partial(doFacebookSignin, vm) }, [
+            m('button[type=button]#facebook-signin', { onclick: _.partial(doFacebookSignin, vm) }, [
                 m('i.fa.fa-facebook-official'),
                 'Sign in with Facebook'
             ])
