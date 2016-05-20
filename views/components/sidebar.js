@@ -13,27 +13,28 @@ module.exports = function(vm) {
                 if (a.type == 'guide') {
                     return m('.feed-guide', [
                         m('a.title', { href: guideurl(a), config: m.route }, a.name),
-                        m('a.tag.category', {
-                            href: '/guides/' + a.category_id + '-' + slug(a.category_name),
-                            config: m.route
-                        }, a.category_name),
                         m('a.user', {
                             href: '/user/guides/' + a.user_id + '-' + slug(a.user_name),
                             config: m.route
                         }, [m('i.fa.fa-user'), ' ', a.user_name]),
-                        m('var', ['Updated ', m('abbr', { title: moment(a.when).format('lll') }, moment(a.when).fromNow())])
+                        m('var', ['Updated ', m('abbr', { title: moment(a.when).format('lll') }, moment(a.when).fromNow())]),
+                        m('a.tag.category', {
+                            href: '/guides/' + a.category_id + '-' + slug(a.category_name),
+                            config: m.route
+                        }, a.category_name)
                     ]);
                 } else if (a.type == 'rating') {
                     return m('.feed-rating.clearfix', [
-                        m('span.likeguide.liked', [m('i.fa.fa-thumbs-o-up'), m('span', a.value)]),
-                        m('div', [
-                            m('a.title', { href: guideurl(a), config: m.route }, a.name),
-                            m('a.tag.category', {
-                                href: '/guides/' + a.category_id + '-' + slug(a.category_name),
-                                config: m.route
-                            }, a.category_name),
-                            m('var', moment(a.when).format('LL'))
-                        ])
+                        m('a.title', { href: guideurl(a), config: m.route }, a.name),
+                        m('var', [
+                            m('span', '+' + a.value + ' thumb' + (a.value > 1 ? 's' : '')),
+                            ' on ',
+                            moment(a.when).format('LL')
+                        ]),
+                        m('a.tag.category', {
+                            href: '/guides/' + a.category_id + '-' + slug(a.category_name),
+                            config: m.route
+                        }, a.category_name)
                     ]);
                 } else {
                     return [];

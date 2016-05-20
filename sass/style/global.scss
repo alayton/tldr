@@ -336,7 +336,34 @@ nav {
    }
 }
 
-@media screen and (max-width : 760px){
+.wrapper > .container {
+   display: flex;
+   max-width: 100%;
+   padding: 0;
+
+   .content {
+      margin: 0 auto;
+      max-width: 67.5rem;
+      padding: 0 1.25rem;
+   }
+}
+
+@media screen and (max-width: 1035px) {
+   .navbar .sidebar-alert {
+      display: none;
+   }
+
+   .wrapper > .container {
+      display: block;
+
+      .activity-feed {
+         max-width: 100%;
+         padding: 0 1.25rem 1.25rem;
+      }
+   }
+}
+
+@media screen and (max-width: 760px) {
    .tldr-logo {
       background: url("/asset/img/tldr-logo-mobile.svg") no-repeat;
       width: 142px;
@@ -455,5 +482,4 @@ nav {
       margin-right: auto;
       margin-left: auto;
    }
-      
 }

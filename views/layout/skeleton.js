@@ -76,7 +76,7 @@ var layout = function(content, contentClass) {
                     m('label.show-menu', { for: 'show-menu' }, [m('i.fa.fa-bars')]),
                     m('input.menu-control[type=checkbox]#show-menu', { role: 'button' }),
                     m('.container#mobile-menu', [
-                        m('a.sidebar-alert.pull-xs-right.hidden-md-down[href=javascript:;]', {
+                        m('a.sidebar-alert.pull-xs-right[href=javascript:;]', {
                             className: (collapsed ? '' : 'open'),
                             onclick: toggleSidebar
                         }, [
