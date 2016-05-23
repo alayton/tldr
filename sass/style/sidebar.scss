@@ -6,6 +6,7 @@
    h3 {
       background-color: $site-faded;
       color: $block-bgcolor;
+      line-height: 2rem;
       font-size: 1rem;
       font-weight: bold;
       text-transform: uppercase;
@@ -20,7 +21,7 @@
 
       a.title {
          display: block;
-         font-size: 1.2rem;
+         font-size: 1.1rem;
       }
 
       a.tag {
@@ -30,8 +31,12 @@
          padding: 0.33rem;
       }
 
-      a.user i {
-         color: $text-muted;
+      a.user {
+         font-size: 0.9rem;
+
+         i {
+            color: $text-muted;
+         }
       }
 
       var {

@@ -9,8 +9,8 @@ var guideList = require('views/components/guide/list.js');
 var categoryTag = require('controllers/components/tag/categorytag.js');
 var pagination = require('views/components/pagination.js');
 
-var showSignup = function() {
-    $('#signupModal').modal('show');
+var showLogin = function() {
+    $('#loginModal').modal('show');
 };
 
 module.exports = function(vm) {
@@ -22,7 +22,7 @@ module.exports = function(vm) {
                     config: m.route
                 }, [m('i.fa.fa-plus'), ' Create Guide']) :
                 m('a.btn.btn-success.new-guide[href=javascript:;]', {
-                    onclick: showSignup
+                    onclick: showLogin
                 }, [m('i.fa.fa-plus'), ' Create Guide']),
             m('h1', [
                 vm.category.name,

@@ -6,6 +6,7 @@ var freeze = require('gulp-freeze');
 var base64 = require('gulp-base64');
 var inject = require('gulp-inject');
 var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
 var gutil = require('gulp-util');
 var gulp = require('gulp');
 var del = require('del');
@@ -44,6 +45,10 @@ gulp.task('css', ['clean'], function() {
             './sass/*.scss'
         ])
         .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
         .pipe(base64({
             baseDir: './',
             maxImageSize: 4096

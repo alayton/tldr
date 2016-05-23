@@ -1,25 +1,56 @@
 .card-tag {
    width: 242px;
    flex: none !important;
-   position: relative;
 
-   &>a {
-      display: block;
+   .cover {
+      position: relative;
+      overflow: hidden;
 
-      &.card-block {
-         margin: 0.75rem 0.5rem;
+      &>a {
+         display: block;
+         opacity: 1;
+         transition: opacity 0.25s;
+
+         img {
+            width: 240px;
+            height: 200px;
+         }
+      }
+
+      ul {
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -250%);
+         transition: transform 0.25s;
+         list-style-type: none;
          padding: 0;
 
-         h4 {
-            margin: 0;
-            text-align: center;
+         li {
+            margin: 0.5rem 0;
+         }
+      }
+
+      &:hover {
+         &>a {
+            opacity: 0.25;
+         }
+
+         ul {
+            transform: translate(-50%, -50%);
          }
       }
    }
 
-   img {
-      width: 240px;
-      height: 200px;
+   a.card-block {
+      display: block;
+      margin: 0.75rem 0.5rem;
+      padding: 0;
+
+      h4 {
+         margin: 0;
+         text-align: center;
+      }
    }
 
    ul.popup {
