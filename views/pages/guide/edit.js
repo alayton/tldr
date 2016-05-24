@@ -3,15 +3,15 @@ var $ = require('jquery');
 var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
-var auth = require('../../../models/auth.js');
-var guideurl = require('../../../util/guideurl.js');
-var imageurl = require('../../../util/imageurl.js');
-var romanize = require('../../../util/romanize.js');
-var layout = require('../../layout/sidebar.js');
-var categoryTag = require('../../../controllers/components/tag/categorytag.js');
-var mdtextarea = require('../../../controllers/components/mdtextarea.js');
-var rate = require('../../../controllers/components/guide/rate.js');
-var guideList = require('../../components/guide/list.js');
+var auth = require('models/auth.js');
+var guideurl = require('util/guideurl.js');
+var imageurl = require('util/imageurl.js');
+var romanize = require('util/romanize.js');
+var layout = require('views/layout/sidebar.js');
+var categoryTag = require('controllers/components/tag/categorytag.js');
+var mdtextarea = require('controllers/components/mdtextarea.js');
+var rate = require('controllers/components/guide/rate.js');
+var guideList = require('views/components/guide/list.js');
 
 var md = require('markdown-it')()
     .disable(['image']);
@@ -33,8 +33,14 @@ var guideImage = function(guide, image) {
     guide.image_id = image.id;
 };
 
+var stickyControls = function(el, isInitialized) {
+    if (isInitialized) return;
+
+    $(el).fixedsticky();
+};
+
 module.exports = function(vm) {
-    var images = require('../../../controllers/components/images.js');
+    var images = require('controllers/components/images.js');
     var moderated = vm.guide.status == 2 && !auth.isPrivileged();
 
     return layout(vm.error !== null ?
@@ -89,6 +95,26 @@ module.exports = function(vm) {
                     ])
                 ])
             ]),
+            m('.guide-controls', { config: stickyControls }, [
+                m('button.btn.btn-info', {
+                    className: (vm.body.length >= vm.maxSections ? 'disabled' : ''),
+                    title: (vm.body.length >= vm.maxSections ? 'Limit of ' + vm.maxSections + ' sections reached' : ''),
+                    onclick: _.partial(vm.addSection, vm)
+                }, [m('i.fa.fa-plus'), ' Add Section']),
+                m('.fill'),
+                m('a.btn.btn-secondary', vm.guide.id ?
+                    { href: guideurl(vm.guide), config: m.route } :
+                    { href: 'javascript:;', disabled: true },
+                    [m('i.fa.fa-link'), ' View Guide']),
+                /*vm.guide.status() == 1 ? [] : m('button.btn.btn-success', {
+                    onclick: _.partial(vm.publish, vm)
+                }, [m('i.fa.fa-save'), ' Save & Publish']),*/
+                m('button.btn', {
+                    onclick: _.partial(vm.save, vm),
+                    disabled: vm.saving(),
+                    className: vm.saved() ? 'btn-success' : 'btn-primary'
+                }, [m('i.fa.fa-save'), vm.saved() ? ' Saved!' : ' Save'])
+            ]),
             m('.guide-body', _.map(vm.body, function(section, idx) {
                 var img = section.image(),
                     imgWidth = img ? Math.min(871, img.width) : 0;
@@ -135,30 +161,6 @@ module.exports = function(vm) {
                     ])
                 ])
             ]),
-            m('.guide-controls', [
-                m('button.btn.btn-info', {
-                    className: (vm.body.length >= vm.maxSections ? 'disabled' : ''),
-                    title: (vm.body.length >= vm.maxSections ? 'Limit of ' + vm.maxSections + ' sections reached' : ''),
-                    onclick: _.partial(vm.addSection, vm)
-                }, [m('i.fa.fa-plus'), ' Add Section']),
-                m('.fill'),
-                m('a.btn.btn-secondary', vm.guide.id ?
-                    {
-                        href: guideurl(vm.guide),
-                        config: m.route
-                    } :
-                    {
-                        href: 'javascript:;',
-                        disabled: true
-                    },
-                    [m('i.fa.fa-link'), ' View Guide']),
-                m('button.btn', {
-                    onclick: _.partial(vm.save, vm),
-                    disabled: vm.saving(),
-                    className: vm.saved() ? 'btn-success' : 'btn-primary'
-                }, [m('i.fa.fa-save'), vm.saved() ? ' Saved!' : ' Save'])
-            ]),
             m.component(images, { category: vm.guide.category_id, select: pickImage })
-        ])
-    );
+        ]), 'edit-guide');
 };

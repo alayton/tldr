@@ -2,12 +2,12 @@ var m = require('mithril');
 var $ = require('jquery');
 var _ = require('underscore');
 var slug = require('slug');
-var auth = require('../../../models/auth.js');
-var prop = require('../../../util/prop.js');
-var param = require('../../../util/param.js');
-var req = require('../../../util/request.js');
-var title = require('../../../util/page/title.js');
-var skeleton = require('../../../views/layout/skeleton.js');
+var auth = require('models/auth.js');
+var prop = require('util/prop.js');
+var param = require('util/param.js');
+var req = require('util/request.js');
+var title = require('util/page/title.js');
+var skeleton = require('views/layout/skeleton.js');
 
 var vm = function(params, done) {
     this.guide = null;
@@ -157,6 +157,14 @@ vm.prototype = {
         }
 
         return false;
+    },
+    publish: function(self) {
+        if (self.saving()) {
+            return;
+        }
+
+        self.guide.status(1);
+        self.save(self);
     },
     save: function(self) {
         if (self.saving()) {

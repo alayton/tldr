@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var m = require('mithril');
 var moment = require('moment');
 var req = require('util/request.js');
 var supports = require('util/supports.js');
@@ -14,9 +15,10 @@ var vm = function(params, done) {
 
     req({
         endpoint: '/activity',
-        method: 'GET'
+        method: 'GET',
+        background: true
     }).then(function(data) {
-        self.activity = data.activity;
+        self.activity = data.activity.slice(0, 10);
         self.loaded = true;
 
         if (supports.localStorage()) {
@@ -30,6 +32,7 @@ var vm = function(params, done) {
             }
             localStorage.setItem('sidebar-activity', JSON.stringify(activity));
         }
+        m.redraw();
 
         if (done) done(null, self);
     }, function() {
