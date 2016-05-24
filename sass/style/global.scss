@@ -157,6 +157,18 @@ ul.popup {
          color: #aaaaaa;
       }
    }
+   
+   .discord {
+      margin-left: 1rem;
+      
+      a {
+         background: url("/asset/img/discord-logo-color.svg") no-repeat;
+         margin-top: .4rem;
+         width: 24px;
+         height: 24px;
+         
+      }
+   }
 
    .sidebar-alert {
       line-height: 2.375rem;
@@ -452,6 +464,10 @@ nav {
       
       .dropdown-menu-right {
          left: 0 !important;
+      }
+      
+      .discord {
+         display: none;
       }
       
    }
