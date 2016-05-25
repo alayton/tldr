@@ -12,8 +12,6 @@ var vm = function(src, bufferCb, previewCb) {
     this.cropping = null;
     this.cropped = null;
     this.constraint = m.prop(null);
-
-    this.MAX_SIZE = 500;
 };
 
 vm.prototype = {
@@ -44,13 +42,8 @@ vm.prototype = {
         this.imageAspect = this.image.width / this.image.height;
 
         this.canvas.style.width = '100%';
-        if (this.image.width > this.image.height) {
-            this.width = Math.min(this.MAX_SIZE, this.image.width);
-            this.height = this.width / this.imageAspect;
-        } else {
-            this.height = Math.min(this.MAX_SIZE, this.image.height);
-            this.width = this.height * this.imageAspect;
-        }
+        this.width = Math.min(this.canvas.offsetWidth, this.image.width);
+        this.height = this.width / this.imageAspect;
 
         this.canvas.width = this.width;
         this.canvas.height = this.height;

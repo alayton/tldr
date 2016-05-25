@@ -1,5 +1,4 @@
 var _ = require('underscore');
-var m = require('mithril');
 var moment = require('moment');
 var req = require('util/request.js');
 var supports = require('util/supports.js');
@@ -15,10 +14,9 @@ var vm = function(params, done) {
 
     req({
         endpoint: '/activity',
-        method: 'GET',
-        background: true
+        method: 'GET'
     }).then(function(data) {
-        self.activity = data.activity.slice(0, 10);
+        self.activity = data.activity;
         self.loaded = true;
 
         if (supports.localStorage()) {

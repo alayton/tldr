@@ -1,6 +1,7 @@
 .activity-feed {
-   width: 18rem;
+   max-width: 18rem;
    background-color: $block-bgcolor;
+   margin-top: -1rem;
 
    h3 {
       background-color: $site-faded;
