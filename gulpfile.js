@@ -33,7 +33,7 @@ gulp.task('javascript', ['clean'], function() {
         .pipe(source('./asset/built/js/app.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(freeze())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./'));

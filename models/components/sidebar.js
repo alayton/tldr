@@ -32,9 +32,9 @@ var vm = function(params, done) {
             }
             localStorage.setItem('sidebar-activity', JSON.stringify(activity));
         }
-        m.redraw();
 
         if (done) done(null, self);
+        else if (typeof window !== 'undefined') m.redraw();
     }, function() {
         self.loaded = true;
     });
