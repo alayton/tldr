@@ -35,7 +35,7 @@ var vm = function(params, done) {
     promises.push(req({
         endpoint: '/hot/guides'
     }, this).then(function(data) {
-        this.guides = data.guides.slice(0, 3);
+        this.guides = data.guides.slice(0, 5);
 
         if (auth.key()) {
             var ids = _.pluck(this.guides, 'id');

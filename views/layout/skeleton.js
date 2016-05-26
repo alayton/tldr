@@ -13,6 +13,7 @@ if (typeof window !== 'undefined') {
     window.Tether = require('tether');
     require('bootstrap');
     require('asset/js/rangyinputs-jquery.js');
+    require('asset/js/fixedsticky.js');
 }
 
 var search = function(e) {
@@ -121,7 +122,7 @@ var layout = function(content, contentClass) {
                             err
                         ]);
                     }),
-                    content
+                    m('.inner-container', content)
                 ]),
                 m('footer.footer', [
                     m('.container', [

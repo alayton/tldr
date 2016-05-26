@@ -137,6 +137,7 @@ ul.popup {
 .navbar {
    height: 60px;
    padding: 0.6rem 1rem;
+   margin: 0;
    z-index: 1;
 
    .fa-search {
@@ -349,15 +350,24 @@ nav {
 }
 
 .wrapper > .container {
-   display: flex;
    max-width: 100%;
    padding: 0;
 
-   .content {
-      flex: 1 0;
-      margin: 0 auto;
-      max-width: 67.5rem;
-      padding: 0 1.25rem;
+   &>.alert {
+      border-radius: 0;
+      border-width: 0 0 1px 0;
+      margin-bottom: 0;
+   }
+
+   .inner-container {
+      display: flex;
+
+      .content {
+         flex: 1 0;
+         margin: 1rem auto 0;
+         max-width: 67.5rem;
+         padding: 0 1.25rem;
+      }
    }
 }
 
@@ -499,4 +509,27 @@ nav {
       margin-right: auto;
       margin-left: auto;
    }
+}
+
+.fixedsticky {
+   position: -webkit-sticky;
+   position: -moz-sticky;
+   position: -ms-sticky;
+   position: -o-sticky;
+   position: sticky;
+}
+/* When position: sticky is supported but native behavior is ignored */
+.fixedsticky-withoutfixedfixed .fixedsticky-off,
+.fixed-supported .fixedsticky-off {
+   position: static;
+}
+.fixedsticky-withoutfixedfixed .fixedsticky-on,
+.fixed-supported .fixedsticky-on {
+   position: fixed;
+}
+.fixedsticky-dummy {
+   display: none;
+}
+.fixedsticky-on + .fixedsticky-dummy {
+   display: block;
 }
