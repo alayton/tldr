@@ -12,8 +12,11 @@ var viewGuide = require('controllers/guide/view.js');
 var editGuide = require('controllers/guide/edit.js');
 var recentGuides = require('controllers/guide/recent.js');
 
+var commentReports = require('controllers/comment/reports.js');
+
 var userManage = require('controllers/user/manage.js');
 var userGuides = require('controllers/user/guides.js');
+var userComments = require('controllers/user/comments.js');
 var userImages = require('controllers/user/images.js');
 
 var search = require('controllers/search/search.js');
@@ -37,10 +40,15 @@ module.exports = {
     '/guide/edit/:id': editGuide,
     '/guide/:catg/:id': viewGuide,
     '/guide/:id': viewGuide,
+
+    '/comments/reports': commentReports,
+
     '/user': userManage,
     '/user/:id': userManage,
     '/user/guides': userGuides,
     '/user/guides/:id': userGuides,
+    '/user/comments': userComments,
+    '/user/comments/:id': userComments,
     '/user/images': userImages,
     '/user/images/:id': userImages,
     

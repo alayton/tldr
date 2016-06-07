@@ -3,6 +3,7 @@ var slug = require('slug');
 var moment = require('moment');
 var auth = require('models/auth.js');
 var layout = require('views/layout/sidebar.js');
+var header = require('views/components/user/header.js');
 
 module.exports = function(vm) {
     if (!auth.user()) {
@@ -10,21 +11,8 @@ module.exports = function(vm) {
             m('.loading-container', m('i.loading.fa.fa-spinner.fa-pulse.fa-3x.fa-fw'))
         ], 'user-settings');
     } else {
-        var isSelf = vm.user.id == auth.user().id;
-
         return layout([
-            m('.category-header', [
-                m('h1', isSelf ? 'Account Settings' : 'Managing ' + vm.user.username)
-            ]),
-            m('ul.nav.nav-pills', [
-                (auth.user() && (auth.user().id == vm.user.id || auth.isManager())) ?
-                    m('li.nav-item', m('a.nav-link.active', { config: m.route, href: '/user/' + vm.user.id + '-' + slug(vm.user.username) }, 'Settings')) :
-                    [],
-                m('li.nav-item', m('a.nav-link', { config: m.route, href: '/user/guides/' + vm.user.id + '-' + slug(vm.user.username) }, 'Guides')),
-                (auth.user() && (auth.user().id == vm.user.id || auth.isPrivileged())) ?
-                    m('li.nav-item', m('a.nav-link', { config: m.route, href: '/user/images/' + vm.user.id + '-' + slug(vm.user.username) }, 'Images')) :
-                    []
-            ]),
+            header(vm.user, 'settings'),
             m('.settings-field', [
                 m('h2', 'Change Username'),
                 m('form', { onsubmit: vm.updateUsername.bind(vm) }, [

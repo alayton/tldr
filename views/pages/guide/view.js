@@ -2,19 +2,22 @@ var m = require('mithril');
 var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
-var auth = require('../../../models/auth.js');
-var imageurl = require('../../../util/imageurl.js');
-var romanize = require('../../../util/romanize.js');
-var layout = require('../../layout/sidebar.js');
-var rate = require('../../../controllers/components/guide/rate.js');
-var guideList = require('../../components/guide/list.js');
+var auth = require('models/auth.js');
+var imageurl = require('util/imageurl.js');
+var romanize = require('util/romanize.js');
+var layout = require('views/layout/sidebar.js');
+var rate = require('controllers/components/guide/rate.js');
+var guideList = require('views/components/guide/list.js');
+var commentList = require('controllers/components/comment/list.js');
 
 var md = require('markdown-it')()
     .disable(['image']);
 
 module.exports = function(vm) {
+    var baseUrl = '';
     if (vm.guide) {
         var catg = vm.guide.category;
+        baseUrl = '/guide/' + vm.guide.id + '-' + slug(vm.guide.title);
     }
 
     return layout(vm.guide === false ?
@@ -70,7 +73,8 @@ module.exports = function(vm) {
                         category: true
                     })
                 ])
-            ]) : []
+            ]) : [],
+            m.component(commentList, { guideId: vm.guide.id, baseUrl: baseUrl, params: vm.params })
         ]
     );
 };

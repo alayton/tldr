@@ -1,0 +1,132 @@
+.comments, .reports {
+   .post-comment {
+      background-color: $block-nestcolor;
+      padding: 1rem;
+      margin-bottom: 1rem;
+
+      .md-controls {
+         margin-bottom: 0;
+      }
+
+      var {
+         float: right;
+         margin: 0 0.5rem 0.5rem;
+         color: $text-muted;
+         font-size: 0.8rem;
+      }
+
+      button {
+         margin-right: 1rem;
+      }
+   }
+
+   .pagination {
+      margin-top: 0;
+      float: right;
+   }
+
+   .sort {
+      line-height: 2.625rem;
+   }
+
+   .report, .comment {
+      a.guide {
+         display: block;
+         padding: 0.25rem 0.5rem 0;
+         background-color: $body-bgcolor2;
+      }
+   }
+
+   .comment {
+      background-color: $block-nestcolor;
+      margin-bottom: 1rem;
+      clear: right;
+
+      &:last-child {
+         margin-bottom: 0;
+      }
+
+      .byline {
+         background-color: $body-bgcolor;
+         padding: 0.25rem 0.5rem 0;
+         font-size: 0.9rem;
+
+         span.edited {
+            font-size: 0.75rem;
+            position: relative;
+            top: -1px;
+         }
+
+         a.thumb, a.report, a.edit, a.delete, a.resolve {
+            margin-left: 1rem;
+         }
+
+         a.thumb {
+            color: $text-muted;
+            text-decoration: none;
+
+            &.up {
+               color: $text-success;
+            }
+
+            i {
+               margin-right: 0.25rem;
+            }
+         }
+
+         a.report {
+            color: $text-error;
+
+            &.done {
+               color: $text-muted;
+            }
+         }
+
+         a.delete {
+            color: $text-error;
+         }
+         a.resolve {
+            color: $text-warning;
+         }
+
+         .reported {
+            position: relative;
+            background: $text-error;
+            line-height: 1rem;
+            padding: 0 0.25rem;
+            margin: 0 0 0 1rem;
+            display: inline-block;
+            font-size: 0.75rem;
+            color: $text-inverted;
+            top: -2px;
+
+            &:after {
+               right: 100%;
+               top: 50%;
+               border: solid transparent;
+               content: " ";
+               height: 0;
+               width: 0;
+               position: absolute;
+               pointer-events: none;
+               border-color: rgba(145, 42, 33, 0);
+               border-right-color: $text-error;
+               border-width: 0.5rem;
+               margin-top: -0.5rem;
+            }
+         }
+      }
+
+      .body {
+         padding: 0.5rem;
+
+         p:last-child {
+            margin-bottom: 0;
+         }
+      }
+   }
+}
+
+.user-comments .comments {
+   margin-top: 1rem;
+}

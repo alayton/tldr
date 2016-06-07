@@ -11,6 +11,7 @@ var param = require('util/param.js');
 var req = require('util/request.js');
 
 var vm = function(params, done) {
+    this.params = params;
     this.guide = null;
     this.body = null;
     this.error = null;

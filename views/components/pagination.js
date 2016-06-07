@@ -8,7 +8,7 @@ module.exports = function(urlPattern, currentPage, totalResults, perPage) {
         hasNext = currentPage < totalPages,
         i;
 
-    if (!totalResults || totalPages == 1) {
+    if (!totalResults/* || totalPages == 1*/) {
         return [];
     }
 

@@ -6,21 +6,13 @@ var config = require('config.js');
 var auth = require('models/auth.js');
 var layout = require('views/layout/sidebar.js');
 var pagination = require('views/components/pagination.js');
+var header = require('views/components/user/header.js');
 
 module.exports = function(vm) {
     var url = '/user/images/' + vm.user.id + '-' + slug(vm.user.username) + '?page=%page%';
 
     return layout([
-        m('.category-header', [
-            m('h1', vm.user.username)
-        ]),
-        m('ul.nav.nav-pills', [
-            (auth.user() && (auth.user().id == vm.user.id || auth.isManager())) ?
-                m('li.nav-item', m('a.nav-link', { config: m.route, href: '/user/' + vm.user.id + '-' + slug(vm.user.username) }, 'Settings')) :
-                [],
-            m('li.nav-item', m('a.nav-link', { config: m.route, href: '/user/guides/' + vm.user.id + '-' + slug(vm.user.username) }, 'Guides')),
-            m('li.nav-item', m('a.nav-link.active', { config: m.route, href: '/user/images/' + vm.user.id + '-' + slug(vm.user.username) }, 'Images'))
-        ]),
+        header(vm.user, 'images'),
         vm.images.length ?
             [
                 m('.card-deck', _.map(vm.images, function(img) {

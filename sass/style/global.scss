@@ -7,6 +7,31 @@ body {
    background-color: $body-bgcolor;
    font-family: 'Droid Sans' !important;
    margin: 0 0 100px;
+
+   &.has-modal {
+      overflow: hidden;
+
+      .modal {
+         background-color: rgba(0,0,0,0.5);
+
+         .modal-dialog {
+            transform: translate(0, 0);
+         }
+      }
+   }
+}
+
+.modal {
+   display: block;
+   overflow-x: hidden;
+   overflow-y: auto;
+   background-color: rgba(0,0,0,0.0);
+   transition: background-color 0.25s linear;
+
+   .modal-dialog {
+      transform: translate(0, -200%);
+      transition: transform 0.25s linear;
+   }
 }
 
 blockquote {
@@ -21,7 +46,7 @@ input.error {
 a {
    color: $text-link;
 
-   &:hover {
+   &:hover, &:focus {
       text-decoration: none;
    }
 }
@@ -368,6 +393,39 @@ nav {
          max-width: 67.5rem;
          padding: 0 1.25rem;
       }
+   }
+}
+
+.page-block {
+   background-color: $block-bgcolor;
+   padding: 1.5rem 1.5rem 1.1rem;
+   margin-bottom: 1.5rem;
+}
+
+.md-controls {
+   div {
+      background-color: $body-bgcolor;
+      height: 1.9em;
+
+      a {
+         padding: 0.25em 0.5em 0.15em;
+         margin: 0 0.25em;
+         width: 2em;
+         color: #000;
+         font-size: 1em;
+         text-align: center;
+         display: inline-block;
+
+         &:hover, &:active {
+            background-color: $block-bgcolor;
+         }
+      }
+   }
+
+   textarea {
+      border-color: $body-bgcolor;
+      border-top: 0;
+      width: 100%;
    }
 }
 

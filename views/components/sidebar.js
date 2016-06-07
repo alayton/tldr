@@ -36,6 +36,19 @@ module.exports = function(vm) {
                             config: m.route
                         }, a.category_name)
                     ]);
+                } else if (a.type == 'comment') {
+                    return m('.feed-comment.clearfix', [
+                        m('a.title', { href: guideurl(a), config: m.route }, a.name),
+                        m('var', [
+                            m('span', a.value + ' comment' + (a.value > 1 ? 's' : '')),
+                            ' on ',
+                            moment(a.when).format('LL')
+                        ]),
+                        m('a.tag.category', {
+                            href: '/guides/' + a.category_id + '-' + slug(a.category_name),
+                            config: m.route
+                        }, a.category_name)
+                    ]);
                 } else {
                     return [];
                 }

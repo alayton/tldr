@@ -3,6 +3,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var slug = require('slug');
 var moment = require('moment');
+var modal = require('util/modal.js');
 var supports = require('util/supports.js');
 var auth = require('models/auth.js');
 
@@ -25,11 +26,13 @@ var search = function(e) {
 };
 
 var showLogin = function() {
-    $('#loginModal').modal('show');
+    var login = require('views/modals/login.js');
+    modal.show(login);
 };
 
 var showSignup = function() {
-    $('#signupModal').modal('show');
+    var signup = require('views/modals/signup.js');
+    modal.show(signup);
 };
 
 var showRename = function() {
@@ -46,8 +49,6 @@ var toggleSidebar = function(e) {
 };
 
 var layout = function(content, contentClass) {
-    var login = require('controllers/components/user/login.js');
-    var signup = require('controllers/components/user/signup.js');
     var rename = require('controllers/components/user/rename.js');
     var collapsed = supports.localStorage() ? JSON.parse(localStorage.getItem('collapse-sidebar')) : false,
         activity = supports.localStorage() ? JSON.parse(localStorage.getItem('sidebar-activity')) : null;
@@ -84,9 +85,11 @@ var layout = function(content, contentClass) {
                             m('i.fa.fa-bell-o.fa-fw'),
                             collapsed ? m('span.label.label-pill.label-primary', activity.count) : []
                         ]),
-                        //m('a.fa.fa-comments-o.discord.pull-xs-right[href=https://discord.gg/011MJzqDXvhlAe3aE]'),
-                        m('div.discord.pull-xs-right', [
-                            m('a.discord.pull-xs-right[href=https://discord.gg/011MJzqDXvhlAe3aE]', {title:'Join our public Discord channel!'}),
+                        m('.discord.pull-xs-right', [
+                            m('a.discord.pull-xs-right[href=https://discord.gg/011MJzqDXvhlAe3aE]', {
+                                target: '_blank',
+                                title:'Join our public Discord channel!'
+                            })
                         ]),
                         m('ul.nav.navbar-nav.pull-xs-right', [
                             auth.user() ?
@@ -98,7 +101,10 @@ var layout = function(content, contentClass) {
                                     m('.dropdown-menu.dropdown-menu-right', [
                                         m('a.dropdown-item', { config: m.route, href: '/user' }, 'Account settings'),
                                         m('a.dropdown-item', { config: m.route, href: '/user/guides/' + auth.user().id + '-' + slug(auth.user().username) }, 'My guides'),
-                                        auth.isPrivileged() ? m('a.dropdown-item[href=/recent/guides]', { config: m.route }, 'Recent guides') : [],
+                                        auth.isPrivileged() ? [
+                                            m('a.dropdown-item[href=/recent/guides]', { config: m.route }, 'Recent guides'),
+                                            m('a.dropdown-item[href=/comments/reports]', { config: m.route }, 'Reported comments')
+                                        ] : [],
                                         m('a.dropdown-item[href=javascript:;]', { onclick: function() { auth.logout(); } }, 'Log out')
                                     ])
                                 ]) :
@@ -146,8 +152,7 @@ var layout = function(content, contentClass) {
                         ])
                     ])
                 ]),
-                m.component(login),
-                m.component(signup),
+                modal.current ? modal.current : [],
                 auth.user() && !auth.user().username ? m.component(rename) : []
             ]);
 };
