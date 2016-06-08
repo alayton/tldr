@@ -4,6 +4,7 @@ var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
 var auth = require('models/auth.js');
+var modal = require('util/modal.js');
 var guideurl = require('util/guideurl.js');
 var imageurl = require('util/imageurl.js');
 var romanize = require('util/romanize.js');
@@ -18,8 +19,10 @@ var md = require('markdown-it')()
 
 var currentImage = null;
 
-var showImages = function(image) {
-    $('#imagesModal').modal('show');
+var showImages = function(vm, image) {
+    var images = require('views/modals/images.js');
+    modal.show(images({ category: vm.guide.category_id, select: pickImage }));
+
     currentImage = image;
 };
 
@@ -40,7 +43,6 @@ var stickyControls = function(el, isInitialized) {
 };
 
 module.exports = function(vm) {
-    var images = require('controllers/components/images.js');
     var moderated = vm.guide.status == 2 && !auth.isPrivileged();
 
     return layout(vm.error !== null ?
@@ -50,7 +52,7 @@ module.exports = function(vm) {
                 m.component(rate, { guide: vm.guide, parent: vm }),
                 m('.guide-image', [
                     m('img', { src: vm.guide.image_id ? imageurl(vm.guide.image_id, 160, 120) : '/asset/img/guide-ph.png' }),
-                    m('button.btn.btn-secondary', { onclick: _.partial(showImages, _.partial(guideImage, vm.guide)) }, [m('i.fa.fa-picture-o'), ' Choose Image'])
+                    m('button.btn.btn-secondary', { onclick: _.partial(showImages, vm, _.partial(guideImage, vm.guide)) }, [m('i.fa.fa-picture-o'), ' Choose Image'])
                 ]),
                 m('.guide-title', [
                     m('input.form-control', {
@@ -133,11 +135,14 @@ module.exports = function(vm) {
                     ]),
                     m('.section-controls', [
                         m('button.btn.btn-secondary', {
-                            onclick: _.partial(showImages, section.image)
+                            onclick: _.partial(showImages, vm, section.image)
                         }, [m('i.fa.fa-picture-o'), ' Choose Image']),
+                        img ? m('button.btn.btn-warning', {
+                            onclick: _.partial(section.image, 0)
+                        }, [m('i.fa.fa-minus-square-o'), ' Remove Image']) : [],
                         m('button.btn.btn-danger', {
                             onclick: _.partial(vm.delSection, vm, idx)
-                        }, [m('i.fa.fa-times'), ' Remove'])
+                        }, [m('i.fa.fa-times'), ' Remove Section'])
                     ])
                 ]);
             })),
@@ -160,7 +165,6 @@ module.exports = function(vm) {
                         ])
                     ])
                 ])
-            ]),
-            m.component(images, { category: vm.guide.category_id, select: pickImage })
+            ])
         ]), 'edit-guide');
 };

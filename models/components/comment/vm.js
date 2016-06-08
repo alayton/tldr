@@ -140,6 +140,10 @@ vm.prototype = {
             }.bind(this));
         }
     },
+    repage: function(page) {
+        this.page(page);
+        this.load();
+    },
     resolve: function(report) {
         req({
             method: 'DELETE',

@@ -40,7 +40,10 @@ module.exports = function(urlPattern, currentPage, totalResults, perPage) {
 
     return m('ul.pagination', [
         hasPrevious ?
-            m('li.page-item', m('a.page-link', { href: urlPattern.replace('%page%', currentPage - 1), config: m.route }, m('span', m.trust('&laquo;')))) :
+            m('li.page-item', m('a.page-link', (_.isFunction(urlPattern) ?
+                { href: 'javascript:;', onclick: _.partial(urlPattern, currentPage - 1) } :
+                { href: urlPattern.replace('%page%', currentPage - 1), config: m.route }
+            ), m('span', m.trust('&laquo;')))) :
             m('li.page-item', m('span.page-link', m('span', m.trust('&laquo;')))),
         _.map(pages, function(page) {
             if (page === null) {
@@ -48,12 +51,18 @@ module.exports = function(urlPattern, currentPage, totalResults, perPage) {
             } else {
                 return m('li.page-item',
                     { className: currentPage == page ? 'active' : '' },
-                    m('a.page-link', { href: urlPattern.replace('%page%', page), config: m.route }, page)
+                    m('a.page-link', (_.isFunction(urlPattern) ?
+                        { href: 'javascript:;', onclick: _.partial(urlPattern, page) } :
+                        { href: urlPattern.replace('%page%', page), config: m.route }
+                    ), page)
                 );
             }
         }),
         hasNext ?
-            m('li.page-item', m('a.page-link', { href: urlPattern.replace('%page%', currentPage + 1), config: m.route }, m('span', m.trust('&raquo;')))) :
+            m('li.page-item', m('a.page-link', (_.isFunction(urlPattern) ?
+                { href: 'javascript:;', onclick: _.partial(urlPattern, currentPage + 1) } :
+                { href: urlPattern.replace('%page%', currentPage + 1), config: m.route }
+            ), m('span', m.trust('&raquo;')))) :
             m('li.page-item', m('span.page-link', m('span', m.trust('&raquo;'))))
     ])
 };

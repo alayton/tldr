@@ -24,9 +24,6 @@ var showReport = function(comment) {
 };
 
 module.exports = function(vm) {
-    var urlPattern = vm.baseUrl + '?comment-page=%page%';
-    if (vm.sort != 'rating') urlPattern += '&comment-sort=' + vm.sort();
-
     return m('.comments.page-block', [
         m('h3', 'Comments'),
         m('.post-comment', [
@@ -37,7 +34,7 @@ module.exports = function(vm) {
             m('button[type=button].btn.btn-primary.btn-sm', { onclick: vm.post.bind(vm), disabled: vm.saving() }, auth.key() ? 'Post comment' : 'Log in to comment')
         ]),
         vm.comments.length > 0 ? [
-            pagination(urlPattern, vm.page(), vm.totalResults(), vm.perPage()),
+            pagination(vm.repage.bind(vm), vm.page(), vm.totalResults(), vm.perPage()),
             m('.sort', [
                 'Sort by ',
                 m('select.sort', { onchange: m.withAttr('value', vm.sort), value: vm.sort() }, [
@@ -79,7 +76,7 @@ module.exports = function(vm) {
                     ]) : m('.body', m.trust(md.render(c.body)))
                 ]);
             }),
-            pagination(urlPattern, vm.page(), vm.totalResults(), vm.perPage()),
+            pagination(vm.repage.bind(vm), vm.page(), vm.totalResults(), vm.perPage()),
             m('.clearfix')
         ] : m('.comment-ph', 'No comments yet!')
     ]);

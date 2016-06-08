@@ -403,7 +403,9 @@ nav {
 }
 
 .md-controls {
-   div {
+   margin-bottom: 0.25rem;
+
+   .toolbar {
       background-color: $body-bgcolor;
       height: 1.9em;
 
@@ -422,10 +424,33 @@ nav {
       }
    }
 
-   textarea {
-      border-color: $body-bgcolor;
-      border-top: 0;
-      width: 100%;
+   .text {
+      position: relative;
+
+      .background {
+         position: absolute;
+         width: 100%;
+         height: 100%;
+         background: $block-bgcolor url("/asset/img/tldr-logo-background.svg") no-repeat center;
+         background-size: auto 50px;
+         transition: all 0.25s ease-in;
+         filter: grayscale(100%) blur(2px);
+         opacity: 0.2;
+      }
+
+      &.no-fade .background {
+         filter: grayscale(0) blur(0);
+         opacity: 1;
+      }
+
+      textarea {
+         position: absolute;
+         background: transparent;
+         width: 100%;
+         height: 100%;
+         border-color: $body-bgcolor;
+         border-top: 0;
+      }
    }
 }
 

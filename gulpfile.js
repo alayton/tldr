@@ -119,6 +119,10 @@ gulp.task('css-watch', ['clean'], function() {
             './sass/*.scss'
         ])
         .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
         .pipe(base64({
             baseDir: './',
             maxImageSize: 4096
@@ -129,6 +133,10 @@ gulp.task('css-watch', ['clean'], function() {
 gulp.task('css-watch2', function() {
     gulp.src(['./node_modules/bootstrap/scss/bootstrap-flex.scss', './node_modules/font-awesome/css/font-awesome.min.css', './sass/*.scss'])
         .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
         .pipe(base64({
             baseDir: './',
             maxImageSize: 4096

@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var m = require('mithril');
 
-var Modal = function(model, view, opts) {
+var Modal = function(model, view, opts, modalOpts) {
     return m.component({
         controller: model,
         view: function(vm) {
@@ -19,7 +19,7 @@ var Modal = function(model, view, opts) {
                     $body.toggleClass('has-modal', true);
                     $body.css('padding-right', ($body.width() - normalWidth) + 'px');
                 }
-            }, m('.modal-dialog', view(vm)));
+            }, m('.modal-dialog', { className: modalOpts.className }, view(vm)));
         }
     }, opts);
 };

@@ -11,15 +11,21 @@ var autosize = function(el, isInitialized) {
         var $this = $(this);
         $this.css({ height: 'auto', 'overflow-y': 'hidden' });
 
-        var height = Math.min(300, this.scrollHeight);
+        var height = Math.max(Math.min(300, this.scrollHeight), 76);
         var overflow = this.scrollHeight <= 300 ? 'hidden' : 'auto';
-        $this.css({ height: height + 'px', 'overflow-y': overflow });
+        $this.parent().css({ height: height + 'px' }).toggleClass('no-fade', !$this.val() && !$this.is(':focus'));
+        $this.css({ height: '', 'overflow-y': overflow });
     }).trigger('input');
+
+    $(el).on('focus blur', function() {
+        var $this = $(this);
+        $this.parent().toggleClass('no-fade', !$this.val() && !$this.is(':focus'));
+    });
 };
 
 module.exports = function(vm) {
     return m('.form-group.md-controls', [
-        m('div', [
+        m('.toolbar', [
             m('a', { onclick: vm.bold }, m('i.fa.fa-bold', { title: 'Bold' })),
             m('a', { onclick: vm.italic }, m('i.fa.fa-italic', { title: 'Italic' })),
             m('a', { onclick: vm.strikethrough }, m('i.fa.fa-strikethrough', { title: 'Strikethrough' })),
@@ -33,6 +39,13 @@ module.exports = function(vm) {
             m('a', { onclick: vm.code }, m('i.fa.fa-code', { title: 'Code Block' })),
             m('a', { onclick: vm.table }, m('i.fa.fa-table', { title: 'Table' }))
         ]),
-        m('textarea', { config: autosize, oninput: m.withAttr('value', vm.val), value: vm.val() })
+        m('.text', [
+            m('.background'),
+            m('textarea', {
+                config: autosize,
+                oninput: m.withAttr('value', vm.val),
+                value: vm.val()
+            })
+        ])
     ]);
 };
