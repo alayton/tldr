@@ -3,6 +3,8 @@ var _ = require('underscore');
 var m = require('mithril');
 
 var Modal = function(model, view, opts, modalOpts) {
+    modalOpts = modalOpts || {};
+
     return m.component({
         controller: model,
         view: function(vm) {
