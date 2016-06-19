@@ -8,6 +8,7 @@ var romanize = require('util/romanize.js');
 var layout = require('views/layout/sidebar.js');
 var rate = require('controllers/components/guide/rate.js');
 var guideList = require('views/components/guide/list.js');
+var username = require('views/components/user/name.js');
 var commentList = require('controllers/components/comment/list.js');
 
 var md = require('markdown-it')()
@@ -33,11 +34,8 @@ module.exports = function(vm) {
                         href: '/guide/edit/' + vm.guide.id + '-' + slug(vm.guide.title), config: m.route
                     }, 'Edit') : [],
                     m('h1', vm.guide.title),
-                    m('span.author', [
-                        'By ',
-                        m('a', { href: '/user/guides/' + vm.guide.user_id + '-' + slug(vm.guide.author_name), config: m.route }, vm.guide.author_name)
-                    ]),
-                    m('span.updated', ['Last updated ', m('abbr', { title: moment(vm.guide.edited).format('lll') }, moment(vm.guide.edited).fromNow())]),
+                    username(vm.guide.user, { full: true }),
+                    m('span.updated', [m('i.fa.fa-clock-o'), ' updated ', m('abbr', { title: moment(vm.guide.edited).format('lll') }, moment(vm.guide.edited).fromNow())]),
                     m('.tags', [
                         m('a.tag.category', {
                             href: '/guides/' + catg.id + '-' + slug(catg.name),
@@ -66,6 +64,10 @@ module.exports = function(vm) {
                     ])
                 ]);
             })),
+            vm.guide.source_url ? m('.guide-source', [
+                'Thanks to ',
+                m('a', { href: vm.guide.source_url, target: '_blank', rel: 'nofollow' }, vm.guide.source_title ? vm.guide.source_title : vm.guide.source_url)
+            ]) : [],
             vm.guide.suggestions.length > 0 ? m('.guide-extras', [
                 m('section.suggested', [
                     m('h3', 'Suggested Guides'),

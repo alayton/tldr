@@ -24,7 +24,7 @@ var showReport = function(comment) {
 };
 
 module.exports = function(vm) {
-    var url = '/user/comments/' + vm.user.id + '-' + slug(vm.user.username) + '?page=%page%';
+    var url = '/user/comments/' + vm.user.id + '-' + slug(vm.user.username) + '?comment-page=%page%';
 
     return layout([
         header(vm.user, 'comments'),
@@ -34,8 +34,8 @@ module.exports = function(vm) {
                 m('a.guide', { href: guideUrl, config: m.route }, c.guide_title),
                 m('.comment', [
                     m('.byline', [
-                        m('abbr', { title: moment(c.created).format('lll') }, moment(c.created).fromNow()),
-                        c.edited != c.created ? m('span.edited', { title: moment(c.edited).format('lll') }, ' [edited]') : [],
+                        m('span', { title: moment(c.created).format('lll') }, [m('i.fa.fa-clock-o'), moment(c.created).fromNow()]),
+                        c.edited != c.created ? m('abbr', { title: 'Edited ' + moment(c.edited).format('lll') }, '*') : [],
                         m.component(rate, { comment: c, parent: vm }),
                         auth.isPrivileged() || (auth.user() && auth.user().id == c.user_id) ?
                             m('a.edit', {

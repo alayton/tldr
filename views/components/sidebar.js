@@ -3,6 +3,7 @@ var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
 var guideurl = require('util/guideurl.js');
+var username = require('views/components/user/name.js');
 
 module.exports = function(vm) {
     return m('.activity-feed', [
@@ -13,10 +14,7 @@ module.exports = function(vm) {
                 if (a.type == 'guide') {
                     return m('.feed-guide', [
                         m('a.title', { href: guideurl(a), config: m.route }, a.name),
-                        m('a.user', {
-                            href: '/user/guides/' + a.user_id + '-' + slug(a.user_name),
-                            config: m.route
-                        }, [m('i.fa.fa-user'), ' ', a.user_name]),
+                        username(a.user),
                         m('var', ['Updated ', m('abbr', { title: moment(a.when).format('lll') }, moment(a.when).fromNow())]),
                         m('a.tag.category', {
                             href: '/guides/' + a.category_id + '-' + slug(a.category_name),

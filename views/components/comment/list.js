@@ -9,6 +9,7 @@ var auth = require('models/auth.js');
 var rate = require('controllers/components/comment/rate.js');
 var mdtextarea = require('controllers/components/mdtextarea.js');
 var pagination = require('views/components/pagination.js');
+var username = require('views/components/user/name.js');
 
 var md = require('markdown-it')()
     .disable(['image']);
@@ -24,8 +25,8 @@ var showReport = function(comment) {
 };
 
 module.exports = function(vm) {
-    return m('.comments.page-block', [
-        m('h3', 'Comments'),
+    return m('.comments.page-block#comments', [
+        m('h3', 'Comments (', vm.totalResults(), ')'),
         m('.post-comment', [
             vm.bodyError() ? m('.alert.alert-danger', vm.bodyError()) : [],
             m.component(mdtextarea, { val: vm.body }),
@@ -46,10 +47,10 @@ module.exports = function(vm) {
                 return m('.comment', [
                     m('.byline', [
                         'Posted by ',
-                        m('a.user', { href: '/user/guides/' + c.user_id + '-' + slug(c.user_name) }, c.user_name),
+                        username(c.user),
                         ' ',
-                        m('abbr', { title: moment(c.created).format('lll') }, moment(c.created).fromNow()),
-                        c.edited != c.created ? m('span.edited', { title: moment(c.edited).format('lll') }, ' [edited]') : [],
+                        m('span', { title: moment(c.created).format('lll') }, [m('i.fa.fa-clock-o'), moment(c.created).fromNow()]),
+                        c.edited != c.created ? m('abbr', { title: 'Edited ' + moment(c.edited).format('lll') }, '*') : [],
                         m.component(rate, { comment: c, parent: vm }),
                         auth.isPrivileged() || (auth.user() && auth.user().id == c.user_id) ?
                             m('a.edit', {

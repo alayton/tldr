@@ -80,7 +80,7 @@ model.prototype = {
             data: this.serialize()
         }, true).then(function(data) {
             if (data.ok) {
-                self.closeModal();
+                modal.hide();
                 layout.notices().push('Success! We just sent you an email with a link to activate your account.');
             } else if (data.error) {
                 layout.errors().push(data.error);

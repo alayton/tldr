@@ -4,14 +4,55 @@
    }
 }
 
+.user-lg, .user-sm {
+   a.profile {
+      i { color: $text-muted; }
+      &.exec i { color: $site-color; }
+      &.admin i { color: $site-faded; }
+      &.mod i { color: $text-success; }
+   }
+}
+
+.user-lg {
+   a.profile {
+      margin-right: 0.5rem;
+   }
+
+   a.social {
+      margin-right: 0.25rem;
+   }
+}
+
+.user-sm {
+   display: inline;
+
+   a.social {
+      margin: 0 0.25rem;
+   }
+}
+
 .user-settings {
    .settings-field {
       background-color: $block-bgcolor;
       padding: 1.5rem 1.5rem 1.1rem;
       margin-top: 1.5rem;
 
-      button {
-         display: block;
+      .saved {
+         margin-left: 1rem;
+         color: $text-success;
+      }
+
+      &.social {
+         small {
+            display: block;
+            margin-bottom: 0.5rem;
+         }
+
+         label i {
+            font-size: 1.25rem;
+            position: relative;
+            top: 2px;
+         }
       }
    }
 

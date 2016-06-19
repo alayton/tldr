@@ -1,4 +1,5 @@
 var m = require('mithril');
+var _ = require('underscore');
 var slug = require('slug');
 var moment = require('moment');
 var auth = require('models/auth.js');
@@ -13,6 +14,40 @@ module.exports = function(vm) {
     } else {
         return layout([
             header(vm.user, 'settings'),
+            m('.settings-field.social', [
+                m('h2', 'Social Accounts'),
+                m('form', { onsubmit: vm.updateSocial.bind(vm) }, [
+                    vm.socialError() ? m('p.error', vm.socialError()) : [],
+                    m('small.text-muted', 'Your primary account will always be shown next to your name.'),
+                    _.map(vm.social, function(info) {
+                        return m('.form-group.row', [
+                            m('label.form-control-label.col-sm-1.text-sm-right', { for: 'social-' + info.type }, [
+                                m('i.fa', {
+                                    className: info.icon,
+                                    style: { color: info.color },
+                                    title: info.name
+                                }),
+                                m('span.hidden-sm-up', ' ' + info.name)
+                            ]),
+                            m('input[type=text].form-control.col-sm-5', {
+                                id: 'social-' + info.type,
+                                value: info.id(),
+                                oninput: m.withAttr('value', info.id)
+                            }),
+                            m('label.form-control-label.col-sm-6', [
+                                m('input[type=checkbox]', {
+                                    name: 'socialPrimary',
+                                    checked: info.primary,
+                                    onclick: _.partial(vm.primarySocial, vm, info.type)
+                                }),
+                                ' Primary'
+                            ])
+                        ]);
+                    }),
+                    m('button[type=submit].btn.btn-primary', { disabled: vm.saving() }, 'Save Social Accounts'),
+                    vm.socialSaved() ? m('span.saved', 'Saved!') : []
+                ])
+            ]),
             m('.settings-field', [
                 m('h2', 'Change Username'),
                 m('form', { onsubmit: vm.updateUsername.bind(vm) }, [
@@ -26,7 +61,8 @@ module.exports = function(vm) {
                             oninput: m.withAttr('value', vm.newUsername)
                         })
                     ]),
-                    m('button[type=submit].btn.btn-primary', 'Change Username')
+                    m('button[type=submit].btn.btn-primary', { disabled: vm.saving() }, 'Change Username'),
+                    vm.usernameSaved() ? m('span.saved', 'Changed!') : []
                 ])
             ]),
             m('.settings-field', [
@@ -61,7 +97,8 @@ module.exports = function(vm) {
                             oninput: m.withAttr('value', vm.confirmPassword)
                         })
                     ]),
-                    m('button[type=submit].btn.btn-primary', 'Change Password')
+                    m('button[type=submit].btn.btn-primary', { disabled: vm.saving() }, 'Change Password'),
+                    vm.passwordSaved() ? m('span.saved', 'Changed!') : []
                 ])
             ]),
             /*m('.settings-field', [
@@ -113,7 +150,9 @@ module.exports = function(vm) {
                         m('input[type=checkbox]', { checked: vm.roleModerator(), onclick: m.withAttr('checked', vm.roleModerator) }),
                         ' Moderator'
                     ])),
-                    m('button[type=submit].btn.btn-primary', 'Set Roles')
+                    m('div'),
+                    m('button[type=submit].btn.btn-primary', { disabled: vm.saving() }, 'Set Roles'),
+                    vm.rolesSaved() ? m('span.saved', 'Saved!') : []
                 ])
             ]) : []
         ], 'user-settings');

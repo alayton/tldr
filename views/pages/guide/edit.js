@@ -147,6 +147,30 @@ module.exports = function(vm) {
                 ]);
             })),
             m('.guide-extras', [
+                m('section.source', [
+                    m('h3', 'Source'),
+                    m('.form-group.row', [
+                        m('.col-sm-7', [
+                            m('label.sr-only[for=guideSourceUrl]', 'Source URL'),
+                            m('input.form-control[type=text]', {
+                                id: 'guideSourceUrl',
+                                placeholder: 'Source URL',
+                                oninput: m.withAttr('value', vm.guide.source_url),
+                                val: vm.guide.source_url()
+                            })
+                        ]),
+                        m('.col-sm-5', [
+                            m('label.sr-only[for=guideSourceTitle]', 'Source title'),
+                            m('input.form-control[type=text]', {
+                                id: 'guideSourceTitle',
+                                placeholder: 'Source title',
+                                oninput: m.withAttr('value', vm.guide.source_title),
+                                val: vm.guide.source_title()
+                            })
+                        ])
+                    ]),
+                    m('small.text-muted', 'If you want to credit a source for your information, this is the spot!'),
+                ]),
                 m('section.suggested', [
                     m('h3', 'Suggested Guides'),
                     guideList(vm, vm.guide.suggestions, true, function(g) {

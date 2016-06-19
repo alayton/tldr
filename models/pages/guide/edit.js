@@ -32,6 +32,8 @@ var vm = function(params, done) {
         image_id: 0,
         status: 0,
         title: '',
+        source_url: '',
+        source_title: '',
         tags: [],
         suggestions: []
     };
@@ -54,6 +56,8 @@ var vm = function(params, done) {
             image_id: 0,
             status: m.prop(0),
             title: m.prop(''),
+            source_url: m.prop(''),
+            source_title: m.prop(''),
             tags: [],
             suggestions: []
         };
@@ -87,6 +91,8 @@ var vm = function(params, done) {
 
             this.guide.status = m.prop(this.guide.status);
             this.guide.title = m.prop(this.guide.title);
+            this.guide.source_url = m.prop(this.guide.source_url);
+            this.guide.source_title = m.prop(this.guide.source_title);
 
             _.each(this.body, function(s) {
                 s.text = m.prop(s.text || '');
@@ -130,7 +136,9 @@ vm.prototype = {
             this.guide.category_id != this.savedGuide.category_id ||
             this.guide.image_id != this.savedGuide.image_id ||
             this.guide.status() != this.savedGuide.status ||
-            this.guide.title() != this.savedGuide.title) {
+            this.guide.title() != this.savedGuide.title ||
+            this.guide.source_url() != this.savedGuide.source_url ||
+            this.guide.source_title() != this.savedGuide.source_title) {
             return true;
         }
 
@@ -186,6 +194,8 @@ vm.prototype = {
             status: parseInt(self.guide.status()),
             title: self.guide.title(),
             body: JSON.stringify(body),
+            source_url: self.guide.source_url(),
+            source_title: self.guide.source_title(),
             tags: _.pluck(self.guide.tags, 'id'),
             suggestions: self.guide.suggestions ? _.pluck(self.guide.suggestions, 'id') : []
         };

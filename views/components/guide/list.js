@@ -5,6 +5,7 @@ var moment = require('moment');
 var guideurl = require('util/guideurl.js');
 var imageurl = require('util/imageurl.js');
 var rate = require('controllers/components/guide/rate.js');
+var username = require('views/components/user/name.js');
 
 module.exports = function(vm, guides, opts) {
     opts = opts || {};
@@ -25,12 +26,10 @@ module.exports = function(vm, guides, opts) {
                         href: '/guides/' + g.category_id + '-' + slug(g.category_name),
                         config: m.route
                     }, g.category_name) : [],
-                    m('a', {
-                        config: m.route,
-                        href: '/user/guides/' + g.user_id + '-' + slug(g.author_name)
-                    }, [m('i.fa.fa-user'), ' ', g.author_name])
+                    username(g.user),
+                    m('var', [m('i.fa.fa-clock-o'), ' updated ', m('abbr', { title: moment(g.edited).format('lll') }, moment(g.edited).fromNow())])
                 ]),
-                m('var', ['Last updated ', m('abbr', { title: moment(g.edited).format('lll') }, moment(g.edited).fromNow())]),
+                m('.comments', [g.comments, ' ', m('i.fa.fa-comment')]),
                 opts.extra ? opts.extra(g) : []
             ])
         ]);

@@ -132,7 +132,7 @@ model.prototype = {
                 this.image = null;
                 this.mime = null;
 
-                this.click(self, data.image);
+                this.click(data.image);
 
                 if (this.userImages()) {
                     this.userImages().unshift(data.image);

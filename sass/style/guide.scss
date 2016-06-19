@@ -34,20 +34,27 @@
             position: absolute;
             bottom: 0.5rem;
 
-            a i {
+            var {
                color: $text-muted;
+               margin-left: 0.75rem;
             }
          }
 
-         &>var {
+         .comments {
             position: absolute;
             bottom: 0.5rem;
-            right: 1rem;
+            right: 0.75rem;
+            color: $text-muted;
+
+            i {
+               position: relative;
+               top: -2px;
+            }
          }
       }
 
       a.tag {
-         margin: 0 0.5rem 0 0;
+         margin: 0 0.75rem 0 0;
       }
 
       .status {
@@ -130,11 +137,24 @@
       }
    }
 
-   .author, .updated {
+   .user-lg, .updated {
       color: $text-muted;
-      font-size: 0.8em;
-      line-height: 1.2em;
+      line-height: 1.2rem;
       display: block;
+   }
+
+   .user-lg {
+      display: inline-block;
+
+      a.social {
+         position: relative;
+         top: 1px;
+         font-size: 1.2rem;
+      }
+   }
+
+   .updated {
+      font-size: 0.8rem;
    }
 
    .tags {
@@ -146,6 +166,13 @@
 
       margin-top: 0.5rem;
    }
+}
+
+.guide-source {
+   margin-bottom: 1.5rem;
+   padding: 0.5rem 1.5rem;
+   background-color: $block-bgcolor;
+   color: $text-muted;
 }
 
 .guide-body {
