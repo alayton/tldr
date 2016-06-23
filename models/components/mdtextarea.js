@@ -7,7 +7,7 @@ var vm = function(val) {
 };
 
 var getTextarea = function(el) {
-    return $(el).parent().siblings('textarea');
+    return $(el).parent().parent().find('textarea');
 };
 
 vm.prototype = {

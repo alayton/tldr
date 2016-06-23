@@ -43,7 +43,10 @@ var stickyControls = function(el, isInitialized) {
 };
 
 module.exports = function(vm) {
-    var moderated = vm.guide.status == 2 && !auth.isPrivileged();
+    var moderated = vm.guide.status == 2 && !auth.isPrivileged(),
+        div = null;
+
+    if (typeof document !== 'undefined') div = document.createElement('div');
 
     return layout(vm.error !== null ?
         m('.alert.alert-danger', vm.error ? vm.error : 'Guide not found!') :
@@ -121,13 +124,17 @@ module.exports = function(vm) {
                 var img = section.image(),
                     imgWidth = img ? Math.min(871, img.width) : 0;
 
+                var sectionHTML = md.render(section.text());
+                div.innerHTML = sectionHTML;
+                var length = div.innerText.length;
+
                 return m('section', [
                     m.component(mdtextarea, { val: section.text }),
-                    m('var', { className: section.text().length > vm.sectionLength ? 'limited' : '' }, [section.text().length, ' / ', vm.sectionLength]),
+                    m('var', { className: length > vm.sectionLength ? 'limited' : '' }, [length, ' / ', vm.sectionLength]),
                     m('.preview.clearfix', [
                         m('header', romanize(idx + 1)),
                         m('article', [
-                            m.trust(md.render(section.text())),
+                            m.trust(sectionHTML),
                             img ?
                                 m('.image', m('img', { src: imageurl(img.id, imgWidth), style: { maxWidth: imgWidth + 'px' } })) :
                                 []
